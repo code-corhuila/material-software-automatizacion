@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación de n8n en Docker Desktop | Ingeniería Mecatrónica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a2f4b;
+    --secondary-color: #2d5a8a;
+    --accent-color: #00d4ff;
+    --accent-orange: #ff6b35;
+    --light-bg: #f0f4f8;
+    --dark-text: #1a1a1a;
+    --border-color: #d0d0d0;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--dark-text);
+    background-color: #fff;
+}
+
+/* Header */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 0;
+}
+
+.top-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    text-align: center;
+}
+
+.brand-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin: 5px 0;
+}
+
+.main-nav {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 50px 0;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: var(--secondary-color);
+    font-size: 2em;
+    margin-bottom: 25px;
+    border-left: 5px solid var(--accent-orange);
+    padding-left: 15px;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: var(--secondary-color);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.hero-section h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.lead {
+    font-size: 1.2em;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 40px 0;
+}
+
+.divider-thick {
+    border: none;
+    border-top: 3px solid var(--accent-color);
+    margin: 50px 0;
+}
+
+/* Definition Box */
+.definition-box {
+    background-color: #e0f7ff;
+    border-left: 5px solid var(--secondary-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-size: 1.05em;
+}
+
+/* Reflection Box */
+.reflection-box {
+    background-color: #fff3cd;
+    border-left: 5px solid var(--warning-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.reflection-box h4 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.reflection-box p {
+    color: #856404;
+    line-height: 1.7;
+}
+
+.reflection-box ul {
+    margin-left: 20px;
+    color: #856404;
+}
+
+.reflection-box li {
+    margin-bottom: 8px;
+}
+
+/* Success Box */
+.success-box {
+    background-color: #d4edda;
+    border-left: 5px solid var(--success-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.success-box h4 {
+    color: #155724;
+    margin-bottom: 10px;
+}
+
+.success-box p {
+    color: #155724;
+    line-height: 1.7;
+}
+
+/* Warning Box */
+.warning-box {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.warning-box h4 {
+    color: #721c24;
+    margin-bottom: 10px;
+}
+
+.warning-box p {
+    color: #721c24;
+    line-height: 1.7;
+}
+
+/* Comparison Cards */
+.comparison-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card h3,
+.card h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Step Box */
+.step-box {
+    background-color: var(--light-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.step-num {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.step-box h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Strategy Grid */
+.strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.strategy-box {
+    background-color: var(--light-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.strategy-box h5 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.strategy-box ul {
+    list-style-position: inside;
+    margin-left: 10px;
+}
+
+.strategy-box li {
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-responsive {
+    overflow-x: auto;
+    margin: 30px 0;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: left;
+    font-weight: 500;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.styled-table tbody tr:hover {
+    background-color: var(--light-bg);
+}
+
+.styled-table tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 5px 12px;
+    margin: 5px 5px 5px 0;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.tag-docker {
+    background-color: #e7f3ff;
+    color: #004085;
+}
+
+.tag-n8n {
+    background-color: #fff3e7;
+    color: #8b4513;
+}
+
+.tag-automation {
+    background-color: #e2f5e2;
+    color: #155724;
+}
+
+/* Code Blocks */
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.5;
+    position: relative;
+}
+
+code {
+    font-family: 'Courier New', monospace;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--primary-color);
+}
+
+pre code {
+    background-color: transparent;
+    color: #f8f8f2;
+    padding: 0;
+}
+
+/* Checklist */
+.checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.checklist li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--light-bg);
+    border-radius: 5px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.checklist li:before {
+    content: "✓ ";
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Footer */
+.main-footer {
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+.main-footer p {
+    margin: 8px 0;
+    font-size: 0.95em;
+}
+
+.main-footer ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.main-footer li {
+    margin: 8px 0;
+}
+
+.main-footer a {
+    color: #fff9e6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.main-footer a:hover {
+    color: var(--accent-color);
+}
+
+/* Scroll to Top Button */
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    transition: background-color 0.3s;
+}
+
+#scrollTopBtn:hover {
+    background-color: var(--accent-orange);
+}
+
+/* Lists */
+ul, ol {
+    margin: 15px 0;
+    margin-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+    line-height: 1.7;
+}
+
+/* Links */
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent-orange);
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    .hero-section {
+        padding: 40px 20px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+    }
+    
+    .main-nav a {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .comparison-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .strategy-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="top-bar">
+            <div class="container brand-container">
+                <img src="https://raw.githubusercontent.com/code-corhuila/material-mineria-datos/b3725d694125ab35294ddfe415a327bc1445d32c/01-week/01-session/LOGO%20CORHUILA%20BLANCO%20PNG%20(2).png" alt="Logo Corhuila" class="logo-corhuila" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                <h1 class="brand-name" style="color: white;">Instalación de n8n en Docker Desktop</h1>
+                <p style="color: white;">Guía Paso a Paso - Ingeniería Mecatrónica</p>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul>
+                    <li><a href="#introduccion">Introducción</a></li>
+                    <li><a href="#requisitos">Requisitos</a></li>
+                    <li><a href="#paso1">Paso 1: Docker</a></li>
+                    <li><a href="#paso2">Paso 2: n8n</a></li>
+                    <li><a href="#paso3">Paso 3: Verificar</a></li>
+                    <li><a href="#paso4">Paso 4: Acceder</a></li>
+                    <li><a href="#troubleshooting">Solución Problemas</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container main-content">
+
+        <section id="introduccion" class="hero-section">
+            <h1>Instalación de n8n en Docker Desktop</h1>
+            <p class="lead">Guía completa y detallada para instalar n8n (plataforma de automatización workflow) en tu máquina local usando Docker Desktop. Perfecto para desarrollar y probar automatizaciones antes de desplegar en producción.</p>
+        </section>
+
+        <hr class="divider">
+
+        <section id="que-esperar">
+            <h2>¿Qué Lograrás?</h2>
+            <p>Al seguir esta guía podrás:</p>
+            <ul class="checklist">
+                <li>Instalar Docker Desktop en tu sistema operativo</li>
+                <li>Configurar n8n con Docker Compose</li>
+                <li>Ejecutar n8n localmente en tu máquina</li>
+                <li>Acceder a la interfaz web de n8n</li>
+                <li>Crear tus primeros flujos de automatización</li>
+                <li>Resolver problemas comunes</li>
+            </ul>
+        </section>
+
+        <hr class="divider">
+
+        <section id="requisitos">
+            <h2>1. Requisitos Previos</h2>
+            <p>Asegúrate de tener lo siguiente antes de comenzar:</p>
+
+            <div class="strategy-grid">
+                <div class="strategy-box">
+                    <h5>Sistema Operativo</h5>
+                    <p>Windows 10/11 Pro, Enterprise, Home (versión 21H2+), macOS 11+, o Linux (Ubuntu/Debian)</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>Hardware Mínimo</h5>
+                    <p>Procesador multi-core, 4GB RAM (8GB recomendado), 10GB espacio disco libre</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>Software Base</h5>
+                    <p>Terminal/PowerShell, conexión a internet estable, permisos de administrador</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>Conocimientos</h5>
+                    <p>Conceptos básicos de terminal de comandos (no es obligatorio, veremos todo el proceso)</p>
+                </div>
+            </div>
+
+            <div class="reflection-box">
+                <h4>💡 Nota Importante</h4>
+                <p>Este guía está optimizada para <strong>Windows 11 Pro y Linux</strong>. Si tienes Windows 10 Home, necesitarás también WSL 2 (Windows Subsystem for Linux 2). Si tienes macOS, el proceso es muy similar.</p>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section id="paso1">
+            <h2>2. Paso 1: Instalar Docker Desktop</h2>
+            <p>Docker es el software que permite ejecutar n8n en un contenedor aislado. Aquí te mostramos cómo instalarlo.</p>
+
+            <h3>2.1 Descargar Docker Desktop</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Ir al sitio oficial</h4>
+                <p>Abre tu navegador y dirígete a:</p>
+                <pre><code>https://www.docker.com/products/docker-desktop</code></pre>
+                <p>Verás un botón azul grande que dice <strong>"Download for Windows"</strong>, <strong>"Download for Mac"</strong> o similar según tu SO.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Seleccionar tu SO</h4>
+                <p>Haz clic en el botón de descarga. Docker detectará automáticamente tu sistema operativo. Descarga la versión que corresponda:</p>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Sistema Operativo</th>
+                                <th>Descarga</th>
+                                <th>Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Windows (Intel)</strong></td>
+                                <td>Docker Desktop for Windows</td>
+                                <td>Para procesadores Intel/AMD</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Windows (ARM)</strong></td>
+                                <td>Docker Desktop for Windows (ARM)</td>
+                                <td>Para procesadores ARM (raro en desktop)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>macOS (Intel)</strong></td>
+                                <td>Docker Desktop for Mac (Intel)</td>
+                                <td>Para Mac con chips Intel</td>
+                            </tr>
+                            <tr>
+                                <td><strong>macOS (Apple Silicon)</strong></td>
+                                <td>Docker Desktop for Mac (Apple Silicon)</td>
+                                <td>Para Mac M1, M2, M3</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Linux</strong></td>
+                                <td>Docker Engine (CLI)</td>
+                                <td>No USA Docker Desktop, solo CLI</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>2.2 Instalar Docker Desktop</h3>
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Ejecutar el instalador</h4>
+                <ol>
+                    <li>Una vez descargado, abre el archivo <code>.exe</code> (Windows), <code>.dmg</code> (Mac) o el script de instalación (Linux)</li>
+                    <li>En Windows y Mac aparecerá un asistente de instalación</li>
+                    <li>Lee los términos de servicio y acepta</li>
+                    <li>Selecciona las opciones por defecto (generalmente están bien)</li>
+                    <li>Haz clic en <strong>"Install"</strong></li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Esperar a que termine</h4>
+                <p>La instalación puede tardar varios minutos (5-15 minutos típicamente). Es normal que veas una barra de progreso. <strong>No cierres la ventana.</strong></p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">5</span>Reiniciar el sistema</h4>
+                <p>Al terminar, probablemente te pedirá reiniciar tu computadora. <strong>Es importante hacerlo.</strong> Guarda tu trabajo y reinicia.</p>
+            </div>
+
+            <h3>2.3 Verificar que Docker está instalado</h3>
+            <div class="step-box">
+                <h4><span class="step-num">6</span>Abrir Terminal/PowerShell</h4>
+                <p><strong>En Windows:</strong> Abre PowerShell o Command Prompt (presiona <code>Win + R</code>, escribe <code>powershell</code>, presiona Enter)</p>
+                <p><strong>En Mac:</strong> Abre Terminal (presiona <code>Cmd + Space</code>, escribe <code>terminal</code></p>
+                <p><strong>En Linux:</strong> Abre tu terminal favorita (Ctrl + Alt + T en Ubuntu)</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">7</span>Verificar instalación</h4>
+                <p>Escribe los siguientes comandos en la terminal:</p>
+                <pre><code># Verificar versión de Docker
+docker --version
+
+# Descargar y ejecutar imagen de prueba
+docker run hello-world</code></pre>
+                <p>Si todo está correcto, verás algo como:</p>
+                <pre><code>Docker version 24.0.0, build 1234567
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.</code></pre>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ ¡Excelente!</h4>
+                <p>Docker Desktop está instalado y funcionando correctamente. Ahora pasamos al siguiente paso.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="paso2">
+            <h2>3. Paso 2: Instalar n8n con Docker</h2>
+            <p>Ahora que Docker está listo, instalaremos n8n con una configuración optimizada usando Docker Compose.</p>
+
+            <h3>3.1 Crear carpeta de proyecto</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Crear directorio</h4>
+                <p>Crea una carpeta donde guardaremos la configuración de n8n:</p>
+                <pre><code># En Windows (PowerShell):
+mkdir C:\n8n-local
+
+# En Mac/Linux:
+mkdir ~/n8n-local
+cd ~/n8n-local</code></pre>
+                <p>O simplemente crea una carpeta manualmente en tu explorador de archivos.</p>
+            </div>
+
+            <h3>3.2 Crear archivo docker-compose.yml</h3>
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Navegar a la carpeta</h4>
+                <pre><code># En PowerShell:
+cd C:\n8n-local
+
+# En Mac/Linux:
+cd ~/n8n-local</code></pre>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Crear archivo docker-compose.yml</h4>
+                <p>Necesitas crear un archivo llamado <code>docker-compose.yml</code>. Puedes hacerlo de varias formas:</p>
+                
+                <p><strong>Opción A: Usar un editor de texto (más fácil)</strong></p>
+                <ol>
+                    <li>Abre el Bloc de Notas (Notepad) o Visual Studio Code</li>
+                    <li>Copia el contenido de abajo</li>
+                    <li>Guarda el archivo como <code>docker-compose.yml</code> (no <code>.txt</code>)</li>
+                    <li>Muévelo a tu carpeta <code>C:\n8n-local</code> o <code>~/n8n-local</code></li>
+                </ol>
+
+                <p><strong>Opción B: Crear con terminal (para usuarios avanzados)</strong></p>
+                <pre><code># En Mac/Linux:
+touched docker-compose.yml
+nano docker-compose.yml</code></pre>
+
+                <p><strong>Contenido del archivo docker-compose.yml:</strong></p>
+                <pre><code>version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-local
+    ports:
+      - "5678:5678"
+    environment:
+      - NODE_ENV=production
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=cambio_esta_contrasena_123
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Bogota
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+    networks:
+      - n8n-network
+
+  # Base de datos PostgreSQL (Opcional pero recomendado)
+  postgres:
+    image: postgres:15-alpine
+    container_name: n8n-postgres
+    environment:
+      POSTGRES_USER: n8n
+      POSTGRES_PASSWORD: n8n_password_123
+      POSTGRES_DB: n8n
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - n8n-network
+
+volumes:
+  n8n_data:
+  postgres_data:
+
+networks:
+  n8n-network:
+    driver: bridge</code></pre>
+
+                <div class="reflection-box">
+                    <h4>⚙️ Personalizar el archivo</h4>
+                    <p>Puedes cambiar estos valores según tus necesidades:</p>
+                    <ul>
+                        <li><strong>N8N_BASIC_AUTH_PASSWORD:</strong> Cambiar por una contraseña segura</li>
+                        <li><strong>GENERIC_TIMEZONE:</strong> Tu zona horaria (ej: America/New_York, Europe/Madrid, Asia/Tokyo)</li>
+                        <li><strong>Puerto 5678:</strong> Puedes cambiar si tienes conflicto (ej: 5679, 5680)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>3.3 Descargar imágenes y ejecutar</h3>
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Ejecutar Docker Compose</h4>
+                <p>En la terminal, dentro de la carpeta <code>n8n-local</code>, ejecuta:</p>
+                <pre><code>docker-compose up -d</code></pre>
+                <p>La flag <code>-d</code> significa "detached" (ejecución en segundo plano).</p>
+                <p>Este comando:</p>
+                <ul>
+                    <li>Descargará las imágenes de n8n y PostgreSQL (puede tardar 5-10 minutos la primera vez)</li>
+                    <li>Creará los contenedores</li>
+                    <li>Los iniciará automáticamente</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">5</span>Esperar a que inicie</h4>
+                <p>Una vez ejecutado el comando anterior, espera 30-60 segundos para que n8n termine de iniciar completamente. Los servidores necesitan tiempo para levantarse.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">6</span>Verificar que está corriendo</h4>
+                <p>Ejecuta este comando para ver el estado de los contenedores:</p>
+                <pre><code>docker-compose ps</code></pre>
+                <p>Deberías ver algo como:</p>
+                <pre><code>CONTAINER ID   IMAGE                COMMAND              STATUS
+abc1234567     n8nio/n8n:latest     "docker-entrypoint"  Up 2 minutes
+xyz7654321     postgres:15-alpine   "docker-entrypoint"  Up 2 minutes</code></pre>
+                <p>Si ves <strong>Status: Up</strong>, está funcionando. Si ves <strong>Exited</strong>, hay un problema (ver sección Solución de Problemas).</p>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ ¡Contenedores en ejecución!</h4>
+                <p>n8n y PostgreSQL están ahora corriendo en segundo plano. Próximo paso: acceder a la interfaz web.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="paso3">
+            <h2>4. Paso 3: Verificar n8n</h2>
+            <p>Ahora verificaremos que n8n está funcionando correctamente viendo los logs.</p>
+
+            <h3>4.1 Ver logs de n8n</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Ver todos los logs</h4>
+                <pre><code># Ver últimas líneas de log
+docker-compose logs n8n
+
+# Ver logs en tiempo real (presiona Ctrl+C para salir)
+docker-compose logs -f n8n</code></pre>
+                <p>Deberías ver something como:</p>
+                <pre><code>n8n-local  | n8n ready on 0.0.0.0, port 5678
+n8n-local  | Server started successfully
+n8n-local  | Version: 1.XX.X</code></pre>
+                <p>Esto significa que n8n está escuchando en el puerto 5678 y listo para recibir conexiones.</p>
+            </div>
+
+            <h3>4.2 Verificar conectividad</h3>
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Probar conexión</h4>
+                <pre><code># En PowerShell/bash:
+curl http://localhost:5678
+
+# O accede directamente en el navegador:
+# http://localhost:5678</code></pre>
+            </div>
+
+            <h3>4.3 Ver recursos usados</h3>
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Monitorear CPU y memoria</h4>
+                <pre><code># Ver estadísticas de contenedores en tiempo real
+docker stats
+
+# Si solo quieres n8n:
+docker stats n8n-local</code></pre>
+                <p>Deberías ver un uso moderado de memoria (generalmente 200-500 MB).</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="paso4">
+            <h2>5. Paso 4: Acceder a n8n</h2>
+            <p>Ahora el momento emocionante: ¡acceder a la interfaz web de n8n!</p>
+
+            <h3>5.1 Abrir n8n en el navegador</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Abrir navegador</h4>
+                <p>Abre tu navegador web favorito (Chrome, Firefox, Safari, Edge, etc.)</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Ir a la URL</h4>
+                <p>En la barra de direcciones, escribe:</p>
+                <pre><code>http://localhost:5678</code></pre>
+                <p>Presiona Enter.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Pantalla de login</h4>
+                <p>Deberías ver una pantalla de login de n8n. Si no aparece nada, espera 10 segundos más y recarga la página (F5 o Ctrl+R).</p>
+                <p>Las credenciales son las que pusiste en el archivo <code>docker-compose.yml</code>:</p>
+                <ul>
+                    <li><strong>Usuario:</strong> admin</li>
+                    <li><strong>Contraseña:</strong> cambio_esta_contrasena_123 (o la que hayas puesto)</li>
+                </ul>
+            </div>
+
+            <h3>5.2 Configuración inicial</h3>
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Ingresar credenciales</h4>
+                <ol>
+                    <li>Ingresa el usuario: <code>admin</code></li>
+                    <li>Ingresa la contraseña (la que configuraste)</li>
+                    <li>Haz clic en <strong>"Sign In"</strong></li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">5</span>Configurar perfil (primera vez)</h4>
+                <p>Es posible que te pida completar información en tu primer acceso:</p>
+                <ul>
+                    <li>Nombre: Tu nombre (ej: "Admin" u "Operador")</li>
+                    <li>Email: Tu email (ej: admin@empresa.com)</li>
+                    <li>Contraseña: Confirma tu contraseña</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">6</span>¡Acceso exitoso!</h4>
+                <p>Después del login deberías ver el dashboard principal de n8n con:</p>
+                <ul>
+                    <li>Lista de workflows (vacía al principio)</li>
+                    <li>Botón para crear nuevo workflow</li>
+                    <li>Menú de configuración</li>
+                    <li>Panel izquierdo con nodos disponibles</li>
+                </ul>
+            </div>
+
+            <div class="success-box">
+                <h4>🎉 ¡n8n está corriendo!</h4>
+                <p>¡Felicidades! Has instalado exitosamente n8n en Docker Desktop. Ahora puedes crear flujos de automatización.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="comandos-utiles">
+            <h2>6. Comandos Útiles</h2>
+            <p>Estos comandos te ayudarán a gestionar n8n desde la terminal.</p>
+
+            <h3>Gestión de Contenedores</h3>
+            <div class="table-responsive">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Comando</th>
+                            <th>Descripción</th>
+                            <th>Cuándo usar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>docker-compose up -d</code></td>
+                            <td>Inicia los contenedores</td>
+                            <td>Primera instalación o después de detenerlos</td>
+                        </tr>
+                        <tr>
+                            <td><code>docker-compose down</code></td>
+                            <td>Detiene y elimina los contenedores</td>
+                            <td>Cuando quieras apagar n8n</td>
+                        </tr>
+                        <tr>
+                            <td><code>docker-compose ps</code></td>
+                            <td>Ver estado de contenedores</td>
+                            <td>Verificar si están corriendo</td>
+                        </tr>
+                        <tr>
+                            <td><code>docker-compose logs n8n</code></td>
+                            <td>Ver logs de n8n</td>
+                            <td>Diagnosticar errores</td>
+                        </tr>
+                        <tr>
+                            <td><code>docker-compose logs -f n8n</code></td>
+                            <td>Ver logs en tiempo real</td>
+                            <td>Ver qué está pasando ahora</td>
+                        </tr>
+                        <tr>
+                            <td><code>docker-compose restart n8n</code></td>
+                            <td>Reiniciar contenedor n8n</td>
+                            <td>Si algo funciona mal</td>
+                        </tr>
+                        <tr>
+                            <td><code>docker stats</code></td>
+                            <td>Ver CPU y memoria usados</td>
+                            <td>Monitorear rendimiento</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Ejemplos prácticos</h3>
+            <pre><code># Detener n8n (los datos se guardan)
+docker-compose down
+
+# Reanudar n8n después
+docker-compose up -d
+
+# Ver si hay problemas
+docker-compose logs n8n | tail -20
+
+# Reiniciar si está lento
+docker-compose restart n8n
+
+# Eliminar TODOS los datos (¡cuidado!)
+docker-compose down -v</code></pre>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="troubleshooting">
+            <h2>7. Solución de Problemas</h2>
+            <p>Problemas comunes y cómo resolverlos.</p>
+
+            <h3>Problema 1: "Connection refused" o no puedo acceder a localhost:5678</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>Cuando accedo a <code>http://localhost:5678</code> no aparece nada o dice "Connection refused"</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Espera más tiempo:</strong> n8n tarda 30-60 segundos en iniciar. Espera e intenta de nuevo.</li>
+                    <li><strong>Verifica que está corriendo:</strong>
+                        <pre><code>docker-compose ps</code></pre>
+                        <p>Debe mostrar STATUS "Up". Si no, continúa con el paso 3.</p>
+                    </li>
+                    <li><strong>Revisa los logs:</strong>
+                        <pre><code>docker-compose logs n8n</code></pre>
+                        <p>Busca mensajes de error.</p>
+                    </li>
+                    <li><strong>Reinicia los contenedores:</strong>
+                        <pre><code>docker-compose restart n8n</code></pre>
+                    </li>
+                    <li><strong>Verifica el puerto:</strong> Asegúrate que en <code>docker-compose.yml</code> está <code>5678:5678</code></li>
+                </ol>
+            </div>
+
+            <h3>Problema 2: "Port 5678 is already allocated"</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>Otro programa ya usa el puerto 5678</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Opción 1: Cambiar puerto (recomendado)</strong>
+                        <p>Edita <code>docker-compose.yml</code> y cambia:</p>
+                        <pre><code># De:
+ports:
+  - "5678:5678"
+
+# A:
+ports:
+  - "5679:5678"</code></pre>
+                        <p>Luego ejecuta:</p>
+                        <pre><code>docker-compose up -d</code></pre>
+                        <p>Y accede a <code>http://localhost:5679</code></p>
+                    </li>
+                    <li><strong>Opción 2: Encontrar qué usa el puerto</strong>
+                        <pre><code># En PowerShell (Windows):
+netstat -ano | findstr :5678
+
+# En Mac/Linux:
+lsof -i :5678</code></pre>
+                        <p>Luego cierra ese programa o usa Opción 1.</p>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Problema 3: n8n se detiene o sale ("Exited" status)</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p><code>docker-compose ps</code> muestra STATUS "Exited"</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Ver el error en logs:</strong>
+                        <pre><code>docker-compose logs n8n</code></pre>
+                    </li>
+                    <li><strong>Problemas comunes en logs:</strong>
+                        <ul>
+                            <li>"Out of memory" → Aumenta RAM en Docker Desktop Settings</li>
+                            <li>"Connection refused" → Espera, n8n puede estar iniciando</li>
+                            <li>"Permission denied" → En Linux, usa `sudo`</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reintentar:</strong>
+                        <pre><code>docker-compose down
+docker-compose up -d</code></pre>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Problema 4: Docker no reconoce comandos</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>"docker: command not found" o error similar</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Windows:</strong> Abre PowerShell como administrador</li>
+                    <li><strong>Mac/Linux:</strong> En Linux, prefija con `sudo`: `sudo docker-compose up -d`</li>
+                    <li><strong>Reinicia computadora:</strong> A veces la instalación no se registra hasta reiniciar después de instalar Docker</li>
+                    <li><strong>Verifica Docker instalado:</strong>
+                        <pre><code>docker --version</code></pre>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Problema 5: Contraseña olvidada o no puedo usar n8n</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>No recuerdo la contraseña o n8n no me deja entrar</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Opción 1: Cambiar contraseña en docker-compose.yml</strong>
+                        <p>Edita el archivo y cambia:</p>
+                        <pre><code>N8N_BASIC_AUTH_PASSWORD=mi_nueva_contrasena_segura</code></pre>
+                        <p>Luego ejecuta:</p>
+                        <pre><code>docker-compose down
+docker-compose up -d</code></pre>
+                    </li>
+                    <li><strong>Opción 2: Borrar datos y empezar de nuevo</strong>
+                        <pre><code>docker-compose down -v
+docker-compose up -d</code></pre>
+                        <p><strong>⚠️ Cuidado:</strong> Esto borra TODOS tus flujos y configuración. Solo si no hay nada importante.</p>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Problema 6: n8n es muy lento</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>Todo va muy lento, la interfaz tarda en responder</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Verifica recursos:</strong>
+                        <pre><code>docker stats</code></pre>
+                        <p>Si CPU > 80% o Memory > 80%, hay problema.</p>
+                    </li>
+                    <li><strong>Aumenta recursos Docker:</strong>
+                        <ul>
+                            <li>Abre Docker Desktop</li>
+                            <li>Settings → Resources</li>
+                            <li>Aumenta "CPUs" a 4 o más</li>
+                            <li>Aumenta "Memory" a 8GB o más</li>
+                            <li>Haz clic "Apply & Restart"</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reinicia n8n:</strong>
+                        <pre><code>docker-compose restart n8n</code></pre>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Problema 7: Hay conflicto con PostgreSQL</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>PostgreSQL no inicia o hay error de base de datos</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Opción 1: Usar solo n8n sin PostgreSQL</strong>
+                        <p>Si no necesitas persistencia de base de datos, usa este archivo simplificado:</p>
+                        <pre><code>version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-local
+    ports:
+      - "5678:5678"
+    environment:
+      - NODE_ENV=production
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=cambio_esta_contrasena_123
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+
+volumes:
+  n8n_data:</code></pre>
+                    </li>
+                    <li><strong>Opción 2: Borrar volúmenes corruptos</strong>
+                        <pre><code>docker-compose down -v
+docker-compose up -d</code></pre>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="reflection-box">
+                <h4>💡 No encuentro tu problema?</h4>
+                <p>Si tu problema no está aquí, intenta:</p>
+                <ul>
+                    <li>Revisar los logs completos: <code>docker-compose logs</code></li>
+                    <li>Buscar en <a href="https://community.n8n.io/" target="_blank">n8n Community</a></li>
+                    <li>Consultar <a href="https://docs.n8n.io/" target="_blank">n8n Docs</a></li>
+                    <li>Verificar <a href="https://docs.docker.com/" target="_blank">Docker Docs</a></li>
+                </ul>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="siguientes-pasos">
+            <h2>8. Próximos Pasos</h2>
+            <p>Ahora que n8n está instalado, ¿qué sigue?</p>
+
+            <div class="strategy-grid">
+                <div class="strategy-box">
+                    <h5>1. Explorar la Interfaz</h5>
+                    <p>Familiarízate con el dashboard. Haz clic en los botones, revisa los menús, entiende la estructura.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>2. Crear Primer Flujo</h5>
+                    <p>Da clic en "New Workflow" y crea un flujo simple (manual trigger + log).</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>3. Conectar a API</h5>
+                    <p>Prueba con APIs públicas (OpenWeatherMap, CoinGecko) para traer datos reales.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>4. Integrar Webhooks</h5>
+                    <p>Aprende a usar webhooks para que sistemas externos triguereen tus flujos.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>5. Lógica Compleja</h5>
+                    <p>Domina nodos condicionales (If/Switch), loops, y transformaciones de datos.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>6. Automatizar Procesos Reales</h5>
+                    <p>Aplica n8n a procesos de tu trabajo: alertas, reportes, sincronización.</p>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4>🚀 ¡Está todo listo!</h4>
+                <p>Tienes n8n corriendo, ahora el límite es tu imaginación. Puedes automatizar casi cualquier cosa que implique integración entre sistemas.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="referencias">
+            <h2>9. Referencias y Recursos</h2>
+            <p>Material adicional para profundizar.</p>
+
+            <div class="comparison-cards">
+                <div class="card">
+                    <h4>📚 Documentación</h4>
+                    <p><a href="https://docs.docker.com/" target="_blank">Docker Docs</a></p>
+                    <p><a href="https://docs.n8n.io/" target="_blank">n8n Docs</a></p>
+                    <p><a href="https://docs.n8n.io/hosting/installation/docker/" target="_blank">n8n + Docker</a></p>
+                </div>
+                <div class="card">
+                    <h4>👥 Comunidades</h4>
+                    <p><a href="https://community.n8n.io/" target="_blank">n8n Community Forum</a></p>
+                    <p><a href="https://stackoverflow.com/questions/tagged/n8n" target="_blank">Stack Overflow - n8n</a></p>
+                    <p><a href="https://discord.gg/nr6qy3MpZx" target="_blank">n8n Discord</a></p>
+                </div>
+                <div class="card">
+                    <h4>🎓 Tutoriales</h4>
+                    <p><a href="https://www.youtube.com/c/n8nio" target="_blank">n8n YouTube Channel</a></p>
+                    <p><a href="https://www.youtube.com/watch?v=rhzgIAVAVp0" target="_blank">n8n Tutorial</a></p>
+                    <p><a href="https://www.youtube.com/watch?v=pTFZFxd4-v8" target="_blank">Docker Course</a></p>
+                </div>
+                <div class="card">
+                    <h4>⚙️ Herramientas</h4>
+                    <p><a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker Desktop</a></p>
+                    <p><a href="https://code.visualstudio.com/" target="_blank">VS Code</a></p>
+                    <p><a href="https://www.postman.com/" target="_blank">Postman</a></p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <h3>Instalación de n8n en Docker Desktop</h3>
+            <p><strong>Guía preparada para:</strong> Ingeniería Mecatrónica</p>
+            <p><strong>Creado por:</strong> Ing. Julian Quimbayo Castro</p>
+            <p>Última actualización: Febrero 2026</p>
+            <p>Este material es de uso educativo. Para más información, consulta la documentación oficial de Docker y n8n.</p>
+            <ul>
+                <li><a href="https://docs.docker.com/" target="_blank">Docker Documentation</a></li>
+                <li><a href="https://docs.n8n.io/" target="_blank">n8n Documentation</a></li>
+                <li><a href="https://n8n.io/" target="_blank">n8n.io</a></li>
+            </ul>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.9;">© Corporación Universitaria de Huila - Corhuila</p>
+        </div>
+    </footer>
+
+    <button id="scrollTopBtn" title="Volver arriba">↑</button>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupScrollButton();
+    setupNavigation();
+    setupSmoothScroll();
+    highlightActiveSection();
+});
+
+// Scroll to Top Button
+function setupScrollButton() {
+    const scrollBtn = document.getElementById('scrollTopBtn');
+
+    window.addEventListener('scroll', function() {
+        if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
+            scrollBtn.style.display = 'block';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+
+    scrollBtn.addEventListener('click', function() {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    });
+}
+
+// Smooth Scroll
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Active Navigation Highlight
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+
+    window.addEventListener('scroll', highlightActiveSection);
+}
+
+function highlightActiveSection() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+    let current = '';
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Copy Code to Clipboard
+document.querySelectorAll('pre').forEach(pre => {
+    const button = document.createElement('button');
+    button.textContent = '📋 Copiar';
+    button.style.cssText = `
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 8px 12px;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 10;
+    `;
+
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    pre.addEventListener('mouseenter', () => {
+        button.style.opacity = '1';
+    });
+
+    pre.addEventListener('mouseleave', () => {
+        button.style.opacity = '0';
+    });
+
+    button.addEventListener('click', () => {
+        const code = pre.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = button.textContent;
+            button.textContent = '✅ Copiado!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        });
+    });
+});
+    </script>
+</body>
+</html>
