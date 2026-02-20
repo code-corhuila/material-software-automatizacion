@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Primer Flujo de Automatización en n8n | Ingeniería Mecatrónica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a2f4b;
+    --secondary-color: #2d5a8a;
+    --accent-color: #00d4ff;
+    --accent-orange: #ff6b35;
+    --light-bg: #f0f4f8;
+    --dark-text: #1a1a1a;
+    --border-color: #d0d0d0;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--dark-text);
+    background-color: #fff;
+}
+
+/* Header */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 0;
+}
+
+.top-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    text-align: center;
+}
+
+.brand-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin: 5px 0;
+}
+
+.main-nav {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 50px 0;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: var(--secondary-color);
+    font-size: 2em;
+    margin-bottom: 25px;
+    border-left: 5px solid var(--accent-orange);
+    padding-left: 15px;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: var(--secondary-color);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.hero-section h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.lead {
+    font-size: 1.2em;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 40px 0;
+}
+
+.divider-thick {
+    border: none;
+    border-top: 3px solid var(--accent-color);
+    margin: 50px 0;
+}
+
+/* Definition Box */
+.definition-box {
+    background-color: #e0f7ff;
+    border-left: 5px solid var(--secondary-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-size: 1.05em;
+}
+
+/* Reflection Box */
+.reflection-box {
+    background-color: #fff3cd;
+    border-left: 5px solid var(--warning-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.reflection-box h4 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.reflection-box p {
+    color: #856404;
+    line-height: 1.7;
+}
+
+.reflection-box ul {
+    margin-left: 20px;
+    color: #856404;
+}
+
+.reflection-box li {
+    margin-bottom: 8px;
+}
+
+/* Success Box */
+.success-box {
+    background-color: #d4edda;
+    border-left: 5px solid var(--success-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.success-box h4 {
+    color: #155724;
+    margin-bottom: 10px;
+}
+
+.success-box p {
+    color: #155724;
+    line-height: 1.7;
+}
+
+/* Warning Box */
+.warning-box {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.warning-box h4 {
+    color: #721c24;
+    margin-bottom: 10px;
+}
+
+.warning-box p {
+    color: #721c24;
+    line-height: 1.7;
+}
+
+.warning-box ul {
+    margin-left: 20px;
+    color: #721c24;
+}
+
+.warning-box li {
+    margin-bottom: 8px;
+}
+
+/* Comparison Cards */
+.comparison-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card h3,
+.card h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Step Box */
+.step-box {
+    background-color: var(--light-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.step-num {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.step-box h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Strategy Grid */
+.strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.strategy-box {
+    background-color: var(--light-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.strategy-box h5 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.strategy-box ul {
+    list-style-position: inside;
+    margin-left: 10px;
+}
+
+.strategy-box li {
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-responsive {
+    overflow-x: auto;
+    margin: 30px 0;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: left;
+    font-weight: 500;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.styled-table tbody tr:hover {
+    background-color: var(--light-bg);
+}
+
+.styled-table tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 5px 12px;
+    margin: 5px 5px 5px 0;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.tag-docker {
+    background-color: #e7f3ff;
+    color: #004085;
+}
+
+.tag-n8n {
+    background-color: #fff3e7;
+    color: #8b4513;
+}
+
+.tag-automation {
+    background-color: #e2f5e2;
+    color: #155724;
+}
+
+/* Code Blocks */
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.5;
+    position: relative;
+}
+
+code {
+    font-family: 'Courier New', monospace;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--primary-color);
+}
+
+pre code {
+    background-color: transparent;
+    color: #f8f8f2;
+    padding: 0;
+}
+
+/* Checklist */
+.checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.checklist li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--light-bg);
+    border-radius: 5px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.checklist li:before {
+    content: "✓ ";
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Image Container */
+.image-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-caption {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Flow Diagram */
+.flow-diagram {
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: 8px;
+    margin: 30px 0;
+    border: 2px solid var(--secondary-color);
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.flow-step:not(:last-child)::after {
+    content: "↓";
+    display: block;
+    margin-left: 20px;
+    color: var(--accent-color);
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.flow-icon {
+    background-color: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+/* Footer */
+.main-footer {
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+.main-footer p {
+    margin: 8px 0;
+    font-size: 0.95em;
+}
+
+.main-footer ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.main-footer li {
+    margin: 8px 0;
+}
+
+.main-footer a {
+    color: #fff9e6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.main-footer a:hover {
+    color: var(--accent-color);
+}
+
+/* Scroll to Top Button */
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    transition: background-color 0.3s;
+}
+
+#scrollTopBtn:hover {
+    background-color: var(--accent-orange);
+}
+
+/* Lists */
+ul, ol {
+    margin: 15px 0;
+    margin-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+    line-height: 1.7;
+}
+
+/* Links */
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent-orange);
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    .hero-section {
+        padding: 40px 20px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+    }
+    
+    .main-nav a {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .comparison-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .strategy-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="top-bar">
+            <div class="container brand-container">
+                <img src="https://raw.githubusercontent.com/code-corhuila/material-mineria-datos/b3725d694125ab35294ddfe415a327bc1445d32c/01-week/01-session/LOGO%20CORHUILA%20BLANCO%20PNG%20(2).png" alt="Logo Corhuila" class="logo-corhuila" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                <h1 class="brand-name" style="color: white;">Tu Primer Flujo de Automatización en n8n</h1>
+                <p style="color: white;">Guía Paso a Paso - Ingeniería Mecatrónica</p>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul>
+                    <li><a href="#introduccion">Introducción</a></li>
+                    <li><a href="#requisitos">Requisitos</a></li>
+                    <li><a href="#conceptos">Conceptos</a></li>
+                    <li><a href="#flujo">Crear Flujo</a></li>
+                    <li><a href="#nodos">Agregar Nodos</a></li>
+                    <li><a href="#probar">Probar</a></li>
+                    <li><a href="#activar">Escuchar</a></li>
+                    <li><a href="#reto">Reto</a></li>
+                    <li><a href="#resumen">Resumen</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container main-content">
+
+        <section id="introduccion" class="hero-section">
+            <h1>Tu Primer Flujo de Automatización</h1>
+            <p class="lead">Aprende a crear una automatización sencilla pero poderosa con n8n. En este tutorial crearemos un flujo que notifica por correo cuando recibe datos a través de un webhook. Perfecto para principiantes que desean dominar los conceptos básicos.</p>
+        </section>
+
+        <hr class="divider">
+
+        <section id="que-lograr">
+            <h2>¿Qué Lograrás?</h2>
+            <p>Al seguir este tutorial podrás:</p>
+            <ul class="checklist">
+                <li>Acceder y familiarizarte con la interfaz de n8n</li>
+                <li>Entender qué son los nodos y cómo se conectan</li>
+                <li>Crear tu primer flujo de automatización</li>
+                <li>Usar webhooks para disparar automatizaciones</li>
+                <li>Procesar datos con nodos de condicional</li>
+                <li>Enviar notificaciones por correo</li>
+                <li>Validar datos con expresiones regex</li>
+                <li>Formatear emails con HTML profesional</li>
+                <li>Monitorear la ejecución del flujo</li>
+            </ul>
+
+            <h3>El Flujo que Crearemos</h3>
+            <div class="image-container">
+                <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 30px; border-radius: 8px; margin: 20px 0;">
+                    <div style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 10px;">
+                        <!-- Webhook -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">⚡</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Webhook</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">POST</p>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div style="font-size: 24px; color: #2d5a8a;">→</div>
+                        
+                        <!-- IF Node -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">❓</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">IF</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Regex</p>
+                        </div>
+                        
+                        <!-- Arrow Split -->
+                        <div style="font-size: 24px; color: #2d5a8a;">
+                            <div>true →</div>
+                            <div style="font-size: 12px;">|</div>
+                            <div>false ↓</div>
+                        </div>
+                        
+                        <!-- Gmail -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">📧</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Gmail</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Email HTML</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Sheets (rama false) -->
+                    <div style="margin-top: 20px; text-align: center;">
+                        <p style="margin: 10px 0; color: #666; font-size: 12px;">Si email es inválido (false):</p>
+                        <div style="background: white; width: 80px; height: 80px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                            <span style="font-size: 35px;">📊</span>
+                        </div>
+                        <p style="margin: 8px 0 0; font-weight: bold; color: #333;">Google Sheets</p>
+                        <p style="margin: 2px 0 0; font-size: 12px; color: #666;">Logs de errores</p>
+                    </div>
+                </div>
+                <p class="image-caption"><strong>Flujo Completo:</strong> Webhook → IF (valida email) → Gmail (rama TRUE) + Google Sheets (rama FALSE) para registrar errores</p>
+            </div>
+
+            <div class="reflection-box">
+                <h4>📋 Estructura del Flujo</h4>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Webhook:</strong> Recibe datos POST en localhost:5678/webhook/notify</li>
+                    <li><strong>IF Node:</strong> Valida que el email cumple con patrón regex</li>
+                    <li><strong>Gmail:</strong> Envía un email HTML profesional si el email es válido</li>
+                    <li><strong>Edit Fields:</strong> Agrega información de fecha/hora, datos originales, tipo de error, origen</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section id="requisitos">
+            <h2>Requisitos Previos</h2>
+            <p>Antes de comenzar este tutorial, asegúrate de tener lo siguiente instalado y funcionando en tu máquina:</p>
+            
+            <div class="strategy-grid">
+                <div class="strategy-box">
+                    <h5>🐳 Docker Desktop</h5>
+                    <p>Debe estar instalado y ejecutándose. Si no lo has instalado aún, consulta la guía de <strong>"Instalación de n8n en Docker Desktop"</strong>.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>⚙️ n8n Local</h5>
+                    <p>Debe estar corriendo en tu máquina con Docker Compose. Accesible en <code>http://localhost:5678</code>.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>💻 Visual Studio Code</h5>
+                    <p>Editor de código opcional pero recomendado para trabajar con archivos y APIs. Ya lo tienes instalado.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>🌐 Navegador Web</h5>
+                    <p>Chrome, Firefox, Safari o Edge. Necesario para acceder a la interfaz de n8n.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>📮 Postman o Insomnia</h5>
+                    <p><strong>Postman:</strong> Herramienta para probar webhooks y APIs. Descarga desde <a href="https://www.postman.com/downloads/" target="_blank">postman.com/downloads</a> (versión gratuita es suficiente). Alternativa: <a href="https://insomnia.rest/" target="_blank">Insomnia</a>.</p>
+                </div>
+            </div>
+
+            <h3>Verificar que todo está listo</h3>
+            <div class="reflection-box">
+                <h4>✅ Checklist de Verificación</h4>
+                <p>Antes de continuar, asegúrate de que:</p>
+                <ul>
+                    <li>Docker Desktop está abierto y ejecutándose (ícono en la bandeja del sistema)</li>
+                    <li>n8n está accesible en <code>http://localhost:5678</code></li>
+                    <li>Puedes iniciar sesión en n8n con tus credenciales (admin / contraseña que configuraste)</li>
+                    <li>Tienes una terminal o PowerShell disponible para ejecutar comandos si es necesario</li>
+                    <li>Tienes una herramienta para probar webhooks (curl, Postman, o el navegador será suficiente)</li>
+                </ul>
+            </div>
+
+            <h3>Imagen de la Interfaz de n8n</h3>
+            <div class="image-container">
+                <img src="https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-screenshot.png" alt="Interfaz de n8n" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                <p class="image-caption">Interfaz principal de n8n donde crearemos nuestro primer flujo</p>
+            </div>
+
+            <div class="success-box">
+                <h4>🚀 ¡Listo para Comenzar!</h4>
+                <p>Si has verificado que todos los requisitos están cumplidos, ¡estás listo para crear tu primera automatización! Continúa con la siguiente sección.</p>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section id="conceptos">
+            <h2>1. Conceptos Básicos de n8n</h2>
+            <p>Antes de comenzar, es importante entender los conceptos fundamentales.</p>
+
+            <h3>¿Qué es un Flujo (Workflow)?</h3>
+            <div class="definition-box">
+                <p><strong>Un flujo (workflow)</strong> es una serie de acciones automatizadas que se ejecutan en secuencia o en paralelo. En n8n, un flujo es como un diagrama de flujo visual donde cada caja es una acción (llamada "nodo") y las flechas conectan estas acciones.</p>
+            </div>
+
+            <h3>¿Qué es un Nodo?</h3>
+            <div class="definition-box">
+                <p><strong>Un nodo</strong> es un bloque de funcionamiento que realiza una tarea específica. Puede recibir datos, procesarlos y enviarlos al siguiente nodo. Ejemplos: un webhook que recibe datos, un nodo HTTP que llama a una API, un nodo de correo que envía emails.</p>
+            </div>
+
+            <h3>¿Qué es un Trigger?</h3>
+            <div class="definition-box">
+                <p><strong>Un trigger (disparador)</strong> es el nodo que inicia el flujo. Es el evento que causa que se ejecute la automatización. Ejemplos: un webhook recibe una solicitud, un cronógrafo ejecuta a cierta hora, un email llega a una bandeja.</p>
+            </div>
+
+            <h3>Conceptos Clave</h3>
+            <div class="strategy-grid">
+                <div class="strategy-box">
+                    <h5>📡 Webhook</h5>
+                    <p>Un punto final URL que puede recibir datos desde sistemas externos. Es como un mensajero que trae información a n8n.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>🔗 Conexión</h5>
+                    <p>Las líneas entre nodos que pasan datos de uno a otro. Un nodo envía su resultado al siguiente.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>⚙️ Expresión</h5>
+                    <p>Código JavaScript simple para transformar datos, hacer cálculos o acceder a valores específicos.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>▶️ Ejecución</h5>
+                    <p>Cuando el flujo corre de principio a fin procesando los datos a través de cada nodo.</p>
+                </div>
+            </div>
+
+            <h3>Estructura Básica de un Flujo</h3>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-icon">🔔</div>
+                    <div><strong>1. Trigger(Inicio)</strong> - Webhook recibe solicitud</div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-icon">🔄</div>
+                    <div><strong>2. Procesar</strong> - Transformar o validar datos</div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-icon">📧</div>
+                    <div><strong>3. Acción</strong> - Enviar email, crear ticket, guardar en BD</div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-icon">✅</div>
+                    <div><strong>4. Finalizado</strong> - Flujo completado</div>
+                </div>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="flujo">
+            <h2>2. Crear Nuestro Primer Flujo</h2>
+            <p>Vamos a crear un flujo que notifica por correo cuando recibe datos de un formulario web.</p>
+
+            <h3>2.1 Acceder a n8n</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Abrir n8n en el navegador</h4>
+                <p>Si aún no tienes n8n abierto, ve a tu navegador y escribe:</p>
+                <pre><code>http://localhost:5678</code></pre>
+                <p>Inicia sesión con tus credenciales (usuario: admin, contraseña: la que configuraste).</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Ver el Dashboard</h4>
+                <p>Después de iniciar sesión verás el dashboard con:</p>
+                <ul>
+                    <li><strong>Lista de Workflows:</strong> Tus flujos almacenados (vacía al principio)</li>
+                    <li><strong>Botón + New:</strong> Para crear nuevo flujo</li>
+                    <li><strong>Menú lateral:</strong> Acceso a integraciones, credenciales, etc.</li>
+                </ul>
+            </div>
+
+            <h3>2.2 Crear Nuevo Flujo</h3>
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Iniciar nuevo flujo</h4>
+                <p>En el dashboard, haz clic en el botón <strong>"Create Workflow"</strong> o <strong>"+ New Workflow"</strong>.</p>
+                <p>Verás una pantalla vacía con:</p>
+                <ul>
+                    <li>Un canvas blanco en el centro</li>
+                    <li>Un panel izquierdo con todos los nodos disponibles</li>
+                    <li>Un panel superior con botones de guardar, activar, etc.</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Nombrar el flujo</h4>
+                <p>En la parte superior, verás "Untitled workflow" o similar (generalmente está en naranja). Haz clic ahí para renombrarlo.</p>
+                <p>Pon un nombre descriptivo como:</p>
+                <pre><code>Notificador de Nuevos Datos</code></pre>
+                <p>Presiona Enter para confirmar.</p>
+            </div>
+
+            <div class="reflection-box">
+                <h4>💡 Consejo</h4>
+                <p>Es importante dar nombres descriptivos a tus flujos para que cuando tengas muchos, puedas identificarlos fácilmente. Evita nombres como "Flujo1", "Test123", etc.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="nodos">
+            <h2>3. Agregar los Nodos del Flujo</h2>
+            <p>Ahora vamos a construir nuestro flujo agregando nodos uno a uno.</p>
+
+            <h3>3.1 Agregar Webhook (Trigger)</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Buscar nodo Webhook</h4>
+                <p>En el panel izquierdo, busca la barra de búsqueda (dice "Search nodes..."). Escribe:</p>
+                <pre><code>webhook</code></pre>
+                <p>o simplemente escribe "Webhook Trigger" - verás que aparecen opciones.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Seleccionar Webhook</h4>
+                <p>Haz clic en <strong>"Webhook"</strong> (el primero que aparece, con icono de engranaje). Verás que se agrega un nodo al canvas.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Configurar Webhook</h4>
+                <p>El nodo webhook aparecerá en el canvas. Haz doble clic en él para abrir sus configuraciones.</p>
+                <p>Verás opciones como:</p>
+                <ul>
+                    <li><strong>HTTP Method:</strong> Mantén "POST" (es lo más común)</li>
+                    <li><strong>Path:</strong> /notify (o lo que desees)</li>
+                    <li><strong>Authentication:</strong> None (para este ejemplo)</li>
+                </ul>
+                <p>La URL del webhook la verás más abajo, algo como:</p>
+                <pre><code>http://localhost:5678/webhook/notify</code></pre>
+                <p>Esta es la dirección que otros sistemas usarán para enviar datos a tu flujo.</p>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Primer Nodo Agregado</h4>
+                <p>¡Excelente! Ya tienes el trigger que va a iniciar tu automatización. Este webhook esperará recibir datos.</p>
+            </div>
+
+            <h3>3.2 Agregar Nodo IF (Condicional)</h3>
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Buscar nodo IF</h4>
+                <p>En el panel izquierdo, escribe en la búsqueda:</p>
+                <pre><code>if</code></pre>
+                <p>o busca "IF/Else".</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">5</span>Agregar nodo IF</h4>
+                <p>Haz clic en <strong>"IF"</strong>. Se agregará un nuevo nodo al canvas.</p>
+                <p>Ahora necesitas conectar el Webhook con el IF:</p>
+                <ol>
+                    <li>Haz clic en el punto de salida del nodo Webhook (círculo gris en la derecha)</li>
+                    <li>Arrastra hasta el punto de entrada del nodo IF (círculo en la izquierda)</li>
+                    <li>Se dibujará una línea conectando ambos nodos</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">6</span>Configurar nodo IF para validar Email</h4>
+                <p>Haz doble clic en el nodo IF para configurarlo. Aquí verificaremos que los datos que llegan cumplan ciertas condiciones (en este caso, validar que es un email válido).</p>
+                
+                <h5>Paso A: Seleccionar el campo a validar</h5>
+                <p>En <strong>"Conditions"</strong>, verás un campo para escribir. Este es el campo que vamos a validar.</p>
+                <p>Haz clic en el campo y escribe o busca:</p>
+                <pre><code>{{ $json.body.email }}</code></pre>
+                <p>Esto le dice al IF: "valida el campo 'email' que viene en el body del webhook"</p>
+
+                <h5>Paso B: Cambiar el operador a Regex</h5>
+                <p>Verás un dropdown que dice "is equal" o similar. Haz clic en él.</p>
+                <p>Busca y selecciona <strong>"matches regex"</strong> (que coincida con expresión regular)</p>
+
+                <h5>Paso C: Usar Regex para validar email</h5>
+                <p>En el segundo campo (después del dropdown), pega la siguiente expresión regular que valida format de email:</p>
+                <pre><code>^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></pre>
+                <p><strong>¿Qué hace?</strong> Esta expresión verifica que el email tenga un formato válido (usuario@dominio.com)</p>
+
+                <p><strong>Ejemplo:</strong></p>
+                <ul>
+                    <li>✅ juan@gmail.com - VÁLIDO (ejecuta rama TRUE)</li>
+                    <li>✅ maria.lopez@empresa.com - VÁLIDO</li>
+                    <li>❌ juan@gmail - INVÁLIDO (ejecuta rama FALSE)</li>
+                    <li>❌ juan.gmail.com - INVÁLIDO (sin @)</li>
+                </ul>
+
+                <div class="reflection-box">
+                    <h4>💡 Entender Regex</h4>
+                    <p>Las expresiones regulares (regex) son patrones para validar texto. La que usamos:</p>
+                    <ul>
+                        <li><code>^</code> = inicio de la cadena</li>
+                        <li><code>[a-zA-Z0-9_%.+-]+</code> = letras, números y caracteres especiales válidos antes del @</li>
+                        <li><code>@</code> = el carácter @ obligatorio</li>
+                        <li><code>[a-zA-Z0-9.-]+</code> = dominio permitido</li>
+                        <li><code>\.</code> = punto obligatorio</li>
+                        <li><code>[a-zA-Z]{2,}</code> = al menos 2 letras para la extensión (com, es, net, etc.)</li>
+                        <li><code>$</code> = fin de la cadena</li>
+                    </ul>
+                </div>
+
+                <h5>Paso D: Resultado</h5>
+                <p>Después de configurar esto, el nodo IF funcionará así:</p>
+                <ul>
+                    <li><strong>TRUE (rama verde):</strong> Si el email es válido → envía con Gmail</li>
+                    <li><strong>FALSE (rama naranja):</strong> Si el email no es válido → va a otra acción</li>
+                </ul>
+            </div>
+
+            <h3>3.3 Agregar Nodo Gmail para Envío de Email</h3>
+            <p>Ahora vamos a agregar un nodo Gmail para enviar un correo automático. Gmail es confiable y fácil de configurar.</p>
+            
+            <div class="step-box">
+                <h4><span class="step-num">7</span>Buscar nodo Gmail</h4>
+                <p>En el panel izquierdo, escribe en la búsqueda:</p>
+                <pre><code>gmail</code></pre>
+                <p>Debería aparecerte la opción <strong>"Gmail"</strong> o <strong>"Gmail - Send Email"</strong>.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">8</span>Agregar nodo Gmail</h4>
+                <p>Haz clic en <strong>"Gmail"</strong>. Se agregará un nuevo nodo.</p>
+                <p>Conecta el nodo IF con Gmail:</p>
+                <ol>
+                    <li>Haz clic en el punto de salida TRUE del nodo IF</li>
+                    <li>Arrastra hasta el punto de entrada del nodo Gmail</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">9</span>Crear Credenciales OAuth de Gmail</h4>
+                <p>Haz doble clic en el nodo Gmail. Verás un campo de <strong>"Gmail Account"</strong> con un botón <strong>"Create Credentials"</strong> o <strong>"Authenticate"</strong>. Haz clic ahí.</p>
+                <p>Se abrirá una ventana de credenciales pidiendo <strong>Client ID</strong> y <strong>Client Secret</strong>. Para obtenerlos:</p>
+                
+                <h5>Paso A: Copiar OAuth Redirect URL</h5>
+                <ol>
+                    <li>En la ventana de credenciales de n8n, verás un campo <strong>"OAuth Redirect URL"</strong></li>
+                    <li>Es algo como: <code>http://localhost:5678/rest/oauth2-credential/callback</code></li>
+                    <li>Cópia esta URL completa (usa el botón de copiar si existe)</li>
+                </ol>
+
+                <h5>Paso B: Ir a Google Cloud Console</h5>
+                <ol>
+                    <li>Abre tu navegador y ve a: <a href="https://console.cloud.google.com/" target="_blank">console.cloud.google.com</a></li>
+                    <li>Inicia sesión con tu cuenta Google (la misma que usas para Gmail)</li>
+                    <li>Si es tu primera vez, haz clic en "Create Project"</li>
+                    <li>Nómbralo: <code>n8n-automation</code> (o lo que prefieras)</li>
+                    <li>Espera a que se cree el proyecto</li>
+                </ol>
+
+                <h5>Paso C: Habilitar Gmail API</h5>
+                <ol>
+                    <li>En Google Cloud Console, en la barra de búsqueda superior, busca: <code>gmail api</code></li>
+                    <li>Haz clic en <strong>"Gmail API"</strong> en los resultados</li>
+                    <li>Haz clic en el botón azul <strong>"ENABLE"</strong></li>
+                    <li>Espera a que se habilite (toma unos segundos)</li>
+                </ol>
+
+                <h5>Paso D: Crear Credenciales OAuth</h5>
+                <ol>
+                    <li>En el panel izquierdo, haz clic en <strong>"Credentials"</strong> (Credenciales)</li>
+                    <li>Haz clic en el botón <strong>"+ Create Credentials"</strong></li>
+                    <li>Selecciona <strong>"OAuth client ID"</strong></li>
+                    <li>Verás una ventana pidiendo configurar la pantalla de consentimiento primero</li>
+                    <li>Haz clic en <strong>"Configure Consent Screen"</strong></li>
+                </ol>
+
+                <h5>Paso E: Configurar Pantalla de Consentimiento</h5>
+                <ol>
+                    <li>Selecciona <strong>"External"</strong> (usuario externo)</li>
+                    <li>Completa los campos básicos:</li>
+                    <li><strong>App name:</strong> <code>n8n Automation</code></li>
+                    <li><strong>User support email:</strong> Tu correo Gmail</li>
+                    <li>Haz clic en <strong>"Save and Continue"</strong></li>
+                    <li>En la siguiente pantalla, haz clic en <strong>"Add or Remove Scopes"</strong></li>
+                    <li>Busca y selecciona: <code>https://www.googleapis.com/auth/gmail.send</code></li>
+                    <li>Completa el resto y guarda (haz clic en botones "Save" según aparezcan)</li>
+                </ol>
+
+                <h5>Paso F: Crear Credencial OAuth Client</h5>
+                <ol>
+                    <li>Vuelve a <strong>"Credentials"</strong> en el menú izquierdo</li>
+                    <li>Haz clic <strong>"+ Create Credentials"</strong> nuevamente</li>
+                    <li>Selecciona <strong>"OAuth client ID"</strong></li>
+                    <li>En <strong>"Application type"</strong>, selecciona <strong>"Web application"</strong></li>
+                    <li>En <strong>"Authorized redirect URIs"</strong>, haz clic en <strong>"Add URI"</strong></li>
+                    <li>Pega la OAuth Redirect URL que copiaste de n8n en el Paso A</li>
+                    <li>Haz clic en <strong>"Create"</strong></li>
+                </ol>
+
+                <h5>Paso G: Copiar Client ID y Secret</h5>
+                <ol>
+                    <li>Google mostrará un popup con tu <strong>Client ID</strong> y <strong>Client Secret</strong></li>
+                    <li>Cópia el <strong>Client ID</strong> (es una cadena larga que termina en googleusercontent.com)</li>
+                    <li>Cópia el <strong>Client Secret</strong> (es una cadena alpanumérica corta)</li>
+                    <li>Puedes hacer clic en los iconos de copiar para hacerlo más fácil</li>
+                </ol>
+
+                <h5>Paso H: Pegar en n8n</h5>
+                <ol>
+                    <li>Regresa a la ventana de credenciales de n8n (si aún está abierta, sino vuelve al paso de crear credenciales)</li>
+                    <li>En el campo <strong>"Client ID"</strong>, pega el ID que copiaste</li>
+                    <li>En el campo <strong>"Client Secret"</strong>, pega el Secret que copiaste</li>
+                    <li>El <strong>"OAuth Redirect URL"</strong> ya está pre-llenado, no lo cambies</li>
+                    <li>Haz clic en el botón <strong>"Connect my account"</strong> o similar</li>
+                    <li>Te redirigirá a Google para confirmar - haz clic en <strong>"Allow"</strong></li>
+                </ol>
+
+                <h5>¡Resultado!</h5>
+                <p>Si todo fue bien, verás que la credencial está lista y el campo "Gmail Account" mostrará tu correo Gmail. ¡Éxito!</p>
+            </div>
+
+            <div class="reflection-box">
+                <h4>💡 ¿Por qué todos estos pasos?</h4>
+                <p>Google requiere que registres tu aplicación (n8n) para permitirle acceso a Gmail. Es un proceso de seguridad importante que solo se hace una vez. Después de esto, cada que uses Gmail en n8n, simplemente selecciona la credencial que creaste.</p>
+            </div>
+            <div class="step-box">
+                <h4><span class="step-num">10</span>Configurar el Contenido del Email</h4>
+                <p>Una vez autenticado Gmail, configura los campos del mensaje del nodo Gmail:</p>
+                <ul>
+                    <li><strong>Gmail account:</strong> Debería mostrar tu correo (ya está seleccionado)</li>
+                    <li><strong>To:</strong> Tu dirección de correo (ej: mimail@gmail.com)</li>
+                    <li><strong>Subject:</strong> <code>Nuevos datos recibidos en n8n</code></li>
+                </ul>
+
+                <h5>Configurar el Body/Mensaje con HTML</h5>
+                <p>En el campo <strong>"Message Body"</strong> o <strong>"Message"</strong>, tienes dos opciones:</p>
+
+                <p><strong>Opción A: Usar HTML formateado (recomendado)</strong></p>
+                <p>Pega el siguiente HTML que crea un email profesional:</p>
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;/head&gt;
+&lt;body style=&quot;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ffffff; margin: 0; padding: 20px;&quot;&gt;
+    &lt;div style=&quot;max-width: 600px; margin: 0 auto; padding: 30px; border-left: 4px solid #2196F3;&quot;&gt;
+        &lt;h2 style=&quot;color: #333333; margin-top: 0;&quot;&gt;Mensaje recibido&lt;/h2&gt;
+        &lt;div style=&quot;background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;&quot;&gt;
+            &lt;p style=&quot;color: #555555; font-size: 15px; line-height: 1.8; margin: 0; white-space: pre-wrap;&quot;&gt;{{ $('Webhook').item.json.body.mensaje }}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;p style=&quot;color: #999999; font-size: 12px; margin-top: 30px;&quot;&gt;
+            &lt;strong&gt;Fecha:&lt;/strong&gt; {{ $now.toFormat('dd/MM/yyyy HH:mm') }}
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                <p>Este HTML crea un email profesional que:</p>
+                <ul>
+                    <li>Muestra el mensaje recibido desde el webhook</li>
+                    <li>Incluye la fecha y hora actual formateada</li>
+                    <li>Tiene estilos CSS para verse bonito en cualquier cliente de email</li>
+                </ul>
+
+                <h5>Agregar Detalles con Edit Fields (Opcional pero Recomendado)</h5>
+                <p>Si tu nodo Gmail tiene la opción <strong>"Edit Fields"</strong> o similar, haz clic para expandir opciones adicionales:</p>
+                <ol>
+                    <li>Busca un botón que diga <strong>"Edit Fields"</strong> o <strong>"+ Add Field"</strong></li>
+                    <li>Se abrirá una sección para agregar campos JSON adicionales</li>
+                </ol>
+
+                <p>Agrega este JSON con información detallada de la ejecución:</p>
+                <pre><code>{
+  "Fecha/Hora": "={{ $now.toISO() }}",
+  "Dato Recibido": "={{ JSON.stringify($json) }}",
+  "Tipo de Error": "Email inválido o formato incorrecto",
+  "Webhook Origen": "={{ $json.headers?.origin || 'Desconocido' }}"
+}</code></pre>
+
+                <p><strong>¿Qué hace cada campo?</strong></p>
+                <ul>
+                    <li><strong>Fecha/Hora:</strong> Marca la fecha y hora exacta en formato ISO</li>
+                    <li><strong>Dato Recibido:</strong> Muestra todos los datos que llegaron del webhook en formato JSON</li>
+                    <li><strong>Tipo de Error:</strong> Campo puede describir qué fue lo que falló (editable)</li>
+                    <li><strong>Webhook Origen:</strong> Intenta obtener de dónde vino la solicitud</li>
+                </ul>
+
+                <p>Haz clic en <strong>"Save"</strong> cuando termines.</p>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Flujo Completo con Gmail</h4>
+                <p>¡Excelente! Ya tienes un flujo funcional y profesional:</p>
+                <p><strong>Webhook</strong> → <strong>IF (Validar Email con Regex)</strong> → <strong>Gmail (Enviar Email HTML)</strong></p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="probar">
+            <h2>4. Probar tu Flujo</h2>
+            <p>Ahora es momento de verificar que el flujo funciona correctamente.</p>
+
+            <h3>4.1 Guardar el Flujo</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Guardar flujo</h4>
+                <p>En la parte superior derecha, haz clic en el botón <strong>"Save"</strong> (o presiona Ctrl+S).</p>
+                <p>Verás un mensaje confirmando que se guardó.</p>
+            </div>
+
+            <h3>4.2 Activar modo de prueba</h3>
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Habilitar escucha en Webhook</h4>
+                <p>Haz clic en el nodo Webhook para seleccionarlo.</p>
+                <p>En el panel derecho, verás un botón o toggle que dice <strong>"Listen"</strong> o <strong>"Start listening"</strong>.</p>
+                <p>Haz clic para activarlo. El webhook ahora está escuchando en su URL.</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Copiar URL del Webhook</h4>
+                <p>En el panel de configuración del webhook (derecha), verás la URL completa:</p>
+                <pre><code>http://localhost:5678/webhook/notify</code></pre>
+                <p>Copia esta URL (hay un botón para copiar al lado).</p>
+            </div>
+
+            <h3>4.3 Enviar datos de prueba</h3>
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Usar Postman o curl</h4>
+                <p>Ahora necesitas enviar datos a tu webhook. Puedes hacerlo de varias formas:</p>
+
+                <p><strong>Opción A: Con curl (Terminal)</strong></p>
+                <pre><code># En PowerShell o cmd:
+curl -X POST http://localhost:5678/webhook/notify ^
+  -H "Content-Type: application/json" ^
+  -d "{\"name\":\"Juan\",\"email\":\"juan@example.com\",\"mensaje\":\"Hola n8n\"}"</code></pre>
+
+                <p><strong>Opción B: Con Postman</strong></p>
+                <ol>
+                    <li>Abre Postman (u otra herramienta como Insomnia)</li>
+                    <li>Crea una nueva request</li>
+                    <li>Método: POST</li>
+                    <li>URL: <code>http://localhost:5678/webhook/notify</code></li>
+                    <li>Body (JSON):
+                        <pre><code>{
+  "name": "Juan",
+  "email": "juan@example.com",
+  "mensaje": "Esto es una prueba"
+}</code></pre>
+                    </li>
+                    <li>Haz clic en "Send"</li>
+                </ol>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">5</span>Ver la ejecución</h4>
+                <p>Si todo va bien, verás:</p>
+                <ul>
+                    <li>En n8n: El flujo se ejecutará y verás el resultado en el nodo Log</li>
+                    <li>Una línea verde conectando los nodos (indicando éxito)</li>
+                    <li>Los datos aparecerán en el panel "Execution" en el lado derecho</li>
+                </ul>
+            </div>
+
+            <div class="reflection-box">
+                <h4>🔍 Inspeccionar Resultados</h4>
+                <p>En el panel derecho ("Execution"), haz clic en cada nodo para ver:</p>
+                <ul>
+                    <li><strong>Input:</strong> Qué datos recibió el nodo</li>
+                    <li><strong>Output:</strong> Qué datos pasó al siguiente nodo</li>
+                    <li><strong>Logs:</strong> Cualquier mensaje o error</li>
+                </ul>
+            </div>
+
+            <h3>4.4 Verificar Envío de Email</h3>
+            <div class="step-box">
+                <h4><span class="step-num">6</span>Confirmar recepción del email</h4>
+                <p>En el panel derecho (Execution), verás el resultado de cada nodo. En el nodo Gmail, podrás ver si el email se envió exitosamente.</p>
+                <p>Busca el email en tu bandeja de entrada de Gmail. Debería llegar dentro de unos segundos.</p>
+                <p>Si no ves nada, verifica:</p>
+                <ul>
+                    <li>¿Está activado el webhook ("listening")?</li>
+                    <li>¿Enviaste POST a la URL correcta?</li>
+                    <li>¿Los datos están en formato JSON?</li>
+                    <li>¿Hay error en el nodo Gmail? (línea roja o mensaje de error)</li>
+                    <li>Revisa tu carpeta de Spam, podría estar ahí</li>
+                </ul>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ ¡Prueba Exitosa!</h4>
+                <p>Si ves los datos en los logs, ¡tu flujo está funcionando! Has logrado tu primer automatización.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="activar">
+            <h2>5. Dejar el Flujo Escuchando (Modo Local vs Producción)</h2>
+            <p><strong>⚠️ IMPORTANTE:</strong> En n8n LOCAL (tu máquina), el funcionamiento es diferente al de la versión cloud.</p>
+
+            <div class="warning-box">
+                <h4>🔴 En Local NO Existe el Botón "Activate"</h4>
+                <p>Si estás usando n8n en LOCAL (Docker), <strong>no verás un botón "Activate" en la esquina superior derecha</strong> como en la versión cloud. Esto es normal.</p>
+                <p>En su lugar, el webhook se queda "escuchando" automáticamente simplemente con:</p>
+                <ul>
+                    <li>El flujo salvado (guardado con Ctrl+S)</li>
+                    <li>El nodo Webhook con el toggle <strong>"Listen"</strong> activado</li>
+                </ul>
+            </div>
+
+            <h3>5.1 Para Modo Local - Dejar Escuchando Permanentemente</h3>
+            <div class="step-box">
+                <h4><span class="step-num">1</span>Asegurar que el Webhook está en "Listen"</h4>
+                <p>Haz clic en el nodo Webhook para seleccionarlo.</p>
+                <p>En el panel derecha verás un toggle o botón que dice <strong>"Listen"</strong> o <strong>"Start listening"</strong>.</p>
+                <p>Este toggle <strong>DEBE estar ACTIVADO</strong> (usualmente en color azul o verde).</p>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">2</span>Guardar el flujo</h4>
+                <p>Presiona <strong>Ctrl+S</strong> (o Cmd+S en Mac) para guardar todos los cambios.</p>
+                <p>Verás un mensaje confirmando que se guardó.</p>
+            </div>
+
+            <h3>5.2 Para Versión Cloud - Botón "Activate"</h3>
+            <div class="step-box">
+                <h4><span class="step-num">3</span>Si usas n8n en la nube</h4>
+                <p>Si en el futuro despliegas n8n a un servidor o usas n8n en la nube, SÍ verás el botón <strong>"Activate"</strong>.</p>
+                <p>En ese caso:</p>
+                <ol>
+                    <li>Haz clic en el botón <strong>"Activate"</strong> (esquina superior derecha)</li>
+                    <li>Confirma en el diálogo</li>
+                    <li>El botón cambiará a <strong>"Deactivate"</strong> (verde), indicando que está activo</li>
+                </ol>
+            </div>
+
+            <h3>5.3 Monitorear Ejecuciones</h3>
+            <div class="step-box">
+                <h4><span class="step-num">4</span>Ver historial de ejecuciones</h4>
+                <p>En el panel inferior de n8n, verás la pestaña <strong>"Execution"</strong> o <strong>"Executions"</strong>.</p>
+                <p>Aquí aparecerá cada vez que tu flujo se ejecute:</p>
+                <ul>
+                    <li>Hora de ejecución</li>
+                    <li>Estado (✓ éxito o ✗ error)</li>
+                    <li>Duración</li>
+                    <li>Datos procesados en cada nodo</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <h4><span class="step-num">5</span>Prueba que sigue escuchando</h4>
+                <p>Ahora que el webhook está "Listen" y el flujo está guardado, prueba enviando datos:</p>
+                <pre><code>curl -X POST http://localhost:5678/webhook/notify ^
+  -H "Content-Type: application/json" ^
+  -d "{\"name\":\"Test Local\",\"email\":\"tumail@gmail.com\",\"mensaje\":\"Flujo escuchando en local\"}"</code></pre>
+                <p>Deberías recibir el email inmediatamente y ver la ejecución en el historial.</p>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ ¡Flujo Escuchando!</h4>
+                <p>¡Perfecto! Tu flujo está listo en modo local. El webhook escuchará en <code>http://localhost:5678/webhook/notify</code> mientras n8n esté ejecutándose en Docker.</p>
+                <p><strong>Nota:</strong> Si necesitas que corra 24/7, deberás desplegar n8n a un servidor o usar la versión cloud de n8n.</p>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="proximos">
+            <h2>6. Próximos Pasos y Mejoras</h2>
+            <p>Ahora que dominas los conceptos básicos, aquí hay ideas para expandir tu flujo.</p>
+
+            <h3>Mejoras Inmediatas</h3>
+            <div class="strategy-grid">
+                <div class="strategy-box">
+                    <h5>📧 Integrar Email Real</h5>
+                    <p>Conecta credenciales de Gmail o SendGrid al nodo "Send Email" para enviar notificaciones auténticas.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>💾 Guardar en Base de Datos</h5>
+                    <p>Agrega un nodo de PostgreSQL o MongoDB para almacenar los datos que llegan por el webhook.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>🔔 Notificaciones en Slack</h5>
+                    <p>Usa el nodo "Slack" para notificar a tu equipo en Slack en lugar de por email.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>🌐 Llamadas a APIs Externas</h5>
+                    <p>Agrega un nodo HTTP para llamar a otros servicios o APIs basado en los datos recibidos.</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>⏰ Ejecución Programada</h5>
+                    <p>Usa un trigger de "Cron" para ejecutar el flujo a horas específicas (diario, semanal, etc.).</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>🔄 Loops y Condicionales Complejos</h5>
+                    <p>Agrega nodos Loop para procesar múltiples elementos y condicionales IF/ELSE más complejos.</p>
+                </div>
+            </div>
+
+            <h3>Ejemplos de Automatizaciones Prácticas</h3>
+            <div class="comparison-cards">
+                <div class="card">
+                    <h4>📋 Gestión de Formularios</h4>
+                    <p>Webhook recibe datos de formulario web, valida, guarda en BD y envía confirmación por email.</p>
+                </div>
+                <div class="card">
+                    <h4>📊 Sincronización de Datos</h4>
+                    <p>Trae datos de una API cada hora, transforma formato y sincroniza a otra BD o sistema.</p>
+                </div>
+                <div class="card">
+                    <h4>🛒 Alertas de Ecommerce</h4>
+                    <p>Cuando se completa una orden, notifica al equipo de almacén, genera PDF y actualiza CRM.</p>
+                </div>
+                <div class="card">
+                    <h4>💰 Monitoreo de Precios</h4>
+                    <p>Revisa precios de APIs cada hora, compara con límites y notifica si hay cambios.</p>
+                </div>
+            </div>
+
+            <h3>Recursos para Continuar Aprendiendo</h3>
+            <div class="reflection-box">
+                <h4>📚 Recomendaciones</h4>
+                <ul>
+                    <li><strong>Documentación Oficial:</strong> <a href="https://docs.n8n.io/" target="_blank">docs.n8n.io</a> - Guías detalladas de cada nodo</li>
+                    <li><strong>Comunidad:</strong> <a href="https://community.n8n.io/" target="_blank">community.n8n.io</a> - Preguntas y ejemplos de otros usuarios</li>
+                    <li><strong>YouTube:</strong> <a href="https://www.youtube.com/c/n8nio" target="_blank">Canal oficial de n8n</a> - Tutoriales en video</li>
+                    <li><strong>Discord:</strong> Community Discord de n8n para soporte en vivo</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="resumen-gmail">
+            <h2>Resumen Rápido: Validación y Gmail</h2>
+            <p>Si necesitas recordar los pasos sin leer todo lo anterior, aquí está el resumen completo:</p>
+
+            <div class="strategy-grid">
+                <div class="strategy-box">
+                    <h5>0️⃣ Configurar IF con Regex</h5>
+                    <p>En el nodo IF, usa operador "matches regex" con: <code>^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></p>
+                </div>
+                <div class="strategy-box">
+                    <h5>1️⃣ Google Cloud Console</h5>
+                    <p>Ve a console.cloud.google.com, crea proyecto "n8n-automation", habilita Gmail API</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>2️⃣ Pantalla de Consentimiento</h5>
+                    <p>Configura "External", completa datos básicos, agrega scope <code>gmail.send</code></p>
+                </div>
+                <div class="strategy-box">
+                    <h5>3️⃣ Crear Credencial OAuth</h5>
+                    <p>Crea "Web application", pega el OAuth Redirect URL de n8n en "Authorized redirect URIs"</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>4️⃣ Copiar Client ID y Secret</h5>
+                    <p>Google te dará dos valores - cópialo exactamente (Client ID y Client Secret)</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>5️⃣ Pegar en n8n</h5>
+                    <p>En el nodo Gmail de n8n, pega Client ID y Secret, luego conecta tu cuenta Google</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>6️⃣ HTML del Email</h5>
+                    <p>Pega el HTML profesional en el campo Message Body (mostrará el mensaje con estilos)</p>
+                </div>
+                <div class="strategy-box">
+                    <h5>7️⃣ Edit Fields JSON</h5>
+                    <p>Agrega los campos de Fecha/Hora, Dato Recibido, Tipo de Error, Webhook Origen (opcional)</p>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Checklist Rápido Completo</h4>
+                <ul style="margin-bottom: 0;">
+                    <li>✓ IF configurado con "matches regex" y expresión validadora de email</li>
+                    <li>✓ Gmail API habilitada en Google Cloud</li>
+                    <li>✓ Pantalla de consentimiento configurada con scope gmail.send</li>
+                    <li>✓ Credencial OAuth creada con redirect URL correcto</li>
+                    <li>✓ Client ID y Client Secret obtenidos</li>
+                    <li>✓ Valores pegados en n8n y Gmail autenticado</li>
+                    <li>✓ Subject configurado</li>
+                    <li>✓ HTML profesional en el Message Body</li>
+                    <li>✓ Edit Fields con JSON de información detallada (opcional pero recomendado)</li>
+                    <li>✓ Flujo guardado y activado</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section id="reto">
+            <h2>7. 🚀 Reto: Guardar Logs de Errores en Google Sheets</h2>
+            <p>Ahora que tienes un flujo funcional, aquí viene el desafío: <strong>Agregar un nodo para registrar cualquier error en Google Sheets</strong>.</p>
+
+            <h3>¿Qué Aprenderás?</h3>
+            <ul class="checklist">
+                <li>Usar la rama "false" del nodo IF para capturar errores</li>
+                <li>Conectar Google Sheets a n8n</li>
+                <li>Escribir datos en una hoja de cálculo automáticamente</li>
+                <li>Crear un registro de auditoría (logs) de intentos fallidos</li>
+            </ul>
+
+            <h3>Estructura del Reto</h3>
+            <div class="flow-diagram">
+                <div class="flow-step"><div class="flow-icon">🔗</div> Webhook (recibe datos)</div>
+                <div style="text-align: center; color: var(--accent-color); font-weight: bold; margin: -10px 0;">↓</div>
+                <div class="flow-step"><div class="flow-icon">❓</div> IF Node (¿email válido?)</div>
+                <div style="text-align: center; color: var(--accent-color); font-weight: bold; margin: -10px 0;">↙️ true &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; false ↘️</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="flow-step"><div class="flow-icon">📧</div> Gmail (envía email)</div>
+                    <div class="flow-step"><div class="flow-icon">📊</div> Google Sheets (registra error)</div>
+                </div>
+            </div>
+
+            <h3>Pasos para Completar el Reto</h3>
+
+            <h4>Paso 1: Crear una Hoja de Google Sheets</h4>
+            <div class="step-box">
+                <p><strong>a)</strong> Ve a <a href="https://sheets.google.com" target="_blank">sheets.google.com</a></p>
+                <p><strong>b)</strong> Crea una nueva hoja llamada <code>n8n-logs-errores</code></p>
+                <p><strong>c)</strong> Agrega estos encabezados en la primera fila:</p>
+                <pre><code>Timestamp | Email Ingresado | Motivo | Datos Completos | IP Origen</code></pre>
+            </div>
+
+            <h4>Paso 2: Conectar Google Sheets a n8n</h4>
+            <div class="step-box">
+                <p><strong>a)</strong> En n8n, haz clic en <strong>"+"</strong> para agregar un nodo después del IF</p>
+                <p><strong>b)</strong> Busca <strong>"Google Sheets"</strong></p>
+                <p><strong>c)</strong> Selecciona el nodo</p>
+                <p><strong>d)</strong> En el campo "Spreadsheet ID", pega el ID de tu hoja:</p>
+                <ul>
+                    <li>Abre tu hoja de Google Sheets</li>
+                    <li>En la URL: <code>https://docs.google.com/spreadsheets/d/<strong>ESTE_ES_EL_ID</strong>/edit</code></li>
+                    <li>Cópialo y pégalo en n8n</li>
+                </ul>
+                <p><strong>e)</strong> Autentica con tu cuenta Google (similar a Gmail)</p>
+            </div>
+
+            <h4>Paso 3: Conectar la rama FALSE del IF a Google Sheets</h4>
+            <div class="step-box">
+                <p><strong>a)</strong> Haz clic en el pequeño punto de salida "false" del nodo IF</p>
+                <p><strong>b)</strong> Arrastra hacia el nodo Google Sheets</p>
+                <p><strong>c)</strong> Configura Google Sheets para escribir en la hoja:</p>
+                <ul>
+                    <li><strong>Operation:</strong> "Append Rows"</li>
+                    <li><strong>Sheet Name:</strong> (el nombre de tu hoja, usualmente "Sheet1")</li>
+                    <li><strong>Values to Append:</strong> Esta es la parte importante</li>
+                </ul>
+            </div>
+
+            <h4>Paso 4: Mapear los Datos a Google Sheets</h4>
+            <div class="step-box">
+                <p>En el campo "Values to Append", crea una fila JSON con tus datos:</p>
+                <pre><code>{
+  "Timestamp": "={{ $now.toISO() }}",
+  "Email Ingresado": "={{ $json.body.email }}",
+  "Motivo": "Email inválido o formato incorrecto",
+  "Datos Completos": "={{ JSON.stringify($json) }}",
+  "IP Origen": "={{ $json.headers?.['x-forwarded-for'] || 'Desconocido' }}"
+}</code></pre>
+                <p><strong>Explicación:</strong></p>
+                <ul>
+                    <li><strong>Timestamp:</strong> Fecha/hora actual</li>
+                    <li><strong>Email Ingresado:</strong> El email que rechazó el regex</li>
+                    <li><strong>Motivo:</strong> Por qué fue rechazado</li>
+                    <li><strong>Datos Completos:</strong> Todo lo que el usuario envió</li>
+                    <li><strong>IP Origen:</strong> De dónde vino la solicitud</li>
+                </ul>
+            </div>
+
+            <h4>Paso 5: Guardar y Probar</h4>
+            <div class="step-box">
+                <p><strong>a)</strong> Guarda el flujo (Ctrl+S)</p>
+                <p><strong>b)</strong> Asegúrate que el webhook esté en "Listen"</p>
+                <p><strong>c)</strong> Prueba enviando un email INVÁLIDO:</p>
+                <pre><code>curl -X POST http://localhost:5678/webhook/notify ^
+  -H "Content-Type: application/json" ^
+  -d "{\"name\":\"Test\",\"email\":\"esto-no-es-email\",\"mensaje\":\"Prueba de error\"}"</code></pre>
+                <p><strong>d)</strong> Abre tu hoja de Google Sheets y verifica que aparece una nueva fila con el registro del error</p>
+            </div>
+
+            <h3>Checklist del Reto</h3>
+            <div class="success-box">
+                <h4>✅ Verificar Completitud</h4>
+                <ul style="margin-bottom: 0;">
+                    <li>✓ Google Sheets creado con encabezados</li>
+                    <li>✓ Nodo Google Sheets agregado a n8n</li>
+                    <li>✓ Rama FALSE del IF conecta a Google Sheets</li>
+                    <li>✓ JSON configurado con Timestamp, Email, Motivo, Datos, IP</li>
+                    <li>✓ Flujo guardado</li>
+                    <li>✓ Webhook escuchando</li>
+                    <li>✓ Email válido aún envía correo por la rama TRUE</li>
+                    <li>✓ Email inválido registra en Google Sheets por rama FALSE</li>
+                    <li>✓ Hoja de cálculo muestra al menos 1 log de error</li>
+                    <li>✓ Revisa que el JSON se escriba correctamente en las celdas</li>
+                </ul>
+            </div>
+
+            <div class="reflection-box">
+                <h4>💡 Extensiones del Reto (Desafío Adicional)</h4>
+                <ul>
+                    <li><strong>Nivel 2:</strong> Agregar una tercera rama en IF para emails "warning" (dominios sospechosos) que vayan a una hoja diferente</li>
+                    <li><strong>Nivel 3:</strong> Crear un gráfico en Google Sheets que muestre errores por hora/día</li>
+                    <li><strong>Nivel 4:</strong> Enviar un resumen diario por email con los logs del día (usa el nodo Schedule)</li>
+                    <li><strong>Nivel 5:</strong> Conectar a Slack para notificar cuando hay múltiples errores en corto tiempo</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section id="troubleshooting">
+            <h2>8. Solución de Problemas Comunes</h2>
+            <p>Problemas que podrías encontrar y cómo resolverlos.</p>
+
+            <h3>Problema 1: El webhook no recibe datos</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>Envío datos al webhook pero no se ejecuta el flujo</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Verifica que el webhook está escuchando:</strong> El toggle "Listen" debe estar ON (verde)</li>
+                    <li><strong>Comprueba la URL:</strong> Cópiala exactamente desde n8n, no escribas de memoria</li>
+                    <li><strong>Verifica el método HTTP:</strong> Debe ser POST, no GET</li>
+                    <li><strong>Revisa headers:</strong> Incluye <code>Content-Type: application/json</code></li>
+                    <li><strong>Verifica datos:</strong> Asegúrate de enviar JSON válido sin errores de sintaxis</li>
+                </ol>
+            </div>
+
+            <h3>Problema 2: Flujo se ejecuta pero con errores</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>El flujo corre pero en el historial veo líneas rojas o errores</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Haz clic en la ejecución en el historial</strong> para ver detalles</li>
+                    <li><strong>Lee el mensaje de error:</strong> Generalmente dice qué está mal</li>
+                    <li><strong>Revisa el nodo con error:</strong> Verifica su configuración</li>
+                    <li><strong>Datos incompletos:</strong> Si un nodo espera un campo que no existe, causará error. Usa condicionales para validar primero</li>
+                </ol>
+            </div>
+
+            <h3>Problema 3: El nodo IF con Regex no funciona como esperado</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>El IF no valida correctamente los emails, o siempre va a TRUE o FALSE</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Verifica que seleccionaste "matches regex":</strong> No "is equal" u otro operador</li>
+                    <li><strong>Revisa la expresión regex:</strong> Asegúrate de haber copiado correctamente sin espacios extras:
+                        <pre><code>^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></pre>
+                    </li>
+                    <li><strong>Verifica el campo a comparar:</strong> Debe ser <code>{{ $json.body.email }}</code> (o el campo correcto donde viene el email)</li>
+                    <li><strong>Prueba con un email simple:</strong> Primero envía un email conocido como <code>test@gmail.com</code> para verificar si funciona</li>
+                    <li><strong>Usa la pestaña "Test" si existe:</strong> Algunos nodos permiten probar la condición antes de ejecutar el flujo</li>
+                </ol>
+            </div>
+
+            <h3>Problema 4: Necesito cambiar datos dentro del flujo</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>Quiero transformar o procesar los datos recibidos antes de guardarlos o enviarlos</p>
+                <h4>Soluciones</h4>
+                <p>Usa el nodo <strong>"Set"</strong>:</p>
+                <ol>
+                    <li>Agrega un nodo "Set" entre el webhook y el siguiente nodo</li>
+                    <li>Configura nuevos campos con expresiones</li>
+                    <li>Ejemplo: Si recibes "nombre", puedes crear "nombre_mayuscula" con la expresión:
+                        <pre><code>{{ $node.Webhook.json.nombre.toUpperCase() }}</code></pre>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Problema 5: Error al configurar credenciales de Gmail</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>No puedo obtener el Client ID o Client Secret, o recibo error al conectar</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Verifica Google Cloud Console:</strong>
+                        <ul>
+                            <li>¿Habilitaste la Gmail API? (debe estar en verde "Enabled")</li>
+                            <li>¿Configuraste la pantalla de consentimiento OAuth?</li>
+                            <li>¿El redirect URI en Google Cloud es idéntico al de n8n? (cópialo exacto)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Vuelve a crear las credenciales:</strong> Si algo salió mal, elimina la credencial en Google Cloud y crea una nueva.</li>
+                    <li><strong>Verifica el scope:</strong> Asegúrate de haber seleccionado <code>gmail.send</code> en los permisos (scopes).</li>
+                    <li><strong>Recarga n8n:</strong> A veces ayuda refrescar la página (F5) después de configurar en Google.</li>
+                    <li><strong>Usa una cuenta Google diferente:</strong> Si tienes problemas, prueba con otra cuenta de Google.</li>
+                </ol>
+            </div>
+
+            <h3>Problema 6: No recibo el email de Gmail</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>GMail no envía el email o hay error en el nodo Gmail</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Verifica credenciales:</strong> ¿La credencial de Gmail está correctamente autorizada? Busca el nodo Gmail y verifica que no haya error.</li>
+                    <li><strong>Haz clic en "Test" si existe:</strong> Algunos nodos tienen botón para probar directamente.</li>
+                    <li><strong>Revisa la dirección de correo:</strong> El campo "To" debe tener un correo válido y accesible.</li>
+                    <li><strong>Cambiar cuenta Google:</strong> Si la autenticación falla, puedes crear nuevas credenciales borrando las antiguas y haciendo clic en "Create Credentials" nuevamente.</li>
+                    <li><strong>Revisa el panel Execution:</strong> Verás el error exacto que devuelve Gmail, esto te dará más pistas.</li>
+                </ol>
+            </div>
+
+            <h3>Problema 7: El flujo se detiene o desactiva</h3>
+            <div class="warning-box">
+                <h4>⚠️ Problema</h4>
+                <p>El flujo está "Deactivated" sin que lo apagara</p>
+                <h4>Soluciones</h4>
+                <ol>
+                    <li><strong>Muchos errores seguidos:</strong> n8n a veces desactiva flujos con demasiados errores consecutivos</li>
+                    <li><strong>Falta de memoria:</strong> Recarga la página o reinicia Docker si está lentitud</li>
+                    <li><strong>Revisa logs:</strong> En Docker, ejecuta: <code>docker-compose logs n8n</code></li>
+                    <li><strong>Reactiva:</strong> Haz clic en "Activate" nuevamente</li>
+                </ol>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <h3>Tu Primer Flujo de Automatización en n8n</h3>
+            <p><strong>Guía preparada para:</strong> Ingeniería Mecatrónica</p>
+            <p><strong>Creado por:</strong> Ing. Julian Quimbayo Castro</p>
+            <p>Última actualización: Febrero 2026</p>
+            <p>Este material es de uso educativo. Para más información, consulta la documentación oficial de n8n.</p>
+            <ul>
+                <li><a href="https://docs.n8n.io/" target="_blank">n8n Documentation</a></li>
+                <li><a href="https://community.n8n.io/" target="_blank">n8n Community</a></li>
+                <li><a href="https://n8n.io/" target="_blank">n8n.io</a></li>
+            </ul>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.9;">© Corporación Universitaria de Huila - Corhuila</p>
+        </div>
+    </footer>
+
+    <button id="scrollTopBtn" title="Volver arriba">↑</button>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupScrollButton();
+    setupNavigation();
+    setupSmoothScroll();
+    highlightActiveSection();
+});
+
+// Scroll to Top Button
+function setupScrollButton() {
+    const scrollBtn = document.getElementById('scrollTopBtn');
+
+    window.addEventListener('scroll', function() {
+        if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
+            scrollBtn.style.display = 'block';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+
+    scrollBtn.addEventListener('click', function() {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    });
+}
+
+// Smooth Scroll
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Active Navigation Highlight
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+
+    window.addEventListener('scroll', highlightActiveSection);
+}
+
+function highlightActiveSection() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+    let current = '';
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Copy Code to Clipboard
+document.querySelectorAll('pre').forEach(pre => {
+    const button = document.createElement('button');
+    button.textContent = '📋 Copiar';
+    button.style.cssText = `
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 8px 12px;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 10;
+    `;
+
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    pre.addEventListener('mouseenter', () => {
+        button.style.opacity = '1';
+    });
+
+    pre.addEventListener('mouseleave', () => {
+        button.style.opacity = '0';
+    });
+
+    button.addEventListener('click', () => {
+        const code = pre.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = button.textContent;
+            button.textContent = '✅ Copiado!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        });
+    });
+});
+    </script>
+</body>
+</html>

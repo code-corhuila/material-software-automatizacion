@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto: Google Sheets - Tu Primer Flujo de Automatización</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1a2f4b;
+            --secondary-color: #2d5a8a;
+            --accent-orange: #ff6b35;
+            --light-bg: #f0f4f8;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; }
+        h2 { color: var(--secondary-color); font-size: 1.6em; margin-bottom: 20px; border-left: 5px solid var(--accent-orange); padding-left: 15px; }
+        h3 { color: var(--primary-color); font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; }
+        .challenge-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .step-box {
+            background-color: var(--light-bg);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            border-left: 4px solid #555;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        .nav-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        .nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .nav-buttons button:hover { background-color: var(--primary-color); }
+        .checklist { background-color: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .checklist ul { list-style: none; margin-left: 0; }
+        .checklist li { padding: 5px 0; padding-left: 25px; position: relative; }
+        .checklist li:before { content: "☐"; position: absolute; left: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Reto: Guardar Logs en Google Sheets</h1>
+        <p>Es momento de poner en práctica todo lo aprendido. Tu misión será expandir el flujo para registrar todos los emails recibidos en una hoja de cálculo.</p>
+
+        <div class="challenge-box">
+            <strong>🎯 MISIÓN:</strong> Agregar un nodo Google Sheets que guarde cada solicitud recibida en una hoja de cálculo con fecha, email y mensaje.
+        </div>
+
+        <h2>Paso 1: Preparar Google Sheets</h2>
+        <div class="step-box">
+            <p><strong>1. Crea una nueva hoja de cálculo</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Ve a <a href="https://sheets.google.com" target="_blank">Google Sheets</a></li>
+                <li>Haz clic en "+ Crear" (o "+New")</li>
+                <li>Selecciona "Hoja de cálculo en blanco"</li>
+                <li>Ponle nombre: "Logs de Formularios n8n"</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <p><strong>2. Crea los encabezados</strong></p>
+            <p style="margin-top: 10px;">En la primera fila, agrega estos encabezados:</p>
+            <div style="margin-top: 10px;">
+                <strong>Celda A1:</strong> Fecha <br>
+                <strong>Celda B1:</strong> Email <br>
+                <strong>Celda C1:</strong> Nombre <br>
+                <strong>Celda D1:</strong> Mensaje
+            </div>
+        </div>
+
+        <h2>Paso 2: Agregar Nodo Google Sheets a n8n</h2>
+        <div class="step-box">
+            <p><strong>1. Abre tu flujo en n8n</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Agrega un nodo <strong>"Google Sheets"</strong> después del nodo Gmail</li>
+                <li>O conecta directamente desde la salida "true" del IF</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <p><strong>2. Configura las credenciales</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Haz clic en "Create New Credentials"</li>
+                <li>Autoriza tu cuenta de Google (igual que hiciste con Gmail)</li>
+                <li>n8n guardará la autorización automáticamente</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <p><strong>3. Selecciona la hoja de cálculo</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>En "Spreadsheet", selecciona "Logs de Formularios n8n"</li>
+                <li>En "Sheet", selecciona "Hoja 1" (o el nombre de tu hoja)</li>
+                <li>En "Range", escribe: <code>A:D</code> (para las 4 columnas)</li>
+            </ul>
+        </div>
+
+        <h2>Paso 3: Mapear los Datos</h2>
+        <div class="step-box">
+            <p><strong>Define qué datos se guardarán en cada columna</strong></p>
+            <div class="code-block">
+Fila = [
+  {{ new Date().toLocaleString() }},  // Fecha actual
+  {{ $json.email }},                  // Email del formulario
+  {{ $json.nombre }},                 // Nombre del formulario
+  {{ $json.mensaje }}                 // Mensaje del formulario
+]
+            </div>
+        </div>
+
+        <h2>Paso 4: Probar el Reto</h2>
+        <div class="step-box">
+            <p><strong>1. Configura el flujo nuevamente</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Tu flujo ahora debería: Webhook → IF → Gmail + GoogleSheets</li>
+                <li>Ambas acciones (Gmail y Sheets) se ejecutarán cuando la condición sea verdadera</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <p><strong>2. Envía una prueba con Postman</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Abre Postman nuevamente</li>
+                <li>Haz clic en "Send" para enviar datos al webhook</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <p><strong>3. Verifica los resultados</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>✉️ Deberías recibir un email (Gmail funcionando)</li>
+                <li>📊 Abre tu Google Sheet y verifica que hay una nueva fila con los datos</li>
+                <li>Si ambas cosas suceden: ¡HAS COMPLETADO EL RETO! 🎉</li>
+            </ul>
+        </div>
+
+        <h2>Checklist de Verificación</h2>
+        <div class="checklist">
+            <ul>
+                <li>Google Sheets creada con encabezados</li>
+                <li>Nodo Google Sheets agregado a n8n</li>
+                <li>Credenciales de Google autorizadas</li>
+                <li>Rango de celdas mapeado (A:D)</li>
+                <li>Prueba enviada desde Postman</li>
+                <li>Email recibido en tu bandeja</li>
+                <li>Nueva fila visible en Google Sheets</li>
+            </ul>
+        </div>
+
+        <h2>Si Algo No Funciona...</h2>
+        <p>Consulta la siguiente sección de <strong>Troubleshooting</strong> para encontrar soluciones a problemas comunes.</p>
+
+        <div class="nav-buttons">
+            <button onclick="window.location.href='07_proximo.html'">← Anterior</button>
+            <button onclick="window.location.href='09_troubleshooting.html'">Siguiente →</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximos Pasos - Tu Primer Flujo de Automatización</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1a2f4b;
+            --secondary-color: #2d5a8a;
+            --accent-orange: #ff6b35;
+            --light-bg: #f0f4f8;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; }
+        h2 { color: var(--secondary-color); font-size: 1.6em; margin-bottom: 20px; border-left: 5px solid var(--accent-orange); padding-left: 15px; }
+        h3 { color: var(--primary-color); font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; }
+        .idea-box {
+            background-color: #f3e5f5;
+            border-left: 4px solid #7b1fa2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #4a148c;
+        }
+        .feature-card {
+            background-color: var(--light-bg);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .icon { font-size: 1.5em; margin-right: 10px; }
+        .nav-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        .nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .nav-buttons button:hover { background-color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Próximos Pasos y Mejoras</h1>
+        <p>¡Felicitaciones! Creaste tu primer flujo de automatización. Ahora te mostramos cómo llevarlo más allá.</p>
+
+        <h2>Mejoras para tu Flujo Actual</h2>
+
+        <div class="feature-card">
+            <h3><span class="icon">📝</span>Plantillas HTML Avanzadas</h3>
+            <p>Envía correos con diseño profesional usando HTML templates en lugar de texto plano. Agrega logos, colores y formatos.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3><span class="icon">🗄️</span>Integración con Google Sheets</h3>
+            <p>Guarda todos los formularios recibidos en una hoja de cálculo para analizar datos y generar reportes automáticos.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3><span class="icon">📱</span>Notificaciones por SMS o Slack</h3>
+            <p>Además de correo, agrega alertas por SMS (Twilio) o notificaciones en Slack para tu equipo.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3><span class="icon">⏰</span>Validaciones Avanzadas</h3>
+            <p>Crea condiciones más complejas: validar que el teléfono tenga 10 dígitos, que el email sea de dominio corporativo, etc.</p>
+        </div>
+
+        <h2>Otras Automatizaciones Interesantes</h2>
+
+        <div class="idea-box">
+            <h3>1. Sistema de Tickets Automático</h3>
+            <p>Convierte correos que llegan a tu bandeja en tickets en una base de datos. Automáticamente categoriza y asigna prioridad.</p>
+        </div>
+
+        <div class="idea-box">
+            <h3>2. Procesador de Facturas</h3>
+            <p>Recibe una factura por correo → Extrae datos → Guarda en base de datos → Envía confirmación de recepción.</p>
+        </div>
+
+        <div class="idea-box">
+            <h3>3. Monitoreo de Precios Web</h3>
+            <p>Ejecuta periódicamente un scraping de sitios para obtener precios, compáralo con precios anteriores y alerta si hay cambios.</p>
+        </div>
+
+        <div class="idea-box">
+            <h3>4. Sincronización de Datos</h3>
+            <p>Mantén sincronizados datos entre múltiples plataformas: Shopify ↔ Inventory System ↔ Accounting Software.</p>
+        </div>
+
+        <h2>Recursos para Aprender Más</h2>
+        <ul style="margin-left: 30px; margin-top: 15px;">
+            <li><strong>Documentación Oficial:</strong> <a href="https://docs.n8n.io/" target="_blank">docs.n8n.io</a></li>
+            <li><strong>Comunidad n8n:</strong> <a href="https://community.n8n.io/" target="_blank">community.n8n.io</a></li>
+            <li><strong>Ejemplos y Templates:</strong> Dentro de n8n encontrarás templates listos para usar</li>
+            <li><strong>YouTube Tutorials:</strong> Busca "n8n tutorial" para videos paso a paso</li>
+        </ul>
+
+        <h2>Recapitulación de Conceptos Clave</h2>
+        <div style="background-color: #f0f4f8; padding: 15px; border-radius: 5px; margin-top: 15px;">
+            <p>✓ <strong>Webhooks:</strong> Puntos de entrada para que sistemas externos triggeren tus flujos</p>
+            <p>✓ <strong>Nodos:</strong> Bloques de construcción que hacen acciones (recibir, procesar, enviar)</p>
+            <p>✓ <strong>Condicionales (IF):</strong> Permiten lógica compleja en tus automatizaciones</p>
+            <p>✓ <strong>Integraciones:</strong> Conecta n8n con cientos de apps (Gmail, Slack, Sheets, etc.)</p>
+            <p>✓ <strong>Local vs Nube:</strong> Elige dónde ejecutar según tus necesidades</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="window.location.href='06_escuchar.html'">← Anterior</button>
+            <button onclick="window.location.href='08_reto.html'">Siguiente →</button>
+        </div>
+    </div>
+</body>
+</html>

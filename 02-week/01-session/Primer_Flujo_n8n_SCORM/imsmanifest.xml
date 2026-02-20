@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"
+	xmlns:adlcp="http://www.adlnet.org/xsd/adl_cp_v1_2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd
+		http://www.adlnet.org/xsd/adl_cp_v1_2 http://www.adlnet.org/xsd/adl_cp_v1_2.xsd"
+	identifier="Primer_Flujo_n8n_SCORM" version="1.0">
+
+	<metadata>
+		<schema>ADL SCORM</schema>
+		<schemaversion>2004 4th Edition</schemaversion>
+		<adlcp:lom>
+			<adlcp:general>
+				<adlcp:title>Tu Primer Flujo de Automatización en n8n</adlcp:title>
+				<adlcp:description>Curso interactivo que te guía paso a paso para crear tu primer flujo de automatización usando n8n. Aprenderás conceptos fundamentales de automatización, integración con Gmail y Google Sheets.</adlcp:description>
+				<adlcp:language>es</adlcp:language>
+			</adlcp:general>
+			<adlcp:lifeCycle>
+				<adlcp:contribute>
+					<adlcp:role>author</adlcp:role>
+					<adlcp:entity>Corhuila University - Programa de Software y Automatización</adlcp:entity>
+					<adlcp:date>2025-01-01</adlcp:date>
+				</adlcp:contribute>
+			</adlcp:lifeCycle>
+			<adlcp:metaMetadata>
+				<adlcp:identifier>Meta_Primer_Flujo_n8n</adlcp:identifier>
+				<adlcp:catalog>SCORM 2004 4th Edition</adlcp:catalog>
+			</adlcp:metaMetadata>
+		</adlcp:lom>
+	</metadata>
+
+	<organizations default="org1">
+		<organization identifier="org1">
+			<title>Tu Primer Flujo de Automatización en n8n</title>
+
+			<item identifier="item1" identifierref="res1">
+				<title>Introducción al Curso</title>
+			</item>
+
+			<item identifier="item2" identifierref="res2">
+				<title>Requisitos y Preparación</title>
+			</item>
+
+			<item identifier="item3" identifierref="res3">
+				<title>Conceptos Fundamentales</title>
+			</item>
+
+			<item identifier="item4" identifierref="res4">
+				<title>Crear Nuestro Primer Flujo</title>
+			</item>
+
+			<item identifier="item5" identifierref="res5">
+				<title>Agregar los Nodos del Flujo</title>
+			</item>
+
+			<item identifier="item6" identifierref="res6">
+				<title>Probar tu Flujo</title>
+			</item>
+
+			<item identifier="item7" identifierref="res7">
+				<title>Dejar el Flujo Escuchando</title>
+			</item>
+
+			<item identifier="item8" identifierref="res8">
+				<title>Próximos Pasos y Mejoras</title>
+			</item>
+
+			<item identifier="item9" identifierref="res9">
+				<title>Reto: Guardar Logs en Google Sheets</title>
+			</item>
+
+			<item identifier="item10" identifierref="res10">
+				<title>Solución de Problemas Comunes</title>
+			</item>
+
+		</organization>
+	</organizations>
+
+	<resources>
+		<resource identifier="res1" type="webcontent" href="content/00_intro.html">
+			<file href="content/00_intro.html"/>
+		</resource>
+
+		<resource identifier="res2" type="webcontent" href="content/01_requisitos.html">
+			<file href="content/01_requisitos.html"/>
+		</resource>
+
+		<resource identifier="res3" type="webcontent" href="content/02_conceptos.html">
+			<file href="content/02_conceptos.html"/>
+		</resource>
+
+		<resource identifier="res4" type="webcontent" href="content/03_crear_flujo.html">
+			<file href="content/03_crear_flujo.html"/>
+		</resource>
+
+		<resource identifier="res5" type="webcontent" href="content/04_nodos.html">
+			<file href="content/04_nodos.html"/>
+		</resource>
+
+		<resource identifier="res6" type="webcontent" href="content/05_probar.html">
+			<file href="content/05_probar.html"/>
+		</resource>
+
+		<resource identifier="res7" type="webcontent" href="content/06_escuchar.html">
+			<file href="content/06_escuchar.html"/>
+		</resource>
+
+		<resource identifier="res8" type="webcontent" href="content/07_proximo.html">
+			<file href="content/07_proximo.html"/>
+		</resource>
+
+		<resource identifier="res9" type="webcontent" href="content/08_reto.html">
+			<file href="content/08_reto.html"/>
+		</resource>
+
+		<resource identifier="res10" type="webcontent" href="content/09_troubleshooting.html">
+			<file href="content/09_troubleshooting.html"/>
+		</resource>
+	</resources>
+
+</manifest>

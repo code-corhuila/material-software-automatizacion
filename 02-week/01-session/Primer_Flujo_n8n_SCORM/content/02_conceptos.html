@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceptos Básicos - Tu Primer Flujo de Automatización en n8n</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1a2f4b;
+            --secondary-color: #2d5a8a;
+            --accent-orange: #ff6b35;
+            --light-bg: #f0f4f8;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; }
+        h2 { color: var(--secondary-color); font-size: 1.6em; margin-bottom: 20px; border-left: 5px solid var(--accent-orange); padding-left: 15px; }
+        h3 { color: var(--primary-color); font-size: 1.3em; margin-top: 20px; margin-bottom: 10px; }
+        .definition-box {
+            background-color: #e0f7ff;
+            border-left: 5px solid var(--secondary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .flow-diagram {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid var(--secondary-color);
+        }
+        .flow-step { margin: 10px 0; padding-left: 30px; color: var(--secondary-color); font-weight: 500; }
+        .nav-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        .nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .nav-buttons button:hover { background-color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💡 Conceptos Básicos de n8n</h1>
+        <p>Antes de comenzar, es importante entender los conceptos fundamentales que usaremos en nuestro flujo de automatización.</p>
+
+        <h2>¿Qué es un Flujo (Workflow)?</h2>
+        <div class="definition-box">
+            Un <strong>flujo</strong> es una serie de pasos conectados que automatizan una tarea. Cada paso realiza una acción específica y los resultados pasan al siguiente paso. Por ejemplo: "Cuando llega un email, extrae datos, valida información, y guarda en una base de datos".
+        </div>
+
+        <h2>¿Qué es un Nodo?</h2>
+        <div class="definition-box">
+            Un <strong>nodo</strong> es un bloque individual que realiza una función específica. Puede recibir datos de entrada, procesarlos, y enviar datos de salida al siguiente nodo. Ejemplos: Webhook node, IF node, Gmail node, Database node.
+        </div>
+
+        <h2>¿Qué es un Trigger?</h2>
+        <div class="definition-box">
+            Un <strong>trigger</strong> es el nodo que inicia un flujo. Es el "evento" que dispara todo. En nuestro caso, usaremos un <strong>Webhook</strong> como trigger: cuando alguien envía datos POST a una URL específica, el flujo se ejecuta.
+        </div>
+
+        <h2>Estructura Básica de un Flujo</h2>
+        <div class="flow-diagram">
+            <div class="flow-step">1️⃣ TRIGGER → El evento que inicia el flujo</div>
+            <div class="flow-step">2️⃣ PROCESAMIENTO → Nodos que procesan, validan, transforman datos</div>
+            <div class="flow-step">3️⃣ ACCIÓN → Nodos que envían datos a otras aplicaciones</div>
+            <div class="flow-step">4️⃣ RESULTADO → El flujo completa su ejecución</div>
+        </div>
+
+        <h3>Conceptos Clave a Recordar</h3>
+        <ul style="margin-left: 20px;">
+            <li><strong>Webhook:</strong> URL que n8n crea para que sistemas externos envíen datos</li>
+            <li><strong>Condicional (IF Node):</strong> Toma decisiones basadas en condiciones (si email es válido, hacer X; si no, hacer Y)</li>
+            <li><strong>Expresión de Regex:</strong> Patrón para validar que un email tenga formato correcto</li>
+            <li><strong>Nodo de Acción:</strong> Nodos como Gmail, Google Sheets, Slack que realizan acciones reales</li>
+        </ul>
+
+        <div class="nav-buttons">
+            <button onclick="window.location.href='01_requisitos.html'">← Anterior</button>
+            <button onclick="window.location.href='03_crear_flujo.html'">Siguiente →</button>
+        </div>
+    </div>
+</body>
+</html>

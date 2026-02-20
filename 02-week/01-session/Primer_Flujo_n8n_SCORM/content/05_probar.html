@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probar tu Flujo - Tu Primer Flujo de Automatización</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1a2f4b;
+            --secondary-color: #2d5a8a;
+            --accent-orange: #ff6b35;
+            --light-bg: #f0f4f8;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; }
+        h2 { color: var(--secondary-color); font-size: 1.6em; margin-bottom: 20px; border-left: 5px solid var(--accent-orange); padding-left: 15px; }
+        h3 { color: var(--primary-color); font-size: 1.3em; margin-top: 20px; margin-bottom: 10px; }
+        .step-box {
+            background-color: var(--light-bg);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            border-left: 4px solid #555;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-family: monospace;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        .reflection-box {
+            background-color: #d1ecf1;
+            border-left: 5px solid #0c5460;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #0c5460;
+        }
+        .nav-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        .nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .nav-buttons button:hover { background-color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Probar tu Flujo</h1>
+        <p>Es hora de validar que todo funciona correctamente.</p>
+
+        <h2>Paso 1: Testeo Manual en n8n</h2>
+        <div class="step-box">
+            <p><strong>1. Entra en modo Test</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Haz clic en el botón <strong>"Test"</strong> (o <strong>"Execute node"</strong>)</li>
+                <li>Selecciona el nodo Webhook</li>
+                <li>Ingresa datos de prueba en JSON:
+                    <div class="code-block">
+{
+  "email": "tu@email.com",
+  "nombre": "Juan",
+  "mensaje": "Hola desde n8n!"
+}
+                    </div>
+                </li>
+                <li>Haz clic en "Send" o "Test"</li>
+            </ul>
+        </div>
+
+        <h2>Paso 2: Prueba con Postman</h2>
+        <div class="step-box">
+            <p><strong>2. Usar Postman para enviar datos</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Abre Postman (descárgalo desde <a href="https://www.postman.com/downloads/">postman.com</a>)</li>
+                <li>Crea una nueva solicitud POST</li>
+                <li>URL: (la URL de tu Webhook de n8n)</li>
+                <li>Headers:
+                    <div class="code-block">
+Content-Type: application/json
+                    </div>
+                </li>
+                <li>Body (raw JSON):
+                    <div class="code-block">
+{
+  "email": "tu@email.com",
+  "nombre": "Cliente Prueba",
+  "asunto": "Prueba de flujo n8n"
+}
+                    </div>
+                </li>
+                <li>Haz clic en "Send"</li>
+            </ul>
+        </div>
+
+        <h2>Paso 3: Verificar Ejecución</h2>
+        <div class="step-box">
+            <p><strong>3. Revisar logs y resultados</strong></p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>En n8n, ve a la sección "Runs" o "Execution History"</li>
+                <li>Deberías ver:
+                    <ul style="margin-left: 20px; margin-top: 5px;">
+                        <li>El Webhook recibió datos ✓</li>
+                        <li>El IF validó el email ✓</li>
+                        <li>Gmail envió el correo ✓</li>
+                    </ul>
+                </li>
+                <li>Verifica tu bandeja de entrada esperando el correo</li>
+            </ul>
+        </div>
+
+        <div class="reflection-box">
+            <strong>✅ ¡Éxito!</strong> Si recibes el correo, tu flujo está funcionando correctamente. Si no, verifica los logs y la sección de Troubleshooting.
+        </div>
+
+        <h2>Paso 4: Prueba con curl (Línea de Comandos)</h2>
+        <div class="step-box">
+            <p><strong>Alternativa: Usar curl</strong></p>
+            <p style="margin-top: 10px;">Si prefieres la línea de comandos, ejecuta:</p>
+            <div class="code-block">
+curl -X POST http://localhost:5678/webhook/tuwebhook \
+  -H "Content-Type: application/json" \
+  -d '{"email":"tu@email.com","nombre":"Prueba"}'
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="window.location.href='04_nodos.html'">← Anterior</button>
+            <button onclick="window.location.href='06_escuchar.html'">Siguiente →</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modo Escucha - Tu Primer Flujo de Automatización</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1a2f4b;
+            --secondary-color: #2d5a8a;
+            --accent-orange: #ff6b35;
+            --light-bg: #f0f4f8;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; }
+        h2 { color: var(--secondary-color); font-size: 1.6em; margin-bottom: 20px; border-left: 5px solid var(--accent-orange); padding-left: 15px; }
+        h3 { color: var(--primary-color); font-size: 1.3em; margin-top: 20px; margin-bottom: 10px; }
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            color: #1565c0;
+        }
+        .comparison-table {
+            width: 100%;
+            margin: 15px 0;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .comparison-table th { background-color: var(--primary-color); color: white; }
+        .comparison-table tr:nth-child(even) { background-color: var(--light-bg); }
+        .nav-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        .nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .nav-buttons button:hover { background-color: var(--primary-color); }
+        .step-box {
+            background-color: var(--light-bg);
+            border-left: 4px solid var(--accent-orange);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👂 Dejar el Flujo Escuchando</h1>
+        <p>Una vez probado, es importante mantener el flujo activo para que pueda responder a eventos en tiempo real.</p>
+
+        <h2>¿Qué significa "Escuchar"?</h2>
+        <div class="info-box">
+            <p><strong>Escuchar (Listen)</strong> significa dejar que el flujo espere continuamente por webhooks o eventos externos. El flujo permanece activo esperando datos.</p>
+        </div>
+
+        <h2>Modo Local vs Modo Nube</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Característica</th>
+                    <th>Modo Local (Docker)</th>
+                    <th>Modo Nube (n8n.cloud)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Activación</strong></td>
+                    <td>Harás clic en <strong>"Listen"</strong></td>
+                    <td>Harás clic en <strong>"Activate"</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>URL Webhook</strong></td>
+                    <td>http://localhost:5678/webhook/...</td>
+                    <td>https://hook.n8n.cloud/webhook/...</td>
+                </tr>
+                <tr>
+                    <td><strong>Disponibilidad</strong></td>
+                    <td>Solo mientras tu Docker está corriendo</td>
+                    <td>24/7 en servidores de n8n</td>
+                </tr>
+                <tr>
+                    <td><strong>Costo</strong></td>
+                    <td>Gratis (autohospedado)</td>
+                    <td>Plan de pago/trials gratis limitados</td>
+                </tr>
+                <tr>
+                    <td><strong>Control</strong></td>
+                    <td>Control total, datos en tu máquina</td>
+                    <td>n8n maneja infraestructura</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Activar en Modo Local</h2>
+        <div class="step-box">
+            <p><strong>Paso 1:</strong> Abre tu flujo en n8n local (http://localhost:5678)</p>
+            <p style="margin-top: 10px;"><strong>Paso 2:</strong> Busca el botón <strong>"Listen"</strong> en la parte superior derecha</p>
+            <p style="margin-top: 10px;"><strong>Paso 3:</strong> Haz clic en "Listen"</p>
+            <p style="margin-top: 10px;"><strong>Paso 4:</strong> El estatus cambiará a "Active" (verde)</p>
+            <p style="margin-top: 10px;"><strong>Paso 5:</strong> El flujo ahora esperará webhook events continuamente</p>
+        </div>
+
+        <h2>¿Qué Ocurre Durante "Listen"?</h2>
+        <div class="info-box">
+            <ul style="margin-left: 20px;">
+                <li>🟢 El flujo está <strong>activo</strong> y escuchando en la URL del Webhook</li>
+                <li>⏱️ Cuando se recibe una solicitud en el webhook, el flujo se <strong>ejecuta automáticamente</strong></li>
+                <li>📊 Puedes ver las ejecuciones en la sección <strong>"Runs"</strong> o <strong>"Execution History"</strong></li>
+                <li>🔴 Haz clic en <strong>"Stop"</strong> para dejar de escuchar</li>
+            </ul>
+        </div>
+
+        <h2>Importante: Mantén Docker Ejecutándose</h2>
+        <div class="step-box">
+            <p style="color: #d32f2f; font-weight: bold;">⚠️ NOTA CRÍTICA:</p>
+            <p style="margin-top: 10px;">En modo local, <strong>Docker debe estar ejecutándose</strong> todo el tiempo. Si cierras Docker, el Webhook dejará de funcionar.</p>
+            <p style="margin-top: 10px;">Para verificar que Docker está activo:</p>
+            <pre style="background: #f4f4f4; padding: 10px; margin: 10px 0; border-radius: 3px;">docker ps</pre>
+        </div>
+
+        <h2>Diferencia Clave: Listen vs Activate</h2>
+        <ul style="margin-left: 30px; margin-top: 15px;">
+            <li><strong>Listen (Local):</strong> El flujo escucha solo mientras está en desarrollo/pruebas</li>
+            <li><strong>Activate (Nube):</strong> El flujo se guarda y permanece activo automáticamente</li>
+        </ul>
+
+        <div class="nav-buttons">
+            <button onclick="window.location.href='05_probar.html'">← Anterior</button>
+            <button onclick="window.location.href='07_proximo.html'">Siguiente →</button>
+        </div>
+    </div>
+</body>
+</html>

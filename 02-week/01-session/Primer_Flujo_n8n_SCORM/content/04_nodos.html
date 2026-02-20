@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Nodos - Tu Primer Flujo de Automatización</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #1a2f4b;
+            --secondary-color: #2d5a8a;
+            --accent-orange: #ff6b35;
+            --light-bg: #f0f4f8;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; }
+        h2 { color: var(--secondary-color); font-size: 1.6em; margin-bottom: 20px; border-left: 5px solid var(--accent-orange); padding-left: 15px; }
+        h3 { color: var(--primary-color); font-size: 1.3em; margin-top: 20px; margin-bottom: 10px; }
+        .step-box {
+            background-color: var(--light-bg);
+            border-left: 4px solid #00d4ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .reflection-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .nav-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 10px; }
+        .nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .nav-buttons button:hover { background-color: var(--primary-color); }
+        .node-title { color: var(--accent-orange); font-weight: bold; font-size: 1.05em; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Agregar los Nodos del Flujo</h1>
+        <p>Ahora agregaremos 3 nodos clave: Webhook, IF, y Gmail.</p>
+
+        <h2>Nodo 1: Webhook (Trigger)</h2>
+        <div class="step-box">
+            <p class="node-title">1. Agregar el nodo Webhook</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>En el canvas, busca el botón <strong>"+"</strong> o haz clic en "Add node"</li>
+                <li>Busca <strong>"Webhook"</strong> en la barra de búsqueda</li>
+                <li>Selecciona <strong>"Webhook"</strong> como el trigger principal</li>
+                <li>Copia la URL que genera n8n (algo como <code>http://localhost:5678/webhook/...</code>)</li>
+            </ul>
+        </div>
+
+        <div class="reflection-box">
+            <strong>💡 Importante:</strong> Esta URL es tu punto de entrada. Otros servicios enviarán datos a esta URL y el flujo se activará.
+        </div>
+
+        <h2>Nodo 2: IF (Condición)</h2>
+        <div class="step-box">
+            <p class="node-title">2. Agregar el nodo IF</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Conecta un nuevo nodo después del Webhook</li>
+                <li>Busca y selecciona <strong>"If"</strong> (Condición lógica)</li>
+                <li>Configura una condición simple:
+                    <ul style="margin-left: 20px; margin-top: 5px;">
+                        <li><strong>Propiedad:</strong> <code>email</code></li>
+                        <li><strong>Operador:</strong> Contiene patrón</li>
+                        <li><strong>Patrón:</strong> <code>/^[^\s@]+@[^\s@]+\.[^\s@]+$/</code></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="reflection-box">
+            <strong>📧 Validación:</strong> Esta condición verifica que el email tenga un formato válido (usuarios@dominio.com).
+        </div>
+
+        <h2>Nodo 3: Gmail (Acción)</h2>
+        <div class="step-box">
+            <p class="node-title">3. Agregar el nodo Gmail</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Conecta un nodo <strong>"Gmail"</strong> a la salida "true" del IF</li>
+                <li>Haz clic en "Create New Credentials"</li>
+                <li>Autoriza tu cuenta de Google:
+                    <ul style="margin-left: 20px; margin-top: 5px;">
+                        <li>Se abrirá una ventana de Google</li>
+                        <li>Inicia sesión con tu cuenta de Google</li>
+                        <li>Autoriza a n8n para enviar correos</li>
+                    </ul>
+                </li>
+                <li>Configura el correo:
+                    <ul style="margin-left: 20px; margin-top: 5px;">
+                        <li><strong>To:</strong> <code>{{ $json.email }}</code></li>
+                        <li><strong>Subject:</strong> Notificación de nuevo formulario</li>
+                        <li><strong>Body:</strong> Gracias por tu mensaje. Nos pondremos en contacto pronto.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="reflection-box">
+            <strong>🔐 OAuth:</strong> El {{ $json.email }} extrae el campo "email" de los datos recibidos en el Webhook. Google OAuth garantiza que tu contraseña nunca se comparte.
+        </div>
+
+        <h2>Resumen de Nodos</h2>
+        <p>Tu flujo ahora tiene esta estructura:</p>
+        <p style="margin-top: 15px; text-align: center; font-family: monospace;">
+            <strong>Webhook → IF (validar email) → Gmail (enviar)</strong>
+        </p>
+
+        <div class="nav-buttons">
+            <button onclick="window.location.href='03_crear_flujo.html'">← Anterior</button>
+            <button onclick="window.location.href='05_probar.html'">Siguiente →</button>
+        </div>
+    </div>
+</body>
+</html>
