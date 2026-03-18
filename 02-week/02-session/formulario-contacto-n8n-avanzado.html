@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Avanzado de Contacto con n8n | Ingeniería Mecatrónica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a2f4b;
+    --secondary-color: #2d5a8a;
+    --accent-color: #00d4ff;
+    --accent-orange: #ff6b35;
+    --light-bg: #f0f4f8;
+    --dark-text: #1a1a1a;
+    --border-color: #d0d0d0;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--dark-text);
+    background-color: #fff;
+}
+
+/* Header */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 0;
+}
+
+.top-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    text-align: center;
+}
+
+.brand-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin: 5px 0;
+}
+
+.main-nav {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 50px 0;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: var(--secondary-color);
+    font-size: 2em;
+    margin-bottom: 25px;
+    border-left: 5px solid var(--accent-orange);
+    padding-left: 15px;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: var(--secondary-color);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.hero-section h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.lead {
+    font-size: 1.2em;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 40px 0;
+}
+
+.divider-thick {
+    border: none;
+    border-top: 3px solid var(--accent-color);
+    margin: 50px 0;
+}
+
+/* Definition Box */
+.definition-box {
+    background-color: #e0f7ff;
+    border-left: 5px solid var(--secondary-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-size: 1.05em;
+}
+
+/* Reflection Box */
+.reflection-box {
+    background-color: #fff3cd;
+    border-left: 5px solid var(--warning-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.reflection-box h4 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.reflection-box p {
+    color: #856404;
+    line-height: 1.7;
+}
+
+.reflection-box ul {
+    margin-left: 20px;
+    color: #856404;
+}
+
+.reflection-box li {
+    margin-bottom: 8px;
+}
+
+/* Success Box */
+.success-box {
+    background-color: #d4edda;
+    border-left: 5px solid var(--success-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.success-box h4 {
+    color: #155724;
+    margin-bottom: 10px;
+}
+
+.success-box p {
+    color: #155724;
+    line-height: 1.7;
+}
+
+/* Warning Box */
+.warning-box {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.warning-box h4 {
+    color: #721c24;
+    margin-bottom: 10px;
+}
+
+.warning-box p {
+    color: #721c24;
+    line-height: 1.7;
+}
+
+.warning-box ul {
+    margin-left: 20px;
+    color: #721c24;
+}
+
+.warning-box li {
+    margin-bottom: 8px;
+}
+
+/* Comparison Cards */
+.comparison-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card h3,
+.card h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Step Box */
+.step-box {
+    background-color: var(--light-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.step-num {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.step-box h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Strategy Grid */
+.strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.strategy-box {
+    background-color: var(--light-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.strategy-box h5 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.strategy-box ul {
+    list-style-position: inside;
+    margin-left: 10px;
+}
+
+.strategy-box li {
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-responsive {
+    overflow-x: auto;
+    margin: 30px 0;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: left;
+    font-weight: 500;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.styled-table tbody tr:hover {
+    background-color: var(--light-bg);
+}
+
+.styled-table tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 5px 12px;
+    margin: 5px 5px 5px 0;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.tag-docker {
+    background-color: #e7f3ff;
+    color: #004085;
+}
+
+.tag-n8n {
+    background-color: #fff3e7;
+    color: #8b4513;
+}
+
+.tag-automation {
+    background-color: #e2f5e2;
+    color: #155724;
+}
+
+/* Code Blocks */
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.5;
+    position: relative;
+}
+
+code {
+    font-family: 'Courier New', monospace;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--primary-color);
+}
+
+pre code {
+    background-color: transparent;
+    color: #f8f8f2;
+    padding: 0;
+}
+
+/* Checklist */
+.checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.checklist li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--light-bg);
+    border-radius: 5px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.checklist li:before {
+    content: "✓ ";
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Image Container */
+.image-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-caption {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Flow Diagram */
+.flow-diagram {
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: 8px;
+    margin: 30px 0;
+    border: 2px solid var(--secondary-color);
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.flow-step:not(:last-child)::after {
+    content: "↓";
+    display: block;
+    margin-left: 20px;
+    color: var(--accent-color);
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.flow-icon {
+    background-color: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+/* Footer */
+.main-footer {
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+.main-footer p {
+    margin: 8px 0;
+    font-size: 0.95em;
+}
+
+.main-footer ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.main-footer li {
+    margin: 8px 0;
+}
+
+.main-footer a {
+    color: #fff9e6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.main-footer a:hover {
+    color: var(--accent-color);
+}
+
+/* Scroll to Top Button */
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    transition: background-color 0.3s;
+}
+
+#scrollTopBtn:hover {
+    background-color: var(--accent-orange);
+}
+
+/* Lists */
+ul, ol {
+    margin: 15px 0;
+    margin-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+    line-height: 1.7;
+}
+
+/* Links */
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent-orange);
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    .hero-section {
+        padding: 40px 20px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+    }
+    
+    .main-nav a {
+        padding: 10px 15px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="top-bar">
+            <div class="brand-container">
+                <div class="brand-name">Corporación Universitaria de Huila - CORHUILA</div>
+                <div class="brand-name">Programa: Ingeniería Mecatrónica</div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul>
+                    <li><a href="#inicio" class="active">Inicio</a></li>
+                    <li><a href="#requisitos">Requisitos</a></li>
+                    <li><a href="#arquitectura">Arquitectura</a></li>
+                    <li><a href="#flujo">Crear Flujo</a></li>
+                    <li><a href="#variables">Variables Avanzadas</a></li>
+                    <li><a href="#sheets">Google Sheets</a></li>
+                    <li><a href="#pruebas">Pruebas</a></li>
+                    <li><a href="#troubleshooting">Soluciones</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+
+            <section id="inicio">
+                <div class="hero-section">
+                    <h1>🚀 Sistema Avanzado de Formulario de Contacto con n8n</h1>
+                    <p class="lead">
+                        Crea un flujo automatizado complejo que recibe datos de un formulario web, valida la información, 
+                        enriquece los datos y envía notificaciones por email usando Gmail API. 
+                        <strong>Incluye registro en Google Sheets para auditoría.</strong>
+                    </p>
+                    <p style="margin-top: 20px; font-size: 1.1em;">
+                        <span class="tag tag-n8n">Webhook</span>
+                        <span class="tag tag-automation">Gmail API</span>
+                        <span class="tag tag-automation">Google Sheets</span>
+                        <span class="tag tag-automation">Validación Avanzada</span>
+                    </p>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.1em; text-align: center;">
+                    <strong>Nivel del Tutorial:</strong> Intermedio-Avanzado | <strong>Duración estimada:</strong> 30-45 minutos
+                </p>
+
+                <h3>📋 ¿Qué Aprenderás?</h3>
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>✨ Webhooks Avanzados</h5>
+                        <p>Cómo recibir datos complejos desde formularios web y procesarlos en tiempo real.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🔍 Validación de Datos</h5>
+                        <p>Técnicas avanzadas de validación usando expresiones regulares y lógica condicional.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📧 Correos Dinámicos</h5>
+                        <p>Crear emails HTML personalizados con datos del usuario usando templates.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📊 Registro en Sheets</h5>
+                        <p>Guardar automáticamente cada solicitud en Google Sheets para auditoría y análisis.</p>
+                    </div>
+                </div>
+
+                <h3>🔄 Flujo General del Sistema</h3>
+                <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 30px 0;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                        
+                        <!-- Webhook -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">🔔</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Webhook</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Recibe datos POST</p>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 24px; color: #2d5a8a;">→</span>
+                        </div>
+
+                        <!-- Validar -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">✔️</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Validar</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Email y campos</p>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 24px; color: #2d5a8a;">→</span>
+                        </div>
+
+                        <!-- Enriquecer -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">⚙️</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Enriquecer</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Agregar datos</p>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 24px; color: #2d5a8a;">→</span>
+                        </div>
+
+                        <!-- Gmail -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">📧</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Gmail</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Notificación</p>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 24px; color: #2d5a8a;">→</span>
+                        </div>
+
+                        <!-- Sheets -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">📊</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Sheets</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Registro auditoría</p>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 24px; color: #27ae60;">✅</span>
+                        </div>
+
+                        <!-- Completado -->
+                        <div style="text-align: center;">
+                            <div style="background: white; width: 100px; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 0 auto 10px;">
+                                <span style="font-size: 40px;">🎉</span>
+                            </div>
+                            <p style="margin: 0; font-weight: bold; color: #333;">Completado</p>
+                            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Automatización lista</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <p class="image-caption"><strong>Flujo Completo:</strong> Webhook → Validar → Enriquecer datos → Gmail → Google Sheets → Completado</p>
+            </section>
+
+            <hr class="divider">
+
+            <section id="requisitos">
+                <h2>Requisitos Previos</h2>
+                <p>Para este tutorial avanzado, necesitas:</p>
+                
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>✅ Tutorial Anterior Completado</h5>
+                        <p>Debes haber completado el primer tutorial "Tu Primer Flujo de Automatización en n8n" y tener Gmail OAuth configurado.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🔐 Gmail API Configurada</h5>
+                        <p>Ya tienes credenciales OAuth de Gmail listos. Si no, ve al tutorial anterior para crear las credenciales.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🐳 Docker + n8n Activo</h5>
+                        <p>n8n debe estar ejecutándose en <code>http://localhost:5678</code> y puedas iniciar sesión.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📮 Herramienta de Prueba</h5>
+                        <p>Postman, Insomnia o curl para probar el webhook y enviar datos de prueba.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📚 Google Drive</h5>
+                        <p>Tener una cuenta Google con acceso a Google Sheets. Crearemos una nueva sheet durante el flujo.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>💻 Conocimientos de JSON</h5>
+                        <p>Comprender estructura básica de JSON será útil para trabajar con datos del webhook.</p>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Checklist de Requisitos</h4>
+                    <p>Marca que tengas:</p>
+                    <ul>
+                        <li>✓ n8n corriendo en localhost</li>
+                        <li>✓ Gmail OAuth configurado</li>
+                        <li>✓ Herramienta para hacer peticiones HTTP (Postman, curl, etc.)</li>
+                        <li>✓ Google Drive accesible</li>
+                        <li>✓ Comprensión básica de expresiones regulares (del tutorial anterior)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section id="arquitectura">
+                <h2>1. Entender la Arquitectura Avanzada</h2>
+                <p>Antes de codificar, comprendamos los componentes del sistema.</p>
+
+                <h3>1.1 Estructura de Datos que Recibiremos</h3>
+                <p>El webhook recibirá datos POST con esta estructura:</p>
+                <pre><code>{
+  "nombre": "Juan García López",
+  "email": "juan.garcia@example.com",
+  "empresa": "Tech Solutions SAS",
+  "telefono": "+57 3001234567",
+  "asunto": "Consulta sobre automatización",
+  "mensaje": "Quisiera saber cómo implementar n8n en nuestra empresa",
+  "prioridad": "alta",
+  "origen": "formulario-web"
+}</code></pre>
+
+                <h3>1.2 Validaciones que Implementaremos</h3>
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>Email</h5>
+                        <p>Validar formato de email usando regex: <code>usuario@dominio.com</code></p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>Nombre</h5>
+                        <p>Verificar que no esté vacío y tenga al menos 3 caracteres.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>Mensaje</h5>
+                        <p>Comprobar que el mensaje no sea más de 5000 caracteres.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>Teléfono</h5>
+                        <p>Validar que sea un número válido (opcional pero verificado).</p>
+                    </div>
+                </div>
+
+                <h3>1.3 Enriquecimiento de Datos</h3>
+                <p>Antes de enviar el email, agregaremos automáticamente:</p>
+                <ul>
+                    <li><strong>Timestamp:</strong> Fecha y hora exacta de la solicitud</li>
+                    <li><strong>ID Único:</strong> Un identificador único para rastrear la solicitud</li>
+                    <li><strong>IP Address:</strong> De dónde vino la solicitud (si disponible)</li>
+                    <li><strong>Estado:</strong> "NUEVO" para nuevas solicitudes</li>
+                    <li><strong>Asignado a:</strong> Equipo responsable (ej: "Soporte Técnico")</li>
+                </ul>
+
+                <div class="reflection-box">
+                    <h4>💡 ¿Por qué Enriquecer Datos?</h4>
+                    <p>
+                        El enriquecimiento de datos es una práctica común en automatización. Agregar metadatos (datos sobre los datos) 
+                        nos permite:
+                    </p>
+                    <ul>
+                        <li>Rastrear el origen y auditoría de cada solicitud</li>
+                        <li>Identificar patrones o problemas</li>
+                        <li>Automatizar el direccionamiento a equipos correctos</li>
+                        <li>Mantener un histórico completo en Google Sheets</li>
+                    </ul>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section id="flujo">
+                <h2>2. Crear Flujo Avanzado Paso a Paso</h2>
+
+                <h3>2.1 Crear Nuevo Flujo</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Acceder a n8n</h4>
+                    <p>Abre tu navegador en <code>http://localhost:5678</code> e inicia sesión.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Crear nuevo flujo</h4>
+                    <p>Haz clic en <strong>"Create Workflow"</strong> o ve a Dashboard → <strong>"+ New Workflow"</strong>.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Nombrar el flujo</h4>
+                    <p>Haz clic en el título "Untitled workflow" y renómbralo a:</p>
+                    <pre><code>Sistema Avanzado de Contacto - Formulario Web</code></pre>
+                    <p>Presiona Enter.</p>
+                </div>
+
+                <h3>2.2 Agregar Nodo Webhook</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">4</span>Buscar y agregar Webhook</h4>
+                    <p>En el panel izquierdo, busca <code>webhook</code>.</p>
+                    <p>Haz clic en <strong>"Webhook"</strong> para agregarlo al canvas.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">5</span>Configurar Webhook</h4>
+                    <p>Haz doble clic en el nodo Webhook. Configura:</p>
+                    <ul>
+                        <li><strong>HTTP Method:</strong> POST</li>
+                        <li><strong>Path:</strong> <code>contacto-formulario</code> (sin barra inicial)</li>
+                        <li><strong>Authentication:</strong> None</li>
+                    </ul>
+                    <p>Copia la URL completa del webhook (la verás en el nodo), que será algo como:</p>
+                    <pre><code>http://localhost:5678/webhook/contacto-formulario</code></pre>
+                    <p>Guardaremos esta URL para pruebas más adelante.</p>
+                </div>
+
+                <h3>2.3 Nodo de Validación Avanzada (IF)</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">6</span>Agregar primer nodo IF</h4>
+                    <p>Busca <code>if</code> y haz clic en <strong>"IF"</strong>.</p>
+                    <p>Conecta el Webhook con el IF (arrastra desde punto de salida del Webhook).</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">7</span>Configurar validación de Email</h4>
+                    <p>Haz doble clic en el nodo IF. Configura la primera condición:</p>
+                    <ul>
+                        <li><strong>Campo a validar:</strong> <code>{{ $json.email }}</code></li>
+                        <li><strong>Operador:</strong> "matches regex"</li>
+                        <li><strong>Patrón regex:</strong></li>
+                    </ul>
+                    <pre><code>^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></pre>
+                    <p>Esto valida que el email tenga formato correcto. El nodo IF tendrá dos ramas:</p>
+                    <ul>
+                        <li><strong>TRUE (rama izquierda):</strong> Email válido, continúa</li>
+                        <li><strong>FALSE (rama derecha):</strong> Email inválido, error</li>
+                    </ul>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>💡 Consejo: IF Node</h4>
+                    <p>
+                        En n8n, el nodo IF crea dos ramas de ejecución. En este caso, solo continuaremos por la rama TRUE. 
+                        Podríamos agregar manejo de errores en la rama FALSE más adelante, pero por ahora nos enfocaremos 
+                        en el flujo correcto.
+                    </p>
+                </div>
+
+                <h3>2.4 Nodo para Enriquecer Datos</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">8</span>Agregar nodo Set (para enriquecer datos)</h4>
+                    <p>Busca <code>set</code> y haz clic en <strong>"Set"</strong> (o "Assign").</p>
+                    <p>Conecta desde la rama TRUE del IF al nodo Set.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">9</span>Configurar el enriquecimiento</h4>
+                    <p>Haz doble clic en el nodo Set. Aquí agregaremos campos adicionales a los datos:</p>
+                    
+                    <h5>Pasos para agregar campos:</h5>
+                    <ol>
+                        <li>Busca el botón <strong>"Add Field"</strong> o similar</li>
+                        <li>Para cada campo nuevo, haz clic en "Add Field"</li>
+                    </ol>
+
+                    <h5>Agrega estos campos:</h5>
+                    <p><strong>1. Timestamp</strong></p>
+                    <ul>
+                        <li>Nombre del campo: <code>timestamp</code></li>
+                        <li>Valor: <code>{{ $now.toISO() }}</code></li>
+                    </ul>
+
+                    <p><strong>2. ID Único (UUID)</strong></p>
+                    <ul>
+                        <li>Nombre del campo: <code>id_solicitud</code></li>
+                        <li>Valor: <code>{{ $randomUUID() }}</code></li>
+                    </ul>
+
+                    <p><strong>3. Estado</strong></p>
+                    <ul>
+                        <li>Nombre del campo: <code>estado</code></li>
+                        <li>Valor: <code>"NUEVO"</code> (incluye las comillas)</li>
+                    </ul>
+
+                    <p><strong>4. Equipo Responsable</strong></p>
+                    <ul>
+                        <li>Nombre del campo: <code>asignado_a</code></li>
+                        <li>Valor: <code>"Soporte Técnico"</code></li>
+                    </ul>
+
+                    <p><strong>5. Origen Sistema</strong></p>
+                    <ul>
+                        <li>Nombre del campo: <code>origen_sistema</code></li>
+                        <li>Valor: <code>"Formulario Web - Sistema n8n"</code></li>
+                    </ul>
+
+                    <div class="reflection-box">
+                        <h4>💡 Entender expresiones n8n</h4>
+                        <ul>
+                            <li><code>{{ }}</code> = Delimitadores para expresiones</li>
+                            <li><code>$now.toISO()</code> = Fecha/hora actual en formato ISO</li>
+                            <li><code>$randomUUID()</code> = Genera un ID único</li>
+                            <li><code>"texto"</code> = Cadena de texto (requiere comillas)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>2.5 Nodo Gmail para Notificación</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">10</span>Agregar nodo Gmail</h4>
+                    <p>Busca <code>gmail</code> y haz clic en <strong>"Gmail"</strong>.</p>
+                    <p>Conecta desde el nodo Set al Gmail.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">11</span>Configurar Gmail</h4>
+                    <p>Haz doble clic en Gmail. Si ya tienes OAuth configurado del tutorial anterior, aparecerá tu email.</p>
+
+                    <h5>Configuración básica:</h5>
+                    <ul>
+                        <li><strong>Gmail Account:</strong> Tu correo (debe estar autenticado)</li>
+                        <li><strong>To:</strong> Tu dirección de email o <code>{{ $json.email }}</code> para enviarle al remitente</li>
+                        <li><strong>Subject:</strong> <code>Nueva Solicitud de Contacto - {{ $json.nombre }}</code></li>
+                    </ul>
+
+                    <h5>Body HTML Profesional:</h5>
+                    <p>En el campo de mensaje, pega este HTML dinámico:</p>
+                    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;style&gt;
+        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a2f4b 0%, #2d5a8a 100%); color: white; padding: 30px; }
+        .header h2 { margin: 0; font-size: 24px; }
+        .content { padding: 30px; }
+        .field { margin-bottom: 20px; }
+        .label { color: #2d5a8a; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .value { color: #333; font-size: 15px; line-height: 1.6; padding: 10px; background: #f9f9f9; border-left: 3px solid #00d4ff; }
+        .footer { background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px; border-top: 1px solid #ddd; }
+        .id-badge { display: inline-block; background: #00d4ff; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; margin-top: 10px; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="header"&gt;
+            &lt;h2&gt;✉️ Nueva Solicitud de Contacto Recibida&lt;/h2&gt;
+            &lt;p&gt;Hemos recibido tu mensaje. Nos pondremos en contacto pronto.&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="content"&gt;
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;👤 Nombre Completo&lt;/div&gt;
+                &lt;div class="value"&gt;{{ $json.nombre }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;📧 Email&lt;/div&gt;
+                &lt;div class="value"&gt;{{ $json.email }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;🏢 Empresa&lt;/div&gt;
+                &lt;div class="value"&gt;{{ $json.empresa }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;📱 Teléfono&lt;/div&gt;
+                &lt;div class="value"&gt;{{ $json.telefono }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;🎯 Asunto&lt;/div&gt;
+                &lt;div class="value"&gt;{{ $json.asunto }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;💬 Mensaje&lt;/div&gt;
+                &lt;div class="value" style="white-space: pre-wrap;"&gt;{{ $json.mensaje }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="field"&gt;
+                &lt;div class="label"&gt;⚡ Prioridad&lt;/div&gt;
+                &lt;div class="value"&gt;{{ $json.prioridad.toUpperCase() }}&lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;"&gt;
+
+            &lt;div style="background: #f0f7ff; padding: 15px; border-radius: 5px; font-size: 12px; color: #2d5a8a;"&gt;
+                &lt;strong&gt;🔍 Detalles del Sistema:&lt;/strong&gt;&lt;br&gt;
+                ID de Solicitud: {{ $json.id_solicitud }}&lt;br&gt;
+                Fecha/Hora: {{ $now.toFormat('dd/MM/yyyy HH:mm:ss') }}&lt;br&gt;
+                Estado: {{ $json.estado }}&lt;br&gt;
+                Asignado a: {{ $json.asignado_a }}
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="footer"&gt;
+            &lt;p&gt;Este es un email automático del sistema de contacto. Por favor no respondas a este correo. Usa el formulario web para enviar mensajes adicionales.&lt;/p&gt;
+            &lt;p&gt;&lt;strong&gt;Corporación Universitaria de Huila - Ingeniería Mecatrónica&lt;/strong&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+                    <p>Haz clic en Save cuando termines.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Progreso Hasta Aquí</h4>
+                    <p>Flujo: <strong>Webhook → IF (validar email) → Set (enriquecer) → Gmail (notificar)</strong></p>
+                    <p>Ya tenemos un flujo funcional. Ahora agregaremos Google Sheets para auditoría.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section id="sheets">
+                <h2>3. Google Sheets para Auditoría y Registro</h2>
+                <p>Guardaremos cada solicitud en Google Sheets para tener un histórico completo.</p>
+
+                <h3>3.1 Crear Google Sheet</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Crear nuevo Google Sheet</h4>
+                    <p>Antes de agregar el nodo a n8n, crea la hoja en Google Sheets:</p>
+                    <ol>
+                        <li>Abre <a href="https://sheets.google.com" target="_blank">sheets.google.com</a></li>
+                        <li>Crea un nuevo Sheet (documento en blanco)</li>
+                        <li>Nómbralo: <code>Contactos - Sistema n8n</code></li>
+                        <li>En la primera fila, crea estas columnas:</li>
+                    </ol>
+                    <pre><code>ID | Nombre | Email | Empresa | Teléfono | Asunto | Mensaje | Prioridad | Fecha/Hora | Estado | Asignado a</code></pre>
+                </div>
+
+                <h3>3.2 Agregar Nodo Google Sheets</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Agregar nodo Google Sheets</h4>
+                    <p>De vuelta en n8n, busca <code>google sheets</code> y haz clic en <strong>"Google Sheets"</strong>.</p>
+                    <p>Conecta desde el nodo Set (o desde Gmail si prefieres) al Google Sheets.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Autenticar Google Sheets</h4>
+                    <p>Haz doble clic en el nodo Google Sheets. Ve al campo "Credential".</p>
+                    <p>Haz clic en <strong>"Create Credentials"</strong> o en el dropdown de credenciales.</p>
+                    <p>Se abrirá una ventana pidiendo seleccionar tu cuenta Google. Elige la misma que usaste para Gmail.</p>
+                    <p>Haz clic en <strong>"Allow"</strong> cuando solicite permisos.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">4</span>Configurar Google Sheets</h4>
+                    <p>Después de autenticar:</p>
+                    <ul>
+                        <li><strong>Operation:</strong> Selecciona <strong>"Append"</strong> (agregar filas)</li>
+                        <li><strong>Spreadsheet:</strong> Busca y selecciona "Contactos - Sistema n8n" que creaste</li>
+                        <li><strong>Sheet:</strong> Selecciona "Sheet1" o la que corresponda</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">5</span>Mapear Columnas</h4>
+                    <p>En la sección de datos a insertar, mapea cada columna:</p>
+                    <ul>
+                        <li><strong>ID:</strong> <code>{{ $json.id_solicitud }}</code></li>
+                        <li><strong>Nombre:</strong> <code>{{ $json.nombre }}</code></li>
+                        <li><strong>Email:</strong> <code>{{ $json.email }}</code></li>
+                        <li><strong>Empresa:</strong> <code>{{ $json.empresa }}</code></li>
+                        <li><strong>Teléfono:</strong> <code>{{ $json.telefono }}</code></li>
+                        <li><strong>Asunto:</strong> <code>{{ $json.asunto }}</code></li>
+                        <li><strong>Mensaje:</strong> <code>{{ $json.mensaje }}</code></li>
+                        <li><strong>Prioridad:</strong> <code>{{ $json.prioridad }}</code></li>
+                        <li><strong>Fecha/Hora:</strong> <code>{{ $json.timestamp }}</code></li>
+                        <li><strong>Estado:</strong> <code>{{ $json.estado }}</code></li>
+                        <li><strong>Asignado a:</strong> <code>{{ $json.asignado_a }}</code></li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Flujo Completamente Funcional</h4>
+                    <p>Ahora tienes un flujo completo:</p>
+                    <p><strong>Webhook → IF (validar) → Set (enriquecer) → Gmail + Google Sheets</strong></p>
+                    <p>Todas las solicitudes se registran automáticamente en la hoja de cálculo.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section id="variables">
+                <h2>4. Variables Avanzadas y Técnicas</h2>
+
+                <h3>4.1 Expresiones Comunes en n8n</h3>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Expresión</th>
+                                <th>Descripción</th>
+                                <th>Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>${{ $json.campo }}</code></td>
+                                <td>Acceder a un campo de los datos JSON</td>
+                                <td><code>${{ $json.nombre }}</code> → "Juan"</td>
+                            </tr>
+                            <tr>
+                                <td><code>${{ $now.toISO() }}</code></td>
+                                <td>Fecha/hora actual en formato ISO</td>
+                                <td>2026-02-26T10:30:45.000Z</td>
+                            </tr>
+                            <tr>
+                                <td><code>${{ $randomUUID() }}</code></td>
+                                <td>Generar ID único</td>
+                                <td>a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6</td>
+                            </tr>
+                            <tr>
+                                <td><code>${{ $json.texto.toUpperCase() }}</code></td>
+                                <td>Convertir texto a mayúsculas</td>
+                                <td>"hola" → "HOLA"</td>
+                            </tr>
+                            <tr>
+                                <td><code>${{ $json.texto.toLowerCase() }}</code></td>
+                                <td>Convertir texto a minúsculas</td>
+                                <td>"HOLA" → "hola"</td>
+                            </tr>
+                            <tr>
+                                <td><code>${{ $json.numero * 2 }}</code></td>
+                                <td>Operaciones matemáticas</td>
+                                <td>5 * 2 = 10</td>
+                            </tr>
+                            <tr>
+                                <td><code>${{ $now.toFormat('dd/MM/yyyy') }}</code></td>
+                                <td>Formato personalizado de fecha</td>
+                                <td>26/02/2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>4.2 Validaciones Avanzadas Regex</h3>
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>Email</h5>
+                        <pre><code>^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></pre>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>Teléfono (formato +57)</h5>
+                        <pre><code>^\+57\s?\d{10}$</code></pre>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>URL</h5>
+                        <pre><code>^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*)$</code></pre>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>Solo números (4-6 dígitos)</h5>
+                        <pre><code>^\d{4,6}$</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section id="pruebas">
+                <h2>5. Probar el Flujo Completo</h2>
+
+                <h3>5.1 Pasos Previos</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Guardar el flujo</h4>
+                    <p>En la parte superior, haz clic en el botón <strong>"Save"</strong>.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Activar el flujo</h4>
+                    <p>Verás un toggle o botón que dice <strong>"Activate"</strong> (puede estar abajo a la derecha).</p>
+                    <p>Haz clic en el toggle para que el estado cambie a verde (activado).</p>
+                </div>
+
+                <h3>5.2 Obtener la URL del Webhook</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Copiar URL del Webhook</h4>
+                    <p>Haz clic en el nodo Webhook en el canvas.</p>
+                    <p>En el panel de configuración, verás la URL completa. Cópiala, será algo como:</p>
+                    <pre><code>http://localhost:5678/webhook/contacto-formulario</code></pre>
+                </div>
+
+                <h3>5.3 Enviar Datos de Prueba con Postman</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">4</span>Abrir Postman</h4>
+                    <p>Inicia Postman (si no lo tienes, descárgalo de <a href="https://www.postman.com/downloads/" target="_blank">postman.com</a>).</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">5</span>Crear nueva solicitud</h4>
+                    <p>Haz clic en <strong>"+ New"</strong> y selecciona <strong>"HTTP Request"</strong>.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">6</span>Configurar la solicitud</h4>
+                    <p>En el campo de URL (arriba), pega la URL del webhook que copiaste.</p>
+                    <p>Cambia el método HTTP a <strong>"POST"</strong>.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">7</span>Preparar datos JSON</h4>
+                    <p>En Postman, haz clic en la pestaña <strong>"Body"</strong>.</p>
+                    <p>Selecciona <strong>"raw"</strong> y luego de los dropdowns, elige <strong>"JSON"</strong>.</p>
+                    <p>Pega estos datos de prueba:</p>
+                    <pre><code>{
+  "nombre": "Juan García López",
+  "email": "juan@example.com",
+  "empresa": "Tech Solutions SAS",
+  "telefono": "+57 3001234567",
+  "asunto": "Consulta sobre automatización avanzada",
+  "mensaje": "Hola, quisiera saber cómo implementar automatizaciones avanzadas con n8n en nuestra empresa. ¿Pueden ayudarnos?",
+  "prioridad": "alta",
+  "origen": "formulario-web"
+}</code></pre>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">8</span>Enviar la solicitud</h4>
+                    <p>Haz clic en el botón azul <strong>"Send"</strong>.</p>
+                    <p>Deberías recibir una respuesta 200 OK.</p>
+                    <p>Verás en n8n que el flujo se ejecutó (se iluminan los nodos).</p>
+                </div>
+
+                <h3>5.4 Verificar Resultados</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">9</span>Revisar ejecución en n8n</h4>
+                    <p>En n8n, verás el flujo iluminado mostrando que se ejecutó correctamente.</p>
+                    <p>Haz clic en <strong>"Executions"</strong> (arriba a la izquierda) para ver el detalle.</p>
+                    <p>Haz clic en la ejecución para ver cada nodo y sus datosde salida.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">10</span>Verificar email</h4>
+                    <p>Revisa tu email (bandeja de entrada o spam) para verificar que el email se envió correctamente.</p>
+                    <p>Debería llegar con el asunto <strong>"Nueva Solicitud de Contacto - Juan García López"</strong>.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">11</span>Verificar Google Sheets</h4>
+                    <p>Abre tu Google Sheet "Contactos - Sistema n8n".</p>
+                    <p>Deberías ver una nueva fila con todos los datos de la solicitud, incluyendo:</p>
+                    <ul>
+                        <li>El ID único generado</li>
+                        <li>Todos los campos del formulario</li>
+                        <li>La fecha/hora exacta</li>
+                        <li>El estado "NUEVO"</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ ¡Éxito! Flujo Funcionando</h4>
+                    <p>Si completaste todos los pasos y recibiste el email y registró en Sheets, ¡tu flujo está funcionando perfectamente!</p>
+                </div>
+
+                <h3>5.5 Probar Casos Edge (Errores)</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">12</span>Probar con email inválido</h4>
+                    <p>En Postman, cambia el email a algo inválido:</p>
+                    <pre><code>"email": "juaninvalido"</code></pre>
+                    <p>Envía la solicitud.</p>
+                    <p>El flujo debería detenerse en el IF (porque el email no es válido).</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">13</span>Probar con diferentes prioridades</h4>
+                    <p>Cambia "prioridad" por: "baja", "media", "urgente"</p>
+                    <p>Verifica que se registre correctamente en Google Sheets.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section id="troubleshooting">
+                <h2>6. Solución de Problemas Comunes</h2>
+
+                <h3>Problema 1: El webhook no recibe datos</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Problema</h4>
+                    <p>En Postman enviaste la solicitud pero n8n no registró nada.</p>
+                    <h4>Soluciones</h4>
+                    <ol>
+                        <li><strong>Verifica que el flujo está activado:</strong> El toggle debe estar verde/on</li>
+                        <li><strong>Copia la URL correcta:</strong> Asegúrate de copiar completa desde el nodo Webhook</li>
+                        <li><strong>Usa POST, no GET:</strong> El header debe decir "POST" no "GET"</li>
+                        <li><strong>Revisa el Content-Type:</strong> Debe ser "application/json"</li>
+                        <li><strong>Verifica n8n está corriendo:</strong> <code>http://localhost:5678</code> debe estar accesible</li>
+                    </ol>
+                </div>
+
+                <h3>Problema 2: Email no se envía</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Problema</h4>
+                    <p>El flujo ejecuta pero no recibiste el email.</p>
+                    <h4>Soluciones</h4>
+                    <ol>
+                        <li><strong>Revisa credenciales Gmail:</strong> Verifica que esté autenticado correctamente</li>
+                        <li><strong>Verifica el campo "To":</strong> Debe tener un email válido</li>
+                        <li><strong>Revisa carpeta Spam:</strong> A veces los emails llegan ahí</li>
+                        <li><strong>Verifica la ejecución:</strong> En "Executions" verás si hay error en el nodo Gmail</li>
+                        <li><strong>Re-autentica Gmail:</strong> Borra las credenciales y vuelve a hacer "Create Credentials"</li>
+                    </ol>
+                </div>
+
+                <h3>Problema 3: Google Sheets no se actualiza</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Problema</h4>
+                    <p>El flujo ejecuta pero no aparecen datos en Google Sheets.</p>
+                    <h4>Soluciones</h4>
+                    <ol>
+                        <li><strong>Verifica credenciales Google:</strong> Asegúrate que está autenticado</li>
+                        <li><strong>Nombre correcto del Sheet:</strong> El spreadsheet debe existir con el nombre exacto</li>
+                        <li><strong>Permisos de Google Sheets API:</strong> Habilita la API en Google Cloud Console</li>
+                        <li><strong>Revisa los mapeos:</strong> Los campos deben corresponder con las columnas de la hoja</li>
+                        <li><strong>Recarga la hoja:</strong> A veces necesitas recargar el navegador para ver cambios</li>
+                    </ol>
+                </div>
+
+                <h3>Problema 4: Validación IF no funciona</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Problema</h4>
+                    <p>El IF no valida correctamente o siempre pasa la rama true/false.</p>
+                    <h4>Soluciones</h4>
+                    <ol>
+                        <li><strong>Revisa la regex:</strong> Copia exactamente: <code>^[a-zA-Z0-9_%.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></li>
+                        <li><strong>Verifica el campo:</strong> Asegúrate que escribiste <code>{{ $json.email }}</code></li>
+                        <li><strong>Prueba la regex online:</strong> Usa <a href="https://regex101.com/" target="_blank">regex101.com</a> para validar</li>
+                        <li><strong>Revisa los datos enviados:</strong> En Postman, asegúrate que el email está en el JSON</li>
+                    </ol>
+                </div>
+
+                <h3>Problema 5: El flujo corre muy lentamente</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Problema</h4>
+                    <p>Los nodos se ejecutan con retrasos notables.</p>
+                    <h4>Soluciones</h4>
+                    <ol>
+                        <li><strong>Reinicia Docker:</strong> Abre Docker Desktop y reinicia los contenedores</li>
+                        <li><strong>Verifica recursos:</strong> Asegúrate que tu máquina tiene suficiente RAM/CPU</li>
+                        <li><strong>Revisa logs de Docker:</strong> <code>docker-compose logs -f</code> en la terminal</li>
+                        <li><strong>Recarga n8n:</strong> Cierra la pestaña del navegador y abre nuevamente</li>
+                    </ol>
+                </div>
+
+                <h3>Problema 6: Expresiones no funcionan ({{ }} no se evalúan)</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Problema</h4>
+                    <p>Ves <code>{{ $json.nombre }}</code> literalmente en el email en lugar del nombre real.</p>
+                    <h4>Soluciones</h4>
+                    <ol>
+                        <li><strong>En nodos con HTML:</strong> El campo debe estar configurado para aceptar expresiones</li>
+                        <li><strong>Verifica modo de edición:</strong> En Gmail, asegúrate que el Body está en modo "Text with Expressions"</li>
+                        <li><strong>Usa siempre {{ }}:</strong> Toda expresión debe estar entre llaves dobles</li>
+                        <li><strong>Revisa la sintaxis:</strong> <code>$json.campo</code> es correcto. <code>$json[campo]</code> sin comillas también puede funcionar</li>
+                    </ol>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <h3>Sistema Avanzado de Contacto con n8n</h3>
+            <p><strong>Guía preparada para:</strong> Ingeniería Mecatrónica</p>
+            <p><strong>Creado por:</strong> Ing. Julian Quimbayo Castro</p>
+            <p>Última actualización: Febrero 2026</p>
+            <p>Este material es de uso educativo. Para más información, consulta la documentación oficial de n8n.</p>
+            <ul>
+                <li><a href="https://docs.n8n.io/" target="_blank">n8n Documentation</a></li>
+                <li><a href="https://community.n8n.io/" target="_blank">n8n Community</a></li>
+                <li><a href="https://n8n.io/" target="_blank">n8n.io</a></li>
+            </ul>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.9;">© Corporación Universitaria de Huila - Corhuila</p>
+        </div>
+    </footer>
+
+    <button id="scrollTopBtn" title="Volver arriba">↑</button>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupScrollButton();
+    setupNavigation();
+    setupSmoothScroll();
+    highlightActiveSection();
+});
+
+// Scroll to Top Button
+function setupScrollButton() {
+    const scrollBtn = document.getElementById('scrollTopBtn');
+
+    window.addEventListener('scroll', function() {
+        if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
+            scrollBtn.style.display = 'block';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+
+    scrollBtn.addEventListener('click', function() {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    });
+}
+
+// Smooth Scroll
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Active Navigation Highlight
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+
+    window.addEventListener('scroll', highlightActiveSection);
+}
+
+function highlightActiveSection() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+    let current = '';
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Copy Code to Clipboard
+document.querySelectorAll('pre').forEach(pre => {
+    const button = document.createElement('button');
+    button.textContent = '📋 Copiar';
+    button.style.cssText = `
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 8px 12px;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 10;
+    `;
+
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+
+    pre.addEventListener('mouseenter', () => {
+        button.style.opacity = '1';
+    });
+
+    pre.addEventListener('mouseleave', () => {
+        button.style.opacity = '0';
+    });
+
+    button.addEventListener('click', () => {
+        const code = pre.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = button.textContent;
+            button.textContent = '✅ Copiado!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        });
+    });
+});
+    </script>
+</body>
+</html>
