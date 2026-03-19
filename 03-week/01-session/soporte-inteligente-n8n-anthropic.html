@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte Inteligente con n8n y Anthropic (Claude) | Ingeniería Mecatrónica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a2f4b;
+    --secondary-color: #2d5a8a;
+    --accent-color: #00d4ff;
+    --accent-orange: #ff6b35;
+    --light-bg: #f0f4f8;
+    --dark-text: #1a1a1a;
+    --border-color: #d0d0d0;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --ai-color: #d97706;
+    --ai-bg: #fffbeb;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--dark-text);
+    background-color: #fff;
+}
+
+/* Header */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 0;
+}
+
+.top-bar {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    text-align: center;
+}
+
+.brand-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin: 5px 0;
+}
+
+.main-nav {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 50px 0;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: var(--secondary-color);
+    font-size: 2em;
+    margin-bottom: 25px;
+    border-left: 5px solid var(--accent-orange);
+    padding-left: 15px;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: var(--secondary-color);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.hero-section h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.lead {
+    font-size: 1.2em;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 40px 0;
+}
+
+.divider-thick {
+    border: none;
+    border-top: 3px solid var(--accent-color);
+    margin: 50px 0;
+}
+
+/* Definition Box */
+.definition-box {
+    background-color: #e0f7ff;
+    border-left: 5px solid var(--secondary-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-size: 1.05em;
+}
+
+/* AI Box */
+.ai-box {
+    background-color: var(--ai-bg);
+    border-left: 5px solid var(--ai-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.ai-box h4 {
+    color: #92400e;
+    margin-bottom: 10px;
+}
+
+.ai-box p {
+    color: #92400e;
+    line-height: 1.7;
+}
+
+.ai-box ul {
+    margin-left: 20px;
+    color: #92400e;
+}
+
+.ai-box li {
+    margin-bottom: 8px;
+}
+
+/* Reflection Box */
+.reflection-box {
+    background-color: #fff3cd;
+    border-left: 5px solid var(--warning-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.reflection-box h4 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.reflection-box p {
+    color: #856404;
+    line-height: 1.7;
+}
+
+.reflection-box ul {
+    margin-left: 20px;
+    color: #856404;
+}
+
+.reflection-box li {
+    margin-bottom: 8px;
+}
+
+/* Success Box */
+.success-box {
+    background-color: #d4edda;
+    border-left: 5px solid var(--success-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.success-box h4 {
+    color: #155724;
+    margin-bottom: 10px;
+}
+
+.success-box p {
+    color: #155724;
+    line-height: 1.7;
+}
+
+.success-box ul {
+    margin-left: 20px;
+    color: #155724;
+}
+
+.success-box li {
+    margin-bottom: 8px;
+    color: #155724;
+}
+
+/* Warning Box */
+.warning-box {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.warning-box h4 {
+    color: #721c24;
+    margin-bottom: 10px;
+}
+
+.warning-box p {
+    color: #721c24;
+    line-height: 1.7;
+}
+
+.warning-box ul {
+    margin-left: 20px;
+    color: #721c24;
+}
+
+.warning-box li {
+    margin-bottom: 8px;
+}
+
+/* Comparison Cards */
+.comparison-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card h3,
+.card h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Step Box */
+.step-box {
+    background-color: var(--light-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.step-num {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.step-box h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* AI Step Box */
+.ai-step-box {
+    background-color: var(--ai-bg);
+    border-left: 4px solid var(--ai-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.ai-step-box h4 {
+    color: #92400e;
+    margin-top: 0;
+}
+
+.ai-step-num {
+    display: inline-block;
+    background-color: var(--ai-color);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* Strategy Grid */
+.strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.strategy-box {
+    background-color: var(--light-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.strategy-box h5 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.strategy-box ul {
+    list-style-position: inside;
+    margin-left: 10px;
+}
+
+.strategy-box li {
+    margin-bottom: 8px;
+}
+
+/* Tables */
+.table-responsive {
+    overflow-x: auto;
+    margin: 30px 0;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: left;
+    font-weight: 500;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.styled-table tbody tr:hover {
+    background-color: var(--light-bg);
+}
+
+.styled-table tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 5px 12px;
+    margin: 5px 5px 5px 0;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.tag-docker {
+    background-color: #e7f3ff;
+    color: #004085;
+}
+
+.tag-n8n {
+    background-color: #fff3e7;
+    color: #8b4513;
+}
+
+.tag-automation {
+    background-color: #e2f5e2;
+    color: #155724;
+}
+
+.tag-ai {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Code Blocks */
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.5;
+    position: relative;
+}
+
+code {
+    font-family: 'Courier New', monospace;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--primary-color);
+}
+
+pre code {
+    background-color: transparent;
+    color: #f8f8f2;
+    padding: 0;
+}
+
+/* Checklist */
+.checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.checklist li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--light-bg);
+    border-radius: 5px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.checklist li:before {
+    content: "✓ ";
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Image Container */
+.image-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-caption {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Flow Diagram */
+.flow-diagram {
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: 8px;
+    margin: 30px 0;
+    border: 2px solid var(--secondary-color);
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.flow-step:not(:last-child)::after {
+    content: "↓";
+    display: block;
+    margin-left: 20px;
+    color: var(--accent-color);
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.flow-icon {
+    background-color: white;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+/* Node cards */
+.node-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.node-card {
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.node-card:hover {
+    transform: translateY(-3px);
+}
+
+.node-card .node-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.node-card .node-name {
+    font-weight: 700;
+    font-size: 0.95em;
+    color: var(--primary-color);
+}
+
+.node-card .node-desc {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 4px;
+}
+
+.node-card.ai-node {
+    border: 2px solid var(--ai-color);
+    background: var(--ai-bg);
+}
+
+.node-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* Footer */
+.main-footer {
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+.main-footer p {
+    margin: 8px 0;
+    font-size: 0.95em;
+}
+
+.main-footer ul {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.main-footer li {
+    margin: 8px 0;
+}
+
+.main-footer a {
+    color: #fff9e6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.main-footer a:hover {
+    color: var(--accent-color);
+}
+
+/* Scroll to Top Button */
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    transition: background-color 0.3s;
+}
+
+#scrollTopBtn:hover {
+    background-color: var(--accent-orange);
+}
+
+/* Lists */
+ul, ol {
+    margin: 15px 0;
+    margin-left: 30px;
+}
+
+li {
+    margin: 8px 0;
+    line-height: 1.7;
+}
+
+/* Links */
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent-orange);
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    .hero-section {
+        padding: 40px 20px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+    }
+    
+    .main-nav a {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .comparison-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .strategy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .node-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="top-bar">
+            <div class="container brand-container">
+                <img src="https://raw.githubusercontent.com/code-corhuila/material-mineria-datos/b3725d694125ab35294ddfe415a327bc1445d32c/01-week/01-session/LOGO%20CORHUILA%20BLANCO%20PNG%20(2).png" alt="Logo Corhuila" style="max-width: 120px; height: auto; margin-bottom: 15px;">
+                <div class="brand-name">Corporación Universitaria del Huila - CORHUILA</div>
+                <div class="brand-name">Programa: Ingeniería Mecatrónica</div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul>
+                    <li><a href="#inicio" class="active">Inicio</a></li>
+                    <li><a href="#requisitos">Requisitos</a></li>
+                    <li><a href="#arquitectura">Arquitectura</a></li>
+                    <li><a href="#nodo1-webhook">Webhook</a></li>
+                    <li><a href="#nodo2-validacion">Validación</a></li>
+                    <li><a href="#nodo3-enriquecer">Enriquecer</a></li>
+                    <li><a href="#nodo4-anthropic-clasificar">IA Clasificar</a></li>
+                    <li><a href="#nodo5-switch">Switch</a></li>
+                    <li><a href="#nodo6-preparar">Preparar</a></li>
+                    <li><a href="#nodo7-anthropic-respuesta">IA Respuesta</a></li>
+                    <li><a href="#nodo8-gmail-cliente">Email Cliente</a></li>
+                    <li><a href="#nodo9-gmail-admin">Email Admin</a></li>
+                    <li><a href="#nodo10-sheets">Google Sheets</a></li>
+                    <li><a href="#pruebas">Pruebas</a></li>
+                    <li><a href="#troubleshooting">Soluciones</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+
+            <!-- ==================== SECCIÓN INICIO ==================== -->
+            <section id="inicio">
+                <div class="hero-section">
+                    <h1>🤖 Sistema de Soporte Inteligente con n8n + Anthropic (Claude)</h1>
+                    <p class="lead">
+                        Construye una automatización robusta de <strong>10 nodos</strong> que recibe tickets de soporte vía webhook, 
+                        utiliza <strong>Inteligencia Artificial (Claude de Anthropic)</strong> para clasificar, analizar sentimiento 
+                        y generar respuestas automáticas personalizadas. Incluye notificaciones por Gmail y registro en Google Sheets.
+                    </p>
+                    <p style="margin-top: 20px; font-size: 1.1em;">
+                        <span class="tag tag-n8n">n8n Local</span>
+                        <span class="tag tag-ai">🤖 Anthropic Claude</span>
+                        <span class="tag tag-automation">Gmail API</span>
+                        <span class="tag tag-automation">Google Sheets</span>
+                        <span class="tag tag-docker">Docker</span>
+                    </p>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.1em; text-align: center;">
+                    <strong>Nivel:</strong> Intermedio-Avanzado | <strong>Nodos:</strong> 10 | <strong>Duración estimada:</strong> 45-60 minutos
+                </p>
+
+                <h3>📋 ¿Qué Aprenderás?</h3>
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>🤖 IA en Automatización</h5>
+                        <p>Integrar Anthropic (Claude) en n8n para clasificación automática de tickets y generación de respuestas inteligentes.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🔀 Flujos Condicionales</h5>
+                        <p>Usar nodos Switch para enrutar datos según la categoría detectada por la IA.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📧 Notificaciones Duales</h5>
+                        <p>Envío automático de respuesta al cliente y alerta al equipo de soporte vía Gmail.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📊 Auditoría Completa</h5>
+                        <p>Registro de cada ticket con análisis de IA en Google Sheets para métricas y seguimiento.</p>
+                    </div>
+                </div>
+
+                <h3>🔄 Mapa del Flujo — 10 Nodos</h3>
+                <div class="node-grid">
+                    <div class="node-card">
+                        <div class="node-icon">🔔</div>
+                        <div class="node-name">1. Webhook</div>
+                        <div class="node-desc">Recibe ticket POST</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">✔️</div>
+                        <div class="node-name">2. IF Validar</div>
+                        <div class="node-desc">Email + campos</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">⚙️</div>
+                        <div class="node-name">3. Edit Fields</div>
+                        <div class="node-desc">Enriquecer datos</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card ai-node">
+                        <div class="node-icon">🤖</div>
+                        <div class="node-name">4. Anthropic</div>
+                        <div class="node-desc">Clasificar + Sentimiento</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">🔀</div>
+                        <div class="node-name">5. Switch</div>
+                        <div class="node-desc">Enrutar categoría</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">📝</div>
+                        <div class="node-name">6. Edit Fields</div>
+                        <div class="node-desc">Consolidar datos</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card ai-node">
+                        <div class="node-icon">💬</div>
+                        <div class="node-name">7. Anthropic</div>
+                        <div class="node-desc">Generar respuesta</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">📧</div>
+                        <div class="node-name">8. Gmail</div>
+                        <div class="node-desc">Respuesta al cliente</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">🔔</div>
+                        <div class="node-name">9. Gmail</div>
+                        <div class="node-desc">Alerta al admin</div>
+                    </div>
+                    <div class="node-arrow">→</div>
+                    <div class="node-card">
+                        <div class="node-icon">📊</div>
+                        <div class="node-name">10. Sheets</div>
+                        <div class="node-desc">Registro auditoría</div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider-thick">
+
+            <!-- ==================== SECCIÓN REQUISITOS ==================== -->
+            <section id="requisitos">
+                <h2>Requisitos Previos</h2>
+                <p>Antes de comenzar, verifica que tengas todo listo:</p>
+
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>✅ Tutoriales Anteriores</h5>
+                        <p>Haber completado "Tu Primer Flujo" y "Formulario de Contacto Avanzado". Tener Gmail OAuth configurado.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🐳 Docker + n8n Activo</h5>
+                        <p>n8n ejecutándose en <code>http://localhost:5678</code>. Si no lo tienes, revisa la sesión de instalación.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🔑 API Key de Anthropic</h5>
+                        <p>Necesitas una API key de Anthropic. Regístrate en <strong>console.anthropic.com</strong> y crea una clave.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📧 Gmail API Configurada</h5>
+                        <p>Credenciales OAuth de Gmail ya creadas y probadas en tutoriales anteriores.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📊 Google Sheets</h5>
+                        <p>Cuenta Google con acceso a Google Sheets. Crearemos una hoja durante el tutorial.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📮 Herramienta de Prueba</h5>
+                        <p>Postman, Insomnia o curl para enviar peticiones POST al webhook.</p>
+                    </div>
+                </div>
+
+                <h3>🔑 Obtener API Key de Anthropic</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Crear cuenta en Anthropic</h4>
+                    <p>Ve a <strong>console.anthropic.com</strong> y regístrate con tu correo electrónico.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Generar API Key</h4>
+                    <ol>
+                        <li>Inicia sesión en la consola de Anthropic</li>
+                        <li>Ve a <strong>"API Keys"</strong> en el menú lateral</li>
+                        <li>Haz clic en <strong>"Create Key"</strong></li>
+                        <li>Ponle un nombre descriptivo: <code>n8n-soporte-inteligente</code></li>
+                        <li>Copia la clave generada (empieza con <code>sk-ant-...</code>)</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Importante sobre la API Key</h4>
+                    <p>La API key solo se muestra una vez. Guárdala en un lugar seguro. <strong>Nunca la compartas</strong> ni la subas a repositorios públicos. Anthropic ofrece créditos gratuitos para nuevas cuentas.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Verificar créditos</h4>
+                    <p>En la consola de Anthropic, ve a <strong>"Billing"</strong> y verifica que tienes créditos disponibles. El modelo <code>claude-sonnet-4-20250514</code> es eficiente en costo y perfecto para clasificación de texto.</p>
+                </div>
+
+                <h3>📊 Crear Google Sheet para Auditoría</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">4</span>Crear hoja de cálculo</h4>
+                    <ol>
+                        <li>Ve a <strong>sheets.google.com</strong></li>
+                        <li>Crea una nueva hoja llamada: <code>Tickets Soporte Inteligente</code></li>
+                        <li>En la primera fila (encabezados), escribe estas columnas:</li>
+                    </ol>
+                    <pre><code>ID | Fecha | Nombre | Email | Asunto | Mensaje | Categoría IA | Sentimiento | Urgencia | Respuesta IA | Estado</code></pre>
+                    <p>Cada columna en una celda separada (A1 hasta K1).</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Checklist de Requisitos</h4>
+                    <ul>
+                        <li>n8n corriendo en localhost:5678</li>
+                        <li>API Key de Anthropic copiada</li>
+                        <li>Gmail OAuth configurado</li>
+                        <li>Google Sheet creada con encabezados</li>
+                        <li>Postman o curl disponible</li>
+                    </ul>
+                </div>
+            </section>
+
+            <hr class="divider-thick">
+
+            <!-- ==================== SECCIÓN ARQUITECTURA ==================== -->
+            <section id="arquitectura">
+                <h2>1. Arquitectura del Sistema</h2>
+                <p>Comprendamos la arquitectura completa antes de construir.</p>
+
+                <h3>1.1 ¿Por qué IA en Automatización?</h3>
+                <div class="ai-box">
+                    <h4>🤖 El Valor de la Inteligencia Artificial</h4>
+                    <p>
+                        En automatizaciones tradicionales, las reglas son <strong>estáticas</strong>: "si el asunto contiene 'factura', es Facturación". 
+                        Pero ¿qué pasa si el usuario escribe "no me han cobrado correctamente"? Una regla estática no lo detectaría.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        Con <strong>Anthropic Claude</strong>, la IA entiende el <strong>contexto semántico</strong> del mensaje. Puede:
+                    </p>
+                    <ul>
+                        <li><strong>Clasificar</strong> tickets sin reglas hardcodeadas — entiende el significado</li>
+                        <li><strong>Detectar sentimiento</strong> — sabe si el cliente está frustrado, neutro o satisfecho</li>
+                        <li><strong>Evaluar urgencia</strong> — prioriza tickets que requieren atención inmediata</li>
+                        <li><strong>Generar respuestas</strong> — crea respuestas personalizadas y empáticas</li>
+                    </ul>
+                </div>
+
+                <h3>1.2 Estructura de Datos del Ticket</h3>
+                <p>El webhook recibirá datos POST con esta estructura:</p>
+                <pre><code>{
+  "nombre": "María González",
+  "email": "maria.gonzalez@example.com",
+  "asunto": "Error al procesar mi pedido #4521",
+  "mensaje": "Llevo 3 días esperando respuesta sobre mi pedido. El sistema me muestra un error cuando intento rastrear el envío. Ya intenté contactarlos por teléfono pero nadie responde. Necesito una solución urgente.",
+  "prioridad": "alta"
+}</code></pre>
+
+                <h3>1.3 Flujo de Datos Completo</h3>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nodo</th>
+                                <th>Tipo</th>
+                                <th>Función</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>Webhook</strong></td>
+                                <td>Trigger</td>
+                                <td>Recibir datos del formulario</td>
+                                <td>HTTP POST</td>
+                                <td>JSON con campos del ticket</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>IF — Validar</strong></td>
+                                <td>Condicional</td>
+                                <td>Validar email y campos requeridos</td>
+                                <td>JSON del webhook</td>
+                                <td>True (válido) / False (inválido)</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>Edit Fields — Enriquecer</strong></td>
+                                <td>Transformación</td>
+                                <td>Agregar ID, timestamp, metadatos</td>
+                                <td>Datos validados</td>
+                                <td>Datos enriquecidos</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><strong>Anthropic — Clasificar</strong></td>
+                                <td>🤖 IA</td>
+                                <td>Clasificar categoría, sentimiento, urgencia</td>
+                                <td>Asunto + mensaje</td>
+                                <td>JSON con clasificación IA</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><strong>Switch — Enrutar</strong></td>
+                                <td>Condicional</td>
+                                <td>Dirigir según categoría IA</td>
+                                <td>Categoría detectada</td>
+                                <td>Ruta específica</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><strong>Edit Fields — Consolidar</strong></td>
+                                <td>Transformación</td>
+                                <td>Unir datos originales + análisis IA</td>
+                                <td>Datos + clasificación</td>
+                                <td>Objeto consolidado</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><strong>Anthropic — Respuesta</strong></td>
+                                <td>🤖 IA</td>
+                                <td>Generar respuesta personalizada</td>
+                                <td>Ticket + categoría + sentimiento</td>
+                                <td>Texto de respuesta</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><strong>Gmail — Cliente</strong></td>
+                                <td>Notificación</td>
+                                <td>Enviar respuesta automática al cliente</td>
+                                <td>Email + respuesta IA</td>
+                                <td>Email enviado</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><strong>Gmail — Admin</strong></td>
+                                <td>Notificación</td>
+                                <td>Alertar al equipo de soporte</td>
+                                <td>Resumen del ticket + análisis IA</td>
+                                <td>Email de alerta</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><strong>Google Sheets — Log</strong></td>
+                                <td>Registro</td>
+                                <td>Guardar todo en hoja de auditoría</td>
+                                <td>Datos completos</td>
+                                <td>Fila nueva en Sheets</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>💡 ¿Por qué 10 nodos?</h4>
+                    <p>Cada nodo tiene una <strong>responsabilidad única</strong> (similar al principio de Responsabilidad Única en programación). Esto hace el flujo más fácil de depurar, mantener y escalar. Si un nodo falla, sabemos exactamente dónde está el problema.</p>
+                </div>
+            </section>
+
+            <hr class="divider-thick">
+
+            <!-- ==================== NODO 1: WEBHOOK ==================== -->
+            <section id="nodo1-webhook">
+                <h2>2. Nodo 1 — Webhook (Trigger)</h2>
+                <p>El punto de entrada de nuestro sistema. Recibe los tickets de soporte.</p>
+
+                <h3>2.1 Crear el Flujo</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Crear nuevo workflow</h4>
+                    <p>En n8n (<code>http://localhost:5678</code>), haz clic en <strong>"Create Workflow"</strong>.</p>
+                    <p>Renómbralo a: <code>Soporte Inteligente - Anthropic AI</code></p>
+                </div>
+
+                <h3>2.2 Agregar Webhook</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Agregar nodo Webhook</h4>
+                    <ol>
+                        <li>Haz clic en el botón <strong>"+"</strong> del canvas</li>
+                        <li>Busca <strong>"Webhook"</strong> en la barra de búsqueda</li>
+                        <li>Selecciona <strong>"Webhook"</strong> (el de n8n, no el de terceros)</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Configurar el Webhook</h4>
+                    <p>En el panel de configuración:</p>
+                    <ul>
+                        <li><strong>HTTP Method:</strong> <code>POST</code></li>
+                        <li><strong>Path:</strong> <code>soporte-inteligente</code></li>
+                        <li><strong>Authentication:</strong> None (para pruebas locales)</li>
+                        <li><strong>Response Mode:</strong> <code>When Last Node Finishes</code></li>
+                        <li><strong>Response Code:</strong> <code>200</code></li>
+                    </ul>
+                    <p style="margin-top: 10px;">La URL del webhook será:</p>
+                    <pre><code>http://localhost:5678/webhook/soporte-inteligente</code></pre>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>💡 ¿Por qué "When Last Node Finishes"?</h4>
+                    <p>Esto hace que el webhook espere a que <strong>todos los nodos</strong> terminen antes de responder. Así el cliente recibe confirmación de que su ticket fue procesado completamente (incluida la respuesta de la IA).</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 1 Completo</h4>
+                    <p>El Webhook está listo para recibir tickets en <code>/webhook/soporte-inteligente</code>.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 2: VALIDACIÓN ==================== -->
+            <section id="nodo2-validacion">
+                <h2>3. Nodo 2 — IF (Validación)</h2>
+                <p>Validamos que los datos del ticket sean correctos antes de procesarlos con la IA.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar nodo IF</h4>
+                    <ol>
+                        <li>Haz clic en el <strong>"+"</strong> a la derecha del Webhook</li>
+                        <li>Busca <strong>"IF"</strong></li>
+                        <li>Selecciona el nodo <strong>"IF"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar validaciones</h4>
+                    <p>Configuraremos múltiples condiciones que deben cumplirse todas (AND):</p>
+                    <p><strong>Condición 1 — Email válido (Regex):</strong></p>
+                    <ul>
+                        <li><strong>Value 1:</strong> <code>{{ $json.body.email }}</code></li>
+                        <li><strong>Operation:</strong> <code>Regex Match</code></li>
+                        <li><strong>Value 2:</strong> <code>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Condición 2 — Nombre no vacío:</strong></p>
+                    <p>Haz clic en <strong>"+ Add Condition"</strong>:</p>
+                    <ul>
+                        <li><strong>Value 1:</strong> <code>{{ $json.body.nombre }}</code></li>
+                        <li><strong>Operation:</strong> <code>Is Not Empty</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Condición 3 — Mensaje presente:</strong></p>
+                    <p>Haz clic en <strong>"+ Add Condition"</strong>:</p>
+                    <ul>
+                        <li><strong>Value 1:</strong> <code>{{ $json.body.mensaje }}</code></li>
+                        <li><strong>Operation:</strong> <code>Is Not Empty</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Combine Conditions:</strong> <code>ALL</code> (todas deben cumplirse)</p>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>💡 ¿Por qué validar antes de enviar a la IA?</h4>
+                    <p>Cada llamada a Anthropic tiene un costo. Validar primero evita gastar créditos de la API en datos basura o incompletos. Es una buena práctica de <strong>eficiencia en costos</strong>.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 2 Completo</h4>
+                    <p>Solo datos válidos seguirán al procesamiento con IA. Los datos inválidos se detienen aquí.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 3: ENRIQUECER ==================== -->
+            <section id="nodo3-enriquecer">
+                <h2>4. Nodo 3 — Edit Fields (Enriquecer Datos)</h2>
+                <p>Agregamos metadatos importantes antes de enviar a la IA.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar nodo Edit Fields</h4>
+                    <ol>
+                        <li>Conecta desde la salida <strong>true</strong> del nodo IF</li>
+                        <li>Busca <strong>"Edit Fields (Set)"</strong></li>
+                        <li>Selecciona el nodo</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar como JSON</h4>
+                    <p>En <strong>"Mode"</strong> selecciona <strong>"JSON"</strong> y pega este código:</p>
+                    <pre><code>{
+  "ticket_id": "={{ 'TK-' + $now.toFormat('yyyyMMdd') + '-' + Math.floor(Math.random() * 9000 + 1000) }}",
+  "fecha": "={{ $now.toFormat('dd/MM/yyyy HH:mm:ss') }}",
+  "nombre": "={{ $json.body.nombre }}",
+  "email": "={{ $json.body.email }}",
+  "asunto": "={{ $json.body.asunto || 'Sin asunto' }}",
+  "mensaje": "={{ $json.body.mensaje }}",
+  "prioridad": "={{ $json.body.prioridad || 'media' }}",
+  "ip_origen": "={{ $json.headers?.['x-forwarded-for'] || 'Local' }}",
+  "estado": "NUEVO"
+}</code></pre>
+                </div>
+
+                <div class="definition-box">
+                    <strong>¿Qué hace cada campo?</strong>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>ticket_id:</strong> Genera un ID único como <code>TK-20260318-4523</code> usando la fecha actual + número aleatorio</li>
+                        <li><strong>fecha:</strong> Marca temporal exacta del ticket</li>
+                        <li><strong>nombre/email/asunto/mensaje:</strong> Datos del formulario original</li>
+                        <li><strong>prioridad:</strong> Usa la prioridad enviada o "media" por defecto</li>
+                        <li><strong>ip_origen:</strong> Intenta obtener la IP del solicitante</li>
+                        <li><strong>estado:</strong> Todos los tickets comienzan como "NUEVO"</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 3 Completo</h4>
+                    <p>Los datos ahora tienen ID único, timestamp y metadatos. Listos para el análisis de IA.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 4: ANTHROPIC CLASIFICAR ==================== -->
+            <section id="nodo4-anthropic-clasificar">
+                <h2>5. Nodo 4 — Anthropic: Clasificar Ticket con IA 🤖</h2>
+                <p>Aquí es donde la magia de la IA sucede. Claude analizará el ticket y nos dará clasificación, sentimiento y urgencia.</p>
+
+                <h3>5.1 Configurar Credenciales de Anthropic en n8n</h3>
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">1</span>Agregar nodo Anthropic</h4>
+                    <ol>
+                        <li>Haz clic en el <strong>"+"</strong> después del nodo Edit Fields</li>
+                        <li>Busca <strong>"Anthropic"</strong> en la barra de búsqueda</li>
+                        <li>Selecciona <strong>"Anthropic Chat Model"</strong> o <strong>"Basic LLM Chain"</strong></li>
+                    </ol>
+                    <p style="margin-top: 10px;"><strong>Nota:</strong> En versiones recientes de n8n, puedes buscar directamente <strong>"AI Agent"</strong> o <strong>"Basic LLM Chain"</strong> y luego configurar Anthropic como proveedor.</p>
+                </div>
+
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">2</span>Crear credencial de Anthropic</h4>
+                    <ol>
+                        <li>En el nodo, haz clic en <strong>"Credential"</strong> → <strong>"Create New"</strong></li>
+                        <li>Selecciona <strong>"Anthropic API"</strong></li>
+                        <li>En <strong>"API Key"</strong>: pega tu clave <code>sk-ant-...</code></li>
+                        <li>Haz clic en <strong>"Save"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Si no encuentras "Anthropic" directamente</h4>
+                    <p>En algunas versiones de n8n, usa este enfoque alternativo:</p>
+                    <ul>
+                        <li>Agrega un nodo <strong>"HTTP Request"</strong></li>
+                        <li>Configura el método como <strong>POST</strong></li>
+                        <li>URL: <code>https://api.anthropic.com/v1/messages</code></li>
+                        <li>Agrega headers de autenticación (ver paso siguiente)</li>
+                    </ul>
+                </div>
+
+                <h3>5.2 Opción A — Usando nodo nativo Anthropic / Basic LLM Chain</h3>
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">3</span>Configurar el nodo (nativo)</h4>
+                    <p>Si tu versión de n8n tiene el nodo Anthropic nativo o <strong>Basic LLM Chain</strong>:</p>
+                    <ul>
+                        <li><strong>Model:</strong> <code>claude-sonnet-4-20250514</code></li>
+                        <li><strong>Prompt / System Message:</strong> (ver abajo)</li>
+                        <li><strong>Max Tokens:</strong> <code>500</code></li>
+                        <li><strong>Temperature:</strong> <code>0.1</code> (queremos respuestas consistentes)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>System Prompt (copiar exactamente):</strong></p>
+                    <pre><code>Eres un asistente de clasificación de tickets de soporte técnico. 
+Analiza el ticket y responde ÚNICAMENTE con un JSON válido, sin explicaciones adicionales.
+
+El JSON debe tener exactamente esta estructura:
+{
+  "categoria": "TÉCNICO" | "FACTURACIÓN" | "CONSULTA_GENERAL" | "QUEJA" | "SOLICITUD",
+  "sentimiento": "POSITIVO" | "NEUTRO" | "NEGATIVO" | "FRUSTRADO",
+  "urgencia": "BAJA" | "MEDIA" | "ALTA" | "CRÍTICA",
+  "resumen": "Resumen de máximo 50 palabras del problema",
+  "palabras_clave": ["palabra1", "palabra2", "palabra3"]
+}</code></pre>
+                    <p style="margin-top: 15px;"><strong>User Message / Prompt:</strong></p>
+                    <pre><code>Clasifica este ticket de soporte:
+
+Asunto: {{ $json.asunto }}
+Mensaje: {{ $json.mensaje }}
+Prioridad indicada por el usuario: {{ $json.prioridad }}</code></pre>
+                </div>
+
+                <h3>5.3 Opción B — Usando HTTP Request (método universal)</h3>
+                <p>Si tu n8n no tiene nodo nativo de Anthropic, usa HTTP Request:</p>
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">3</span>Configurar HTTP Request para Anthropic</h4>
+                    <p>Agrega un nodo <strong>"HTTP Request"</strong> y configura:</p>
+                    <ul>
+                        <li><strong>Method:</strong> <code>POST</code></li>
+                        <li><strong>URL:</strong> <code>https://api.anthropic.com/v1/messages</code></li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Headers:</strong> (haz clic en "Add Header" por cada uno)</p>
+                    <ul>
+                        <li><code>x-api-key</code> → <code>TU_API_KEY_AQUÍ</code></li>
+                        <li><code>anthropic-version</code> → <code>2023-06-01</code></li>
+                        <li><code>content-type</code> → <code>application/json</code></li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Body (JSON):</strong></p>
+                    <pre><code>{
+  "model": "claude-sonnet-4-20250514",
+  "max_tokens": 500,
+  "temperature": 0.1,
+  "system": "Eres un asistente de clasificación de tickets de soporte técnico. Analiza el ticket y responde ÚNICAMENTE con un JSON válido, sin explicaciones adicionales.\n\nEl JSON debe tener exactamente esta estructura:\n{\n  \"categoria\": \"TÉCNICO\" | \"FACTURACIÓN\" | \"CONSULTA_GENERAL\" | \"QUEJA\" | \"SOLICITUD\",\n  \"sentimiento\": \"POSITIVO\" | \"NEUTRO\" | \"NEGATIVO\" | \"FRUSTRADO\",\n  \"urgencia\": \"BAJA\" | \"MEDIA\" | \"ALTA\" | \"CRÍTICA\",\n  \"resumen\": \"Resumen de máximo 50 palabras del problema\",\n  \"palabras_clave\": [\"palabra1\", \"palabra2\", \"palabra3\"]\n}",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Clasifica este ticket de soporte:\n\nAsunto: {{ $json.asunto }}\nMensaje: {{ $json.mensaje }}\nPrioridad indicada por el usuario: {{ $json.prioridad }}"
+    }
+  ]
+}</code></pre>
+                </div>
+
+                <div class="ai-box">
+                    <h4>🤖 ¿Qué hace este nodo?</h4>
+                    <p>Claude recibe el ticket y devuelve un JSON estructurado con:</p>
+                    <ul>
+                        <li><strong>Categoría:</strong> Tipo de ticket (técnico, facturación, queja, etc.)</li>
+                        <li><strong>Sentimiento:</strong> Estado emocional del cliente</li>
+                        <li><strong>Urgencia:</strong> Nivel de prioridad basado en el contexto del mensaje</li>
+                        <li><strong>Resumen:</strong> Síntesis breve del problema</li>
+                        <li><strong>Palabras clave:</strong> Términos relevantes para búsqueda futura</li>
+                    </ul>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>💡 ¿Por qué temperature = 0.1?</h4>
+                    <p>La temperatura controla la "creatividad" de la IA. Para <strong>clasificación</strong>, queremos respuestas <strong>consistentes y predecibles</strong> (siempre el mismo resultado para entradas similares). Un valor bajo como 0.1 garantiza esto. Para generación de texto creativo usaremos un valor más alto en el nodo 7.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 4 Completo</h4>
+                    <p>La IA clasificará cada ticket automáticamente. La respuesta será un JSON parseable con categoría, sentimiento y urgencia.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 5: SWITCH ==================== -->
+            <section id="nodo5-switch">
+                <h2>6. Nodo 5 — Switch (Enrutamiento por Categoría)</h2>
+                <p>Dirigimos el ticket al flujo correcto según la categoría que detectó la IA.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar nodo Switch</h4>
+                    <ol>
+                        <li>Haz clic en <strong>"+"</strong> después del nodo Anthropic</li>
+                        <li>Busca <strong>"Switch"</strong></li>
+                        <li>Selecciona el nodo <strong>"Switch"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar rutas</h4>
+                    <p><strong>Mode:</strong> <code>Rules</code></p>
+                    <p style="margin-top: 10px;">Si usaste <strong>Opción A</strong> (nodo nativo), el JSON de la IA estará en <code>$json.text</code> o <code>$json.message.content</code> — deberás parsearlo.</p>
+                    <p>Si usaste <strong>Opción B</strong> (HTTP Request), el resultado estará en:</p>
+                    <pre><code>{{ $json.content[0].text }}</code></pre>
+
+                    <p style="margin-top: 15px;">Para extraer la categoría, usa esta expresión en el campo <strong>"Value"</strong>:</p>
+                    <pre><code>={{ JSON.parse($json.content[0].text).categoria }}</code></pre>
+
+                    <p style="margin-top: 15px;"><strong>Reglas del Switch:</strong></p>
+                    <ul>
+                        <li><strong>Ruta 1 (Output 0):</strong> Value <code>equals</code> → <code>TÉCNICO</code></li>
+                        <li><strong>Ruta 2 (Output 1):</strong> Value <code>equals</code> → <code>FACTURACIÓN</code></li>
+                        <li><strong>Ruta 3 (Output 2):</strong> Value <code>equals</code> → <code>QUEJA</code></li>
+                        <li><strong>Fallback (Output 3):</strong> Marca <strong>"Fallback Output"</strong> como habilitado — para CONSULTA_GENERAL y SOLICITUD</li>
+                    </ul>
+                </div>
+
+                <div class="definition-box">
+                    <strong>¿Para qué sirve el enrutamiento?</strong> En un sistema real, cada categoría podría tener un flujo diferente: tickets técnicos se asignan al equipo de ingeniería, facturación al equipo contable, quejas al gerente de servicio. Aunque en este tutorial todas las rutas convergen en el siguiente nodo, la <strong>estructura</strong> queda lista para personalizar.
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 5 Completo</h4>
+                    <p>El Switch enruta por categoría IA. Todas las salidas se conectarán al siguiente nodo (Edit Fields).</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 6: CONSOLIDAR ==================== -->
+            <section id="nodo6-preparar">
+                <h2>7. Nodo 6 — Edit Fields (Consolidar Datos)</h2>
+                <p>Unimos los datos originales del ticket con el análisis de la IA en un solo objeto.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar nodo Edit Fields</h4>
+                    <ol>
+                        <li>Conecta <strong>todas las salidas del Switch</strong> a un nuevo nodo <strong>"Edit Fields (Set)"</strong></li>
+                        <li>Esto significa arrastrar una conexión desde cada salida del Switch hacia este nodo</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar consolidación en modo JSON</h4>
+                    <p>Selecciona <strong>"Mode" → "JSON"</strong> y pega:</p>
+                    <pre><code>{
+  "ticket_id": "={{ $('Edit Fields').item.json.ticket_id }}",
+  "fecha": "={{ $('Edit Fields').item.json.fecha }}",
+  "nombre": "={{ $('Edit Fields').item.json.nombre }}",
+  "email": "={{ $('Edit Fields').item.json.email }}",
+  "asunto": "={{ $('Edit Fields').item.json.asunto }}",
+  "mensaje": "={{ $('Edit Fields').item.json.mensaje }}",
+  "prioridad_usuario": "={{ $('Edit Fields').item.json.prioridad }}",
+  "analisis_ia": "={{ $json.content ? JSON.parse($json.content[0].text) : JSON.parse($json.text) }}",
+  "categoria_ia": "={{ $json.content ? JSON.parse($json.content[0].text).categoria : JSON.parse($json.text).categoria }}",
+  "sentimiento_ia": "={{ $json.content ? JSON.parse($json.content[0].text).sentimiento : JSON.parse($json.text).sentimiento }}",
+  "urgencia_ia": "={{ $json.content ? JSON.parse($json.content[0].text).urgencia : JSON.parse($json.text).urgencia }}",
+  "resumen_ia": "={{ $json.content ? JSON.parse($json.content[0].text).resumen : JSON.parse($json.text).resumen }}"
+}</code></pre>
+                </div>
+
+                <div class="reflection-box">
+                    <h4>💡 ¿Por qué usamos $('Edit Fields').item.json?</h4>
+                    <p>En n8n, cuando necesitas acceder a datos de un nodo anterior que no es el inmediato, usas la sintaxis <code>$('NombreDelNodo').item.json</code>. Esto nos permite "saltar" nodos intermedios y recuperar los datos originales del ticket enriquecido.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 6 Completo</h4>
+                    <p>Ahora tenemos un objeto unificado con datos originales + análisis de IA. Listo para generar la respuesta.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 7: ANTHROPIC RESPUESTA ==================== -->
+            <section id="nodo7-anthropic-respuesta">
+                <h2>8. Nodo 7 — Anthropic: Generar Respuesta Inteligente 🤖</h2>
+                <p>El segundo uso de la IA: generar una respuesta personalizada, empática y útil para el cliente.</p>
+
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">1</span>Agregar segundo nodo Anthropic</h4>
+                    <p>Agrega otro nodo Anthropic (o HTTP Request) igual que el nodo 4.</p>
+                    <ul>
+                        <li><strong>Credential:</strong> Usa la misma credencial de Anthropic ya creada</li>
+                        <li><strong>Model:</strong> <code>claude-sonnet-4-20250514</code></li>
+                        <li><strong>Max Tokens:</strong> <code>800</code> (respuestas más largas)</li>
+                        <li><strong>Temperature:</strong> <code>0.5</code> (más natural que la clasificación)</li>
+                    </ul>
+                </div>
+
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">2</span>System Prompt para generación de respuesta</h4>
+                    <pre><code>Eres un agente de soporte al cliente profesional, amigable y empático.
+Genera una respuesta para el cliente basándote en su ticket de soporte.
+
+Reglas:
+- Saluda al cliente por su nombre
+- Muestra empatía si el sentimiento es negativo o frustrado
+- Ofrece pasos concretos de solución o siguiente acción
+- Incluye el número de ticket para referencia
+- Mantén un tono profesional pero cercano
+- Responde en español
+- Máximo 200 palabras
+- NO uses markdown, responde en texto plano</code></pre>
+                </div>
+
+                <div class="ai-step-box">
+                    <h4><span class="ai-step-num">3</span>User Prompt con contexto completo</h4>
+                    <p>Si usas <strong>Opción A (nodo nativo)</strong>:</p>
+                    <pre><code>Genera una respuesta para este ticket:
+
+Ticket ID: {{ $json.ticket_id }}
+Cliente: {{ $json.nombre }}
+Asunto: {{ $json.asunto }}
+Mensaje original: {{ $json.mensaje }}
+
+Análisis del ticket:
+- Categoría: {{ $json.categoria_ia }}
+- Sentimiento del cliente: {{ $json.sentimiento_ia }}
+- Urgencia: {{ $json.urgencia_ia }}
+- Resumen: {{ $json.resumen_ia }}</code></pre>
+
+                    <p style="margin-top: 15px;">Si usas <strong>Opción B (HTTP Request)</strong>, el body completo sería:</p>
+                    <pre><code>{
+  "model": "claude-sonnet-4-20250514",
+  "max_tokens": 800,
+  "temperature": 0.5,
+  "system": "Eres un agente de soporte al cliente profesional, amigable y empático.\nGenera una respuesta para el cliente basándote en su ticket de soporte.\n\nReglas:\n- Saluda al cliente por su nombre\n- Muestra empatía si el sentimiento es negativo o frustrado\n- Ofrece pasos concretos de solución o siguiente acción\n- Incluye el número de ticket para referencia\n- Mantén un tono profesional pero cercano\n- Responde en español\n- Máximo 200 palabras\n- NO uses markdown, responde en texto plano",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Genera una respuesta para este ticket:\n\nTicket ID: {{ $json.ticket_id }}\nCliente: {{ $json.nombre }}\nAsunto: {{ $json.asunto }}\nMensaje original: {{ $json.mensaje }}\n\nAnálisis del ticket:\n- Categoría: {{ $json.categoria_ia }}\n- Sentimiento del cliente: {{ $json.sentimiento_ia }}\n- Urgencia: {{ $json.urgencia_ia }}\n- Resumen: {{ $json.resumen_ia }}"
+    }
+  ]
+}</code></pre>
+                </div>
+
+                <div class="ai-box">
+                    <h4>🤖 ¿Qué hace diferente este nodo del anterior?</h4>
+                    <p>Compara los dos usos de Anthropic en este flujo:</p>
+                    <ul>
+                        <li><strong>Nodo 4 (Clasificar):</strong> Temperature 0.1, output JSON estructurado, tarea analítica</li>
+                        <li><strong>Nodo 7 (Responder):</strong> Temperature 0.5, output texto libre, tarea creativa/empática</li>
+                    </ul>
+                    <p style="margin-top: 10px;">Esto demuestra que la misma IA puede cumplir roles muy diferentes según cómo la configuras. El <strong>prompt engineering</strong> (diseño de instrucciones) es la clave.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 7 Completo</h4>
+                    <p>Claude generará respuestas personalizadas basándose en el contexto completo del ticket y su análisis previo.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 8: GMAIL CLIENTE ==================== -->
+            <section id="nodo8-gmail-cliente">
+                <h2>9. Nodo 8 — Gmail: Respuesta al Cliente</h2>
+                <p>Enviamos la respuesta generada por IA al email del cliente.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar nodo Gmail</h4>
+                    <ol>
+                        <li>Haz clic en <strong>"+"</strong> después del nodo Anthropic de respuesta</li>
+                        <li>Busca <strong>"Gmail"</strong></li>
+                        <li>Selecciona <strong>"Gmail"</strong> → Operation: <strong>"Send Email"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar email al cliente</h4>
+                    <ul>
+                        <li><strong>Credential:</strong> Tu credencial Gmail OAuth ya configurada</li>
+                        <li><strong>To:</strong> <code>={{ $('Edit Fields1').item.json.email }}</code></li>
+                        <li><strong>Subject:</strong> <code>=[{{ $('Edit Fields1').item.json.ticket_id }}] Respuesta a: {{ $('Edit Fields1').item.json.asunto }}</code></li>
+                        <li><strong>Email Type:</strong> <code>HTML</code></li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Nota:</strong> <code>Edit Fields1</code> es el nombre del nodo 6 (consolidar). n8n agrega un número cuando hay nodos duplicados. Verifica el nombre exacto en tu flujo.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>HTML del email al cliente</h4>
+                    <p>En el campo <strong>"Message"</strong> (HTML), pega:</p>
+                    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;/head&gt;
+&lt;body style="font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding: 20px;"&gt;
+  &lt;div style="max-width: 600px; margin: 0 auto; padding: 30px; border-left: 4px solid #2196F3;"&gt;
+    
+    &lt;div style="background-color: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 20px;"&gt;
+      &lt;p style="margin: 0; color: #1565c0; font-size: 13px;"&gt;
+        🎫 Ticket: &lt;strong&gt;{{ $('Edit Fields1').item.json.ticket_id }}&lt;/strong&gt; | 
+        Categoría: &lt;strong&gt;{{ $('Edit Fields1').item.json.categoria_ia }}&lt;/strong&gt; |
+        Prioridad: &lt;strong&gt;{{ $('Edit Fields1').item.json.urgencia_ia }}&lt;/strong&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;h2 style="color: #333; margin-top: 0;"&gt;Hola {{ $('Edit Fields1').item.json.nombre }}, hemos recibido tu solicitud&lt;/h2&gt;
+    
+    &lt;div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;"&gt;
+      &lt;p style="color: #555; font-size: 15px; line-height: 1.8; margin: 0; white-space: pre-wrap;"&gt;{{ $json.content ? $json.content[0].text : $json.text }}&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div style="border-top: 1px solid #e0e0e0; padding-top: 15px; margin-top: 20px;"&gt;
+      &lt;p style="color: #999; font-size: 12px;"&gt;
+        📅 Fecha: {{ $('Edit Fields1').item.json.fecha }}&lt;br&gt;
+        Este mensaje fue generado automáticamente por nuestro sistema de soporte inteligente.&lt;br&gt;
+        Si necesitas asistencia adicional, responde a este correo con tu número de ticket.
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 8 Completo</h4>
+                    <p>El cliente recibe un email profesional con la respuesta de la IA, número de ticket y datos de referencia.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 9: GMAIL ADMIN ==================== -->
+            <section id="nodo9-gmail-admin">
+                <h2>10. Nodo 9 — Gmail: Alerta al Administrador</h2>
+                <p>Notificamos al equipo de soporte con el análisis completo de la IA.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar segundo nodo Gmail</h4>
+                    <ol>
+                        <li>Haz clic en <strong>"+"</strong> después del Gmail anterior</li>
+                        <li>Agrega otro nodo <strong>"Gmail"</strong> → <strong>"Send Email"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar email al admin</h4>
+                    <ul>
+                        <li><strong>Credential:</strong> Misma credencial Gmail OAuth</li>
+                        <li><strong>To:</strong> <code>tu-email-admin@gmail.com</code> (pon tu email real)</li>
+                        <li><strong>Subject:</strong> <code>=[SOPORTE IA] {{ $('Edit Fields1').item.json.urgencia_ia }} - {{ $('Edit Fields1').item.json.categoria_ia }} | {{ $('Edit Fields1').item.json.ticket_id }}</code></li>
+                        <li><strong>Email Type:</strong> <code>HTML</code></li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>HTML del email de alerta</h4>
+                    <p>En el campo <strong>"Message"</strong>, pega:</p>
+                    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;/head&gt;
+&lt;body style="font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #ffffff; margin: 0; padding: 20px;"&gt;
+  &lt;div style="max-width: 650px; margin: 0 auto; padding: 30px;"&gt;
+    
+    &lt;div style="background-color: #fff3e0; padding: 15px; border-radius: 5px; border-left: 4px solid #ff9800; margin-bottom: 20px;"&gt;
+      &lt;h2 style="margin: 0; color: #e65100; font-size: 18px;"&gt;🤖 Nuevo Ticket Analizado por IA&lt;/h2&gt;
+    &lt;/div&gt;
+
+    &lt;table style="width: 100%; border-collapse: collapse; margin: 20px 0;"&gt;
+      &lt;tr style="background-color: #f5f5f5;"&gt;
+        &lt;td style="padding: 10px; font-weight: bold; width: 150px; border: 1px solid #e0e0e0;"&gt;🎫 Ticket&lt;/td&gt;
+        &lt;td style="padding: 10px; border: 1px solid #e0e0e0;"&gt;{{ $('Edit Fields1').item.json.ticket_id }}&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style="padding: 10px; font-weight: bold; border: 1px solid #e0e0e0;"&gt;👤 Cliente&lt;/td&gt;
+        &lt;td style="padding: 10px; border: 1px solid #e0e0e0;"&gt;{{ $('Edit Fields1').item.json.nombre }} ({{ $('Edit Fields1').item.json.email }})&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style="background-color: #f5f5f5;"&gt;
+        &lt;td style="padding: 10px; font-weight: bold; border: 1px solid #e0e0e0;"&gt;📋 Asunto&lt;/td&gt;
+        &lt;td style="padding: 10px; border: 1px solid #e0e0e0;"&gt;{{ $('Edit Fields1').item.json.asunto }}&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style="padding: 10px; font-weight: bold; border: 1px solid #e0e0e0;"&gt;🤖 Categoría IA&lt;/td&gt;
+        &lt;td style="padding: 10px; border: 1px solid #e0e0e0; font-weight: bold; color: #1565c0;"&gt;{{ $('Edit Fields1').item.json.categoria_ia }}&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr style="background-color: #f5f5f5;"&gt;
+        &lt;td style="padding: 10px; font-weight: bold; border: 1px solid #e0e0e0;"&gt;😊 Sentimiento&lt;/td&gt;
+        &lt;td style="padding: 10px; border: 1px solid #e0e0e0;"&gt;{{ $('Edit Fields1').item.json.sentimiento_ia }}&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td style="padding: 10px; font-weight: bold; border: 1px solid #e0e0e0;"&gt;⚡ Urgencia&lt;/td&gt;
+        &lt;td style="padding: 10px; border: 1px solid #e0e0e0; font-weight: bold; color: #c62828;"&gt;{{ $('Edit Fields1').item.json.urgencia_ia }}&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h3 style="color: #333; margin-top: 25px;"&gt;📝 Mensaje Original&lt;/h3&gt;
+    &lt;div style="background-color: #fafafa; padding: 15px; border-radius: 5px; border-left: 3px solid #ccc;"&gt;
+      &lt;p style="color: #555; line-height: 1.7; margin: 0;"&gt;{{ $('Edit Fields1').item.json.mensaje }}&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;h3 style="color: #333; margin-top: 25px;"&gt;💬 Respuesta Enviada al Cliente (generada por IA)&lt;/h3&gt;
+    &lt;div style="background-color: #e8f5e9; padding: 15px; border-radius: 5px; border-left: 3px solid #4caf50;"&gt;
+      &lt;p style="color: #2e7d32; line-height: 1.7; margin: 0;"&gt;{{ $json.content ? $json.content[0].text : $json.text }}&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;p style="color: #999; font-size: 12px; margin-top: 25px; border-top: 1px solid #e0e0e0; padding-top: 15px;"&gt;
+      ⏰ Procesado: {{ $('Edit Fields1').item.json.fecha }} | Sistema de Soporte Inteligente con Anthropic Claude
+    &lt;/p&gt;
+    
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 9 Completo</h4>
+                    <p>El administrador recibe un resumen completo: datos del cliente, análisis de IA, mensaje original y respuesta generada.</p>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- ==================== NODO 10: GOOGLE SHEETS ==================== -->
+            <section id="nodo10-sheets">
+                <h2>11. Nodo 10 — Google Sheets (Registro de Auditoría)</h2>
+                <p>Guardamos todo en Google Sheets para análisis, métricas y trazabilidad.</p>
+
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Agregar nodo Google Sheets</h4>
+                    <ol>
+                        <li>Haz clic en <strong>"+"</strong> después del Gmail de admin</li>
+                        <li>Busca <strong>"Google Sheets"</strong></li>
+                        <li>Selecciona <strong>"Google Sheets"</strong> → Operation: <strong>"Append Row"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Configurar credenciales Google</h4>
+                    <ul>
+                        <li><strong>Credential:</strong> Si ya tienes Google OAuth configurado, selecciónalo. Si no, crea uno nuevo.</li>
+                        <li><strong>Document:</strong> Selecciona la hoja <code>Tickets Soporte Inteligente</code> que creaste</li>
+                        <li><strong>Sheet:</strong> <code>Sheet1</code> (o el nombre de la pestaña)</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Mapear columnas</h4>
+                    <p>En <strong>"Mapping Mode"</strong>, selecciona <strong>"Map Each Column Manually"</strong> y configura:</p>
+                    <div class="table-responsive">
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Columna en Sheets</th>
+                                    <th>Valor (Expresión)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ID</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.ticket_id }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.fecha }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Nombre</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.nombre }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.email }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Asunto</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.asunto }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Mensaje</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.mensaje }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Categoría IA</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.categoria_ia }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Sentimiento</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.sentimiento_ia }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Urgencia</td>
+                                    <td><code>={{ $('Edit Fields1').item.json.urgencia_ia }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Respuesta IA</td>
+                                    <td><code>={{ $json.content ? $json.content[0].text : $json.text }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Estado</td>
+                                    <td><code>RESPONDIDO_IA</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="ai-box">
+                    <h4>🤖 Valor de la IA en la Auditoría</h4>
+                    <p>Gracias a la IA, tu Google Sheet no solo registra los tickets — también tiene:</p>
+                    <ul>
+                        <li><strong>Categorización automática:</strong> Puedes filtrar por "TÉCNICO", "QUEJA", etc.</li>
+                        <li><strong>Análisis de sentimiento:</strong> Detectar tendencias de insatisfacción</li>
+                        <li><strong>Niveles de urgencia:</strong> Priorizar seguimiento manual para tickets críticos</li>
+                        <li><strong>Respuestas generadas:</strong> Auditar la calidad de las respuestas automáticas</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Nodo 10 Completo — ¡Flujo Terminado!</h4>
+                    <p>Los 10 nodos están configurados. El sistema completo: recibe → valida → enriquece → clasifica con IA → enruta → consolida → responde con IA → notifica al cliente → alerta al admin → registra en Sheets.</p>
+                </div>
+            </section>
+
+            <hr class="divider-thick">
+
+            <!-- ==================== SECCIÓN PRUEBAS ==================== -->
+            <section id="pruebas">
+                <h2>12. Probar el Flujo Completo</h2>
+                <p>Es momento de verificar que los 10 nodos funcionan correctamente.</p>
+
+                <h3>12.1 Guardar y Activar</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">1</span>Guardar el flujo</h4>
+                    <p>Presiona <strong>Ctrl + S</strong> para guardar.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">2</span>Activar modo de escucha</h4>
+                    <p>Haz clic en el nodo <strong>Webhook</strong> y luego en <strong>"Listen for Test Event"</strong>.</p>
+                    <p>Verás el mensaje: <em>"Waiting for webhook call..."</em></p>
+                </div>
+
+                <h3>12.2 Enviar Tickets de Prueba</h3>
+                <p>Abre otra terminal o Postman y envía estos tickets para probar diferentes escenarios:</p>
+
+                <h4>Prueba 1 — Ticket Técnico Urgente</h4>
+                <div class="step-box">
+                    <pre><code>curl -X POST http://localhost:5678/webhook/soporte-inteligente ^
+  -H "Content-Type: application/json" ^
+  -d "{\"nombre\":\"María González\",\"email\":\"maria@example.com\",\"asunto\":\"Error al procesar pedido #4521\",\"mensaje\":\"Llevo 3 días esperando respuesta sobre mi pedido. El sistema me muestra un error cuando intento rastrear el envío. Ya intenté contactarlos por teléfono pero nadie responde. Necesito una solución urgente.\",\"prioridad\":\"alta\"}"</code></pre>
+                    <p><strong>Resultado esperado de la IA:</strong> Categoría: TÉCNICO, Sentimiento: FRUSTRADO, Urgencia: ALTA o CRÍTICA</p>
+                </div>
+
+                <h4>Prueba 2 — Consulta de Facturación</h4>
+                <div class="step-box">
+                    <pre><code>curl -X POST http://localhost:5678/webhook/soporte-inteligente ^
+  -H "Content-Type: application/json" ^
+  -d "{\"nombre\":\"Carlos Rodríguez\",\"email\":\"carlos@example.com\",\"asunto\":\"Consulta sobre mi factura de marzo\",\"mensaje\":\"Buenos días, quisiera saber por qué mi factura de marzo tiene un cargo adicional de $50.000. No recuerdo haber solicitado ningún servicio extra. ¿Podrían explicarme?\",\"prioridad\":\"media\"}"</code></pre>
+                    <p><strong>Resultado esperado:</strong> Categoría: FACTURACIÓN, Sentimiento: NEUTRO, Urgencia: MEDIA</p>
+                </div>
+
+                <h4>Prueba 3 — Queja Crítica</h4>
+                <div class="step-box">
+                    <pre><code>curl -X POST http://localhost:5678/webhook/soporte-inteligente ^
+  -H "Content-Type: application/json" ^
+  -d "{\"nombre\":\"Ana Martínez\",\"email\":\"ana@example.com\",\"asunto\":\"PÉSIMO SERVICIO\",\"mensaje\":\"Estoy completamente indignada. Es la tercera vez que reporto el mismo problema y nadie hace nada. El producto llegó dañado, pedí reemplazo hace 2 semanas y aún nada. Si no resuelven esto hoy, voy a poner una queja formal y cancelar todo.\",\"prioridad\":\"alta\"}"</code></pre>
+                    <p><strong>Resultado esperado:</strong> Categoría: QUEJA, Sentimiento: FRUSTRADO, Urgencia: CRÍTICA</p>
+                </div>
+
+                <h4>Prueba 4 — Consulta General Positiva</h4>
+                <div class="step-box">
+                    <pre><code>curl -X POST http://localhost:5678/webhook/soporte-inteligente ^
+  -H "Content-Type: application/json" ^
+  -d "{\"nombre\":\"Pedro López\",\"email\":\"pedro@example.com\",\"asunto\":\"Información sobre planes premium\",\"mensaje\":\"Hola, estoy muy contento con el servicio actual y me gustaría conocer los planes premium disponibles. ¿Tienen algún descuento para clientes antiguos? Gracias de antemano.\",\"prioridad\":\"baja\"}"</code></pre>
+                    <p><strong>Resultado esperado:</strong> Categoría: CONSULTA_GENERAL, Sentimiento: POSITIVO, Urgencia: BAJA</p>
+                </div>
+
+                <h4>Prueba 5 — Datos Inválidos (debe fallar validación)</h4>
+                <div class="step-box">
+                    <pre><code>curl -X POST http://localhost:5678/webhook/soporte-inteligente ^
+  -H "Content-Type: application/json" ^
+  -d "{\"nombre\":\"\",\"email\":\"esto-no-es-email\",\"asunto\":\"\",\"mensaje\":\"\",\"prioridad\":\"\"}"</code></pre>
+                    <p><strong>Resultado esperado:</strong> El nodo IF detecta datos inválidos y el flujo se detiene sin llamar a la IA (ahorra créditos).</p>
+                </div>
+
+                <h3>12.3 Verificar Resultados</h3>
+                <div class="step-box">
+                    <h4><span class="step-num">3</span>Inspeccionar ejecución en n8n</h4>
+                    <p>Después de enviar cada prueba:</p>
+                    <ol>
+                        <li>En n8n, haz clic en cada nodo para ver su <strong>"Output"</strong></li>
+                        <li>Verifica que el <strong>Nodo 4 (Anthropic)</strong> devolvió JSON con categoría, sentimiento y urgencia</li>
+                        <li>Verifica que el <strong>Nodo 7 (Anthropic)</strong> generó una respuesta personalizada y empática</li>
+                        <li>Confirma que los emails llegaron (cliente y admin)</li>
+                        <li>Revisa Google Sheets para ver la nueva fila registrada</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4><span class="step-num">4</span>Verificar Google Sheets</h4>
+                    <p>Abre tu hoja <code>Tickets Soporte Inteligente</code> y verifica que se agregó una fila con todos los datos, incluyendo el análisis de IA.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ ¡Pruebas Exitosas!</h4>
+                    <p>Si los 4 tickets válidos generaron:</p>
+                    <ul>
+                        <li>Clasificación correcta por la IA</li>
+                        <li>Respuesta personalizada por la IA</li>
+                        <li>Email al cliente con la respuesta</li>
+                        <li>Email al admin con el análisis completo</li>
+                        <li>Fila nueva en Google Sheets</li>
+                    </ul>
+                    <p>¡Tu sistema de soporte inteligente está funcionando!</p>
+                </div>
+            </section>
+
+            <hr class="divider-thick">
+
+            <!-- ==================== SECCIÓN TROUBLESHOOTING ==================== -->
+            <section id="troubleshooting">
+                <h2>13. Solución de Problemas</h2>
+
+                <h3>Errores Comunes y Soluciones</h3>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Problema</th>
+                                <th>Causa Probable</th>
+                                <th>Solución</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Error 401 en Anthropic</td>
+                                <td>API Key inválida o expirada</td>
+                                <td>Verifica la key en console.anthropic.com. Genera una nueva si es necesario.</td>
+                            </tr>
+                            <tr>
+                                <td>Error 429 en Anthropic</td>
+                                <td>Límite de rate excedido</td>
+                                <td>Espera unos segundos entre pruebas. Revisa tus limits en la consola de Anthropic.</td>
+                            </tr>
+                            <tr>
+                                <td>JSON.parse falla en el Switch</td>
+                                <td>La IA no devolvió JSON válido</td>
+                                <td>Revisa el output del nodo Anthropic. Asegúrate que el system prompt pide JSON puro sin explicaciones.</td>
+                            </tr>
+                            <tr>
+                                <td>Error "Cannot read property" en Edit Fields</td>
+                                <td>Nombre del nodo incorrecto</td>
+                                <td>Verifica que <code>$('Edit Fields')</code> y <code>$('Edit Fields1')</code> correspondan a los nombres reales en tu flujo.</td>
+                            </tr>
+                            <tr>
+                                <td>Email no llega</td>
+                                <td>Credencial Gmail expirada</td>
+                                <td>Ve a Credentials → Gmail → Re-autenticarte. Verifica en spam.</td>
+                            </tr>
+                            <tr>
+                                <td>Google Sheets no registra</td>
+                                <td>Permisos insuficientes</td>
+                                <td>Reconecta la credencial Google. Asegúrate de dar permisos a Google Sheets.</td>
+                            </tr>
+                            <tr>
+                                <td>Webhook no responde</td>
+                                <td>n8n no está en modo escucha</td>
+                                <td>Haz clic en el nodo Webhook → "Listen for Test Event". Para producción, activa el workflow.</td>
+                            </tr>
+                            <tr>
+                                <td>Error "insufficient_quota" en Anthropic</td>
+                                <td>Sin créditos disponibles</td>
+                                <td>Ve a console.anthropic.com → Billing y agrega créditos o espera el reset del free tier.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Tips de Depuración</h3>
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>🔍 Inspeccionar Nodo por Nodo</h5>
+                        <p>Haz clic en cada nodo después de una ejecución para ver exactamente qué datos recibió (Input) y qué produjo (Output). Esto te muestra dónde se rompe la cadena.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🧪 Probar Nodos Individualmente</h5>
+                        <p>Puedes ejecutar un nodo individual — haz clic en "Execute Node" (el botón de play en el nodo). Útil para probar la conexión con Anthropic sin ejecutar todo el flujo.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>📋 Ver Historial de Ejecuciones</h5>
+                        <p>Ve al menú principal → "Executions" para ver el historial de todas las ejecuciones, incluyendo las que fallaron y por qué.</p>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>💡 Pinned Data</h5>
+                        <p>Si el webhook necesita datos para probar, usa "Pin Data" en el nodo Webhook: pega un JSON de ejemplo y todos los nodos siguientes podrán usar esos datos sin necesidad de enviar una petición real.</p>
+                    </div>
+                </div>
+
+                <h3>Optimización de Costos de API</h3>
+                <div class="ai-box">
+                    <h4>🤖 Controlar el Gasto en Anthropic</h4>
+                    <ul>
+                        <li><strong>Validar antes de llamar a la IA:</strong> El nodo IF evita llamadas innecesarias</li>
+                        <li><strong>Limitar max_tokens:</strong> 500 para clasificación, 800 para respuestas — no más</li>
+                        <li><strong>Usar claude-sonnet-4-20250514:</strong> Más económico que Opus, suficiente para estas tareas</li>
+                        <li><strong>Temperature baja para clasificación:</strong> Respuestas más cortas y consistentes</li>
+                        <li><strong>Monitorear en la consola:</strong> Revisa el consumo diario en console.anthropic.com</li>
+                    </ul>
+                </div>
+            </section>
+
+            <hr class="divider-thick">
+
+            <!-- ==================== SECCIÓN RESUMEN ==================== -->
+            <section id="resumen">
+                <h2>14. Resumen del Flujo Completo</h2>
+
+                <h3>Los 10 Nodos de tu Sistema</h3>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nodo</th>
+                                <th>Tipo</th>
+                                <th>Propósito</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Webhook</td>
+                                <td>Trigger</td>
+                                <td>Recibir tickets de soporte vía HTTP POST</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>IF (Validar)</td>
+                                <td>Condicional</td>
+                                <td>Validar email regex + campos requeridos no vacíos</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Edit Fields (Enriquecer)</td>
+                                <td>Transformación</td>
+                                <td>Agregar ticket_id, timestamp, metadatos</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>🤖 Anthropic (Clasificar)</td>
+                                <td>IA</td>
+                                <td>Clasificar categoría, sentimiento, urgencia con Claude</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Switch (Enrutar)</td>
+                                <td>Condicional</td>
+                                <td>Dirigir por categoría: Técnico, Facturación, Queja, General</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Edit Fields (Consolidar)</td>
+                                <td>Transformación</td>
+                                <td>Unir datos originales + análisis IA en un objeto</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>🤖 Anthropic (Responder)</td>
+                                <td>IA</td>
+                                <td>Generar respuesta personalizada y empática para el cliente</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Gmail (Cliente)</td>
+                                <td>Notificación</td>
+                                <td>Enviar respuesta IA al email del cliente</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Gmail (Admin)</td>
+                                <td>Notificación</td>
+                                <td>Alertar al equipo de soporte con análisis completo</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Google Sheets (Log)</td>
+                                <td>Registro</td>
+                                <td>Guardar todo en hoja de auditoría para métricas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Conceptos Clave Aprendidos</h3>
+                <div class="comparison-cards">
+                    <div class="card">
+                        <h4>🤖 Prompt Engineering</h4>
+                        <p>Diseñar instrucciones precisas para obtener outputs específicos de la IA (JSON para clasificación, texto para respuesta).</p>
+                    </div>
+                    <div class="card">
+                        <h4>🌡️ Temperature</h4>
+                        <p>Controlar la creatividad de la IA: baja (0.1) para análisis consistente, media (0.5) para texto natural.</p>
+                    </div>
+                    <div class="card">
+                        <h4>🔀 Enrutamiento Inteligente</h4>
+                        <p>Usar la clasificación de la IA para dirigir datos a diferentes flujos de procesamiento.</p>
+                    </div>
+                    <div class="card">
+                        <h4>💰 Eficiencia de Costos</h4>
+                        <p>Validar antes de llamar a la IA para evitar consumo innecesario de créditos API.</p>
+                    </div>
+                    <div class="card">
+                        <h4>📊 Auditoría con IA</h4>
+                        <p>Registrar no solo datos crudos sino también análisis de IA para generar métricas inteligentes.</p>
+                    </div>
+                    <div class="card">
+                        <h4>🔗 Referencia entre Nodos</h4>
+                        <p>Usar <code>$('NombreNodo').item.json</code> para acceder a datos de nodos no inmediatos.</p>
+                    </div>
+                </div>
+
+                <h3>🚀 Próximos Pasos</h3>
+                <div class="strategy-grid">
+                    <div class="strategy-box">
+                        <h5>📈 Mejorar el Sistema</h5>
+                        <ul>
+                            <li>Agregar un nodo de base de datos (PostgreSQL/MySQL) además de Sheets</li>
+                            <li>Implementar respuestas diferentes por categoría</li>
+                            <li>Crear un dashboard con las métricas de Sheets</li>
+                        </ul>
+                    </div>
+                    <div class="strategy-box">
+                        <h5>🧠 Explorar más IA</h5>
+                        <ul>
+                            <li>Usar Claude para detectar spam o tickets falsos</li>
+                            <li>Implementar memoria de conversación para seguimiento</li>
+                            <li>Agregar traducción automática para soporte multiidioma</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p><strong>Corporación Universitaria del Huila — CORHUILA</strong></p>
+            <p>Software y Automatización — Ingeniería Mecatrónica</p>
+            <p>Tutorial: Sistema de Soporte Inteligente con n8n + Anthropic (Claude)</p>
+            <ul>
+                <li><a href="../01-session/primer-flujo-n8n-local.html">← Tutorial Anterior: Primer Flujo en n8n</a></li>
+                <li><a href="../../02-week/02-session/formulario-contacto-n8n-avanzado.html">← Tutorial: Formulario de Contacto Avanzado</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <button id="scrollTopBtn" title="Volver arriba">↑</button>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupScrollButton();
+    setupNavigation();
+    setupSmoothScroll();
+    highlightActiveSection();
+});
+
+function setupScrollButton() {
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', function() {
+        if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
+            scrollBtn.style.display = 'block';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+    scrollBtn.addEventListener('click', function() {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    });
+}
+
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+}
+
+function setupNavigation() {
+    window.addEventListener('scroll', highlightActiveSection);
+}
+
+function highlightActiveSection() {
+    const navLinks = document.querySelectorAll('.main-nav a');
+    let current = '';
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+}
+
+document.querySelectorAll('pre').forEach(pre => {
+    const button = document.createElement('button');
+    button.textContent = '📋 Copiar';
+    button.style.cssText = 'position:absolute;right:10px;top:10px;padding:8px 12px;background-color:#27ae60;color:white;border:none;border-radius:5px;cursor:pointer;font-size:12px;opacity:0;transition:opacity 0.3s;z-index:10;';
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+    pre.addEventListener('mouseenter', () => { button.style.opacity = '1'; });
+    pre.addEventListener('mouseleave', () => { button.style.opacity = '0'; });
+    button.addEventListener('click', () => {
+        const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            button.textContent = '✅ Copiado!';
+            button.style.backgroundColor = '#2196F3';
+            setTimeout(() => {
+                button.textContent = '📋 Copiar';
+                button.style.backgroundColor = '#27ae60';
+            }, 2000);
+        });
+    });
+});
+    </script>
+</body>
+</html>
